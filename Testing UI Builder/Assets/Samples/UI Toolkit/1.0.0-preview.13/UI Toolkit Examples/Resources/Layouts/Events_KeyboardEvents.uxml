@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Template name="first" src="/Assets/first.uxml" />
+    <Style src="/Assets/Samples/UI Toolkit/1.0.0-preview.13/UI Toolkit Examples/Resources/StyleSheets/Events_KeyboardEvents.uss" />
+    <ui:Instance template="first" />
+</ui:UXML>

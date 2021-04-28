@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Template name="Events_KeyboardEvents" src="Samples/UI Toolkit/1.0.0-preview.13/UI Toolkit Examples/Resources/Layouts/Events_KeyboardEvents.uxml" />
+    <ui:Instance template="Events_KeyboardEvents" name="Events_KeyboardEvents" />
+</ui:UXML>
