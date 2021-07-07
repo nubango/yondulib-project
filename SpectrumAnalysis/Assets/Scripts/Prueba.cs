@@ -5,22 +5,28 @@ using UnityEngine;
 namespace Lasp
 {
     /*
-     * RESOLUCION:512
+     *RESOLUCION:512
+     * VENTANA DE 20 [~4% de la resolucion]
      *  POSICION EN EL ARRAY
      *  -silbidos: entre 200 y 300
      *  -palmas y chasquidos > 300 (400 y pico)
      *  -golpes graves: 20 ~ 200 (entre 100 y 170)
      *  
-     *  INTENSIDAD (VENTANA DE 20 [~4% de la resolucion])
+     *  INTENSIDAD 
      *  -silbidos:
      *      -graves y agudos: 5~8
      *      -medios: 9~13
      *  -palmas y golpes: 7,8,9 y 10 
      *  
-     *  INTENSIDAD (VENTANA DE 100 [~20% de la resolucion])
+     * VENTANA DE 100 [~20% de la resolucion]
+     *  POSICION EN EL ARRAY
+     *  -palmas ~ 300
+     *  -chasquidos ~ 500
+     *  
+     *  INTENSIDAD 
      *  -silbidos:
      *      -graves, medios y agudos: (<25)~40 (sobre 25-27)
-     *  -palmas y golpes: 40~70 
+     *  -palmas, golpes y chasquidos: 40~70 
      *  
      * **/
 
