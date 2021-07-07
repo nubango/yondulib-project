@@ -349,8 +349,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 0}
-  limit: 5
-  windowSize: 20
+  limit: 25
+  windowSize: 100
   regionsInSpactrumData: 000000002e0000002f000000340000003500000064000000
 --- !u!4 &1242308688
 Transform:

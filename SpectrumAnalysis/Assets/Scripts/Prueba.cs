@@ -17,6 +17,11 @@ namespace Lasp
      *      -medios: 9~13
      *  -palmas y golpes: 7,8,9 y 10 
      *  
+     *  INTENSIDAD (VENTANA DE 100 [~20% de la resolucion])
+     *  -silbidos:
+     *      -graves, medios y agudos: (<25)~40 (sobre 25-27)
+     *  -palmas y golpes: 40~70 
+     *  
      * **/
 
 
