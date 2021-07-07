@@ -308,6 +308,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 975652792}
+  - component: {fileID: 975652793}
   - component: {fileID: 975652791}
   m_Layer: 0
   m_Name: SoundEventManager
@@ -328,6 +329,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a19f07ce02a31b4d8e6d5967de20685, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundRecognizers:
+  - {fileID: 1191741176}
 --- !u!4 &975652792
 Transform:
   m_ObjectHideFlags: 0
@@ -342,6 +345,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &975652793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975652790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51ea4a27c5e58a544a213e784cc61190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _useDefaultDevice: 1
+  _deviceID: 
+  _channel: 0
+  _resolution: 512
+  _autoGain: 1
+  _gain: 0
+  _dynamicRange: 80
 --- !u!1 &1191741175
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,9 +393,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92634a2dac71da74c9db8bac27104c7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  limit: 0
-  windowSize: 0
-  regionsInSpactrumData: 
+  limit: 25
+  windowSize: 100
 --- !u!4 &1191741177
 Transform:
   m_ObjectHideFlags: 0
@@ -397,7 +418,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1242308688}
-  - component: {fileID: 1242308686}
   - component: {fileID: 1242308687}
   m_Layer: 0
   m_Name: Prueba
@@ -405,26 +425,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1242308686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1242308685}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51ea4a27c5e58a544a213e784cc61190, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _useDefaultDevice: 1
-  _deviceID: 
-  _channel: 0
-  _resolution: 512
-  _autoGain: 0
-  _gain: 0
-  _dynamicRange: 80
+  m_IsActive: 0
 --- !u!114 &1242308687
 MonoBehaviour:
   m_ObjectHideFlags: 0

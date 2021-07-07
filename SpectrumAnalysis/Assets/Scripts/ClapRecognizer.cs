@@ -22,7 +22,7 @@ namespace SpectrumAnalyzer
         #region private_attributes
         private int maxRangeFrequency = 450;
         private int minRangeFrequency = 550;
-        
+
         private int maxRangeIntensity = 40;
         private int minRangeIntensity = 70;
         #endregion
@@ -35,15 +35,20 @@ namespace SpectrumAnalyzer
         #endregion
         #endregion
 
-        private bool Analyze(WindowUnit  max)
+        private bool Analyze(WindowUnit max)
         {
             return max.intensity > minRangeIntensity && max.intensity < maxRangeIntensity &&
                 max.frequency > minRangeFrequency && max.frequency < maxRangeFrequency;
         }
-        
+
         public override bool Recognize(float[] array)
         {
             WindowUnit max = SlidingWindow(array, windowSize);
+
+            if (max.intensity > limit)
+            {
+                Debug.Log((int)max.frequency);
+            }
 
             return Analyze(max);
         }
