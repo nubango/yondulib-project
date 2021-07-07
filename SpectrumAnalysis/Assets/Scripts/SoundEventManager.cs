@@ -23,6 +23,10 @@ namespace SpectrumAnalyzer
         private Lasp.SpectrumAnalyzer _analyzer = null;
         #endregion
 
+        #region public_attributes
+        public SoundRecognizer[] soundRecognizers;
+        #endregion
+
         #region private_methods
         private void Awake()
         {
@@ -34,6 +38,10 @@ namespace SpectrumAnalyzer
             {
                 if (_soundRecognizers == null)
                     _soundRecognizers = new List<SoundRecognizer>();
+
+                foreach (SoundRecognizer s in soundRecognizers)
+                    _soundRecognizers.Add(s);
+                
                 _instance = this;
             }
         }
@@ -48,9 +56,13 @@ namespace SpectrumAnalyzer
         {
             foreach(SoundRecognizer sr in _soundRecognizers)
             {
-                sr.Recognize(_analyzer.logSpectrumSpan.ToArray());
+                Debug.Log(sr.Recognize(_analyzer.logSpectrumSpan.ToArray()));
             }
         }
+        #endregion
+
+        #region public_methods
+        public int GetResolution() => _analyzer.resolution;
         #endregion
 
         #endregion

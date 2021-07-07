@@ -6,7 +6,7 @@ namespace SpectrumAnalyzer
 {
     public abstract class SoundRecognizer : MonoBehaviour
     {
-        public abstract void Recognize(float[] array);
+        public abstract bool Recognize(float[] array);
 
         #region SLIDING_WINDOW_REGION
         public struct WindowUnit
