@@ -7,6 +7,13 @@ public class KeyBind : MonoBehaviour
 {
     private Dictionary<string, KeyCode> keys = new Dictionary<string, KeyCode>();
 
+    //struct InputInfo
+    //{
+    //    int id; // ID unico e interno
+    //    string name; // nombre descriptivo para la accion
+    //    delegate void inputDelegate(); // delegate que se llama con la accion
+    //}
+
     public Text up, left, down, right, jump;
 
     private GameObject currentKey;
