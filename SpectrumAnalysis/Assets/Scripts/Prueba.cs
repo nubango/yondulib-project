@@ -28,6 +28,12 @@ namespace Lasp
      *      -graves, medios y agudos: (<25)~40 (sobre 25-27)
      *  -palmas, golpes y chasquidos: 40~70 
      *  
+     * Nº de detecciones por acción
+     *  -palmadas: 30~70 (media de 40)
+     *  -chasquidos: 3~18 (media 5-7)
+     * SUMA DE LAS FRECUENCIAS
+     *  -chasquidos: 100~374
+     *  
      * **/
 
 

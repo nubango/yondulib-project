@@ -41,22 +41,22 @@ namespace SpectrumAnalyzer
 
                 foreach (SoundRecognizer s in soundRecognizers)
                     _soundRecognizers.Add(s);
-                
+
                 _instance = this;
             }
         }
 
         private void Start()
         {
-            if (_analyzer == null) 
+            if (_analyzer == null)
                 _analyzer = GetComponent<Lasp.SpectrumAnalyzer>();
         }
 
         private void Update()
         {
-            foreach(SoundRecognizer sr in _soundRecognizers)
+            foreach (SoundRecognizer sr in _soundRecognizers)
             {
-                Debug.Log(sr.Recognize(_analyzer.logSpectrumSpan.ToArray()));
+                Debug.Log(sr.name + " - " + sr.Recognize(_analyzer.logSpectrumSpan.ToArray()));
             }
         }
         #endregion
