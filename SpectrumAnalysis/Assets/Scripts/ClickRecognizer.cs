@@ -11,59 +11,62 @@ namespace SpectrumAnalyzer
         private int windowSizeBig = 100;
 
         // Intensidad minima para considerarse un chasquido
-        private int minIntensityClapDetection = 40;
+        private int minIntensityClapDetection = 30;
 
         // minimo y maximo de detecciones seguidas que tiene que haber para que se considere un chasquido
-        private int minCountClapDetection = 3;
-        private int maxCountClapDetection = 18;
+        private int minCountClickDetection = 2;
+        private int maxCountClickDetection = 18;
 
-        // suma de todas las intensidades por encima del umbral de intensidad (minIntensityClapDetection)
-        private int countDetected = 0;
-        private int totalCountDetected = 0;
-        public int totalCountDetectedDebug = 0;
+        // minimo de silencios que tiene que hber despues de un chasquido para que se considere como tal
+        private int minCountSilenceDetection = 18;
 
-        // timer que gestiona el tiempo que hay entre un chasquido y otro
-        private float elapsedTime = 0;
-        private float timeBetweenClapping = 0.5f;
+        // cuenta de las veces que se ha detectado un posible chasquido
+        private int countFrequencyClickDetected = 0;
+        // cuenta las veces que detecta silencio
+        private int countSilenceDetected = 0;
+
+        // minimo de la intensidad total de la muestra para no confundirlo con voces y silbidos
+        private int minAllIntensity = 150;
+
+
         #endregion
 
         /*
-         * Cuenta las veces que detecta un chasquido. Cuando la cuenta esta por encima del umbral, 
-         * detectaria que ha habido un chasquido y devolveria true. El resto del tiempo devuelve false.
-         * 
-         * Al final hacemos un timer para evitar dobles positivos que se dan cuando hay un chasquido muy fuerte 
-         * y puede detectar dos chasquidos cuando en verdad solo ha habido uno
+         * Cuenta las veces que detecta una intensidad que puede ser un chasquido.(+1 cada vez que se ejecuta el método)
+         * Cuando la cuenta esta dentro del umbral, detectaria que ha habido un chasquido y devolveria true. 
+         * El resto del tiempo devuelve false.
          * **/
+
         public override bool Recognize(float[] array)
         {
             bool isClick = false;
-            elapsedTime += Time.deltaTime;
 
             // ventana deslizante con tamaño de ventana grande
             WindowUnit max = SlidingWindow(array, windowSizeBig);
+            WindowUnit allFrequencies = SlidingWindow(array, array.Length - 1);
 
-            // Si la intensidad supera un limite asumimos que estamos oyendo una palmada
-            if (max.intensity > minIntensityClapDetection)
+            // Si la intensidad supera un limite asumimos que estamos oyendo un chasquido
+            if (max.intensity > minIntensityClapDetection && allFrequencies.intensity > minAllIntensity)
             {
-                // contamos cuantas iteraciones dura la palmada para saber si de verdad es una palmada
-                countDetected++;
-                totalCountDetected++;
+                // contamos cuantas iteraciones dura el chasquido para saber si de verdad es un chasquido
+                countFrequencyClickDetected++;
+                countSilenceDetected = 0;
             }
             else
-                countDetected = 0;
+                countSilenceDetected++;
 
-            if (countDetected == 0 && totalCountDetected > minCountClapDetection && totalCountDetected < maxCountClapDetection)
+            if (countFrequencyClickDetected > minCountClickDetection && countFrequencyClickDetected < maxCountClickDetection
+                && countSilenceDetected > minCountSilenceDetection)
             {
-                if (elapsedTime > timeBetweenClapping)
-                {
-                    totalCountDetectedDebug = totalCountDetected;
-                    elapsedTime = 0;
-                    isClick = true;
-                    totalCountDetected = 0;
-                }
+                isClick = true;
+                countFrequencyClickDetected = 0;
             }
-            else if (countDetected == 0 && totalCountDetected > maxCountClapDetection)
-                totalCountDetected = 0;
+            else if ((countFrequencyClickDetected < minCountClickDetection || countFrequencyClickDetected > maxCountClickDetection) && 
+                countSilenceDetected > minCountSilenceDetection)
+            {
+                countFrequencyClickDetected = 0;
+            }
+
 
             return isClick;
         }

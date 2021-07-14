@@ -18,49 +18,57 @@ namespace SpectrumAnalyzer
         private int minIntensityClapDetection = 40;
 
         // minimo de detecciones seguidas que tiene que haber para que se considere una palmada
-        private int minCountClapDetection = 20;
+        private int minCountClapDetection = 25;
+        private int maxCountClapDetection = 70;
 
-        // suma de todas las intensidades por encima del umbral de intensidad (minIntensityClapDetection)
-        private int countDetected = 0;
+        // minimo de silencios que tiene que hber despues de un chasquido para que se considere como tal
+        private int minCountSilenceDetection = 18;
 
-        // timer que gestiona el tiempo que hay entre una palmada y otra
-        private float elapsedTime = 0;
-        private float timeBetweenClapping = 0.5f;
+        // cuenta de las veces que se ha detectado un posible chasquido
+        public int countFrequencyClickDetected = 0;
+        // cuenta las veces que detecta silencio
+        public int countSilenceDetected = 0;
+
+        // minimo de la intensidad total de la muestra para no confundirlo con voces y silbidos
+        private int minAllIntensity = 150;
         #endregion
 
         /*
-         * Cuenta las veces que detecta una palmada. Cuando la cuenta esta por encima del umbral, 
-         * detectaria que ha habido una palmada y devolveria true. El resto del tiempo devuelve false.
-         * 
-         * Al final hacemos un timer para evitar dobles positivos que se dan cuando hay una palmada muy fuerte 
-         * y puede detectar dos palmadas cuando en verdad solo ha habido una
+         * Cuenta las veces que detecta una intensidad que puede ser una palmada(+1 cada vez que se ejecuta el método).
+         * Cuando la cuenta esta dentro del umbral, detectaria que ha habido un palmada y devolveria true. El resto del tiempo devuelve false.
          * **/
         public override bool Recognize(float[] array)
         {
-            bool isClap = false;
-            elapsedTime += Time.deltaTime;
+            bool isClick = false;
 
             // ventana deslizante con tamaño de ventana grande
             WindowUnit max = SlidingWindow(array, windowSizeBig);
+            WindowUnit allFrequencies = SlidingWindow(array, array.Length - 1);
 
             // Si la intensidad supera un limite asumimos que estamos oyendo una palmada
             if (max.intensity > minIntensityClapDetection)
-                // contamos cuantas iteraciones dura la palmada para saber si de verdad es una palmada
-                countDetected++;
-            else
-                countDetected = 0;
-
-            if(countDetected > minCountClapDetection)
             {
-                if (elapsedTime > timeBetweenClapping)
-                {
-                    elapsedTime = 0;
-                    isClap = true;
-                    countDetected = 0;
-                }
+                // contamos cuantas iteraciones dura la palmada para saber si de verdad es una palmada
+                countFrequencyClickDetected++;
+                countSilenceDetected = 0;
+            }
+            else
+                countSilenceDetected++;
+
+            if (countFrequencyClickDetected > minCountClapDetection && countFrequencyClickDetected < maxCountClapDetection
+                && countSilenceDetected > minCountSilenceDetection)
+            {
+                isClick = true;
+                countFrequencyClickDetected = 0;
+            }
+            else if ((countFrequencyClickDetected < minCountClapDetection || countFrequencyClickDetected > maxCountClapDetection) && 
+                countSilenceDetected > minCountSilenceDetection)
+            {
+                countFrequencyClickDetected = 0;
             }
 
-            return isClap;
+
+            return isClick;
         }
     }
 }

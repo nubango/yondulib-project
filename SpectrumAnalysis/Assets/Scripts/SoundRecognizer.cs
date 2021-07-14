@@ -32,7 +32,7 @@ namespace SpectrumAnalyzer
             // sumaos los "ancho" primeras posiciones del array
             while (i < ancho) total += array[i++];
 
-            WindowUnit max = new WindowUnit(i, total);
+            WindowUnit max = new WindowUnit(0, total);
 
             // desplazamos la ventana deslizante quitando a y sumando d
             //[a b c] d e f
