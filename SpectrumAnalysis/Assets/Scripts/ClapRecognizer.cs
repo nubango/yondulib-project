@@ -34,8 +34,9 @@ namespace SpectrumAnalyzer
         #endregion
 
         /*
-         * Cuenta las veces que detecta una intensidad que puede ser una palmada(+1 cada vez que se ejecuta el método).
-         * Cuando la cuenta esta dentro del umbral, detectaria que ha habido un palmada y devolveria true. El resto del tiempo devuelve false.
+         * Cuenta las veces que detecta una intensidad que puede ser una palmada (+1 cada vez que se ejecuta el método).
+         * Cuando la cuenta esta dentro del umbral, detectaria que ha habido un palmada y devolveria true. 
+         * El resto del tiempo devuelve false.
          * **/
         public override bool Recognize(float[] array)
         {
