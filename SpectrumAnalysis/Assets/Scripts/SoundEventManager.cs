@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpectrumAnalyzer
+namespace PatternRecognizer
 {
     /*
      * Clase que se encarga de gestionar los SoundRecognizers y les proporciona el array de frecuencias a cada uno
