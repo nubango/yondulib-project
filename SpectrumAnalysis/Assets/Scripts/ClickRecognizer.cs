@@ -51,11 +51,19 @@ namespace PatternRecognizer
         #endregion
 
         /*
-         * Cuenta las veces que detecta una intensidad que puede ser un chasquido.(+1 cada vez que se ejecuta el método)
-         * Cuando la cuenta esta dentro del umbral, detectaria que ha habido un chasquido y devolveria true. 
+         * Utilizamos una ventana deslizante de tamaño grande para diferenciar los golpes de los silbidos.
+         * Tambien realizamos la suma de todas las frecuencias de la muestra (tamaño maximo de la ventana)
+         * para afinar más y evitar confusiones con ciertos silbidos graves.
+         * 
+         * El algoritmo cuenta las veces que detecta una intensidad que puede ser un chasquido. (+1 cada vez que se ejecuta el método)
+         * Cuando el sumatorio esta dentro del umbral y ha habido el suficiente silencio despues, 
+         * se confirma que ha habido un chasquido y devuelve true. 
+         * 
+         * Tambien detecta combos del mismo tipo (dos chasquidos, dos palmadas), utilizando 
+         * un umbral de silencios más corto y en el que si se detecta otro chasquido suma uno al combo
+         * 
          * El resto del tiempo devuelve false.
          * **/
-
         public override bool Recognize(float[] array)
         {
             bool isClick = false;
@@ -67,11 +75,13 @@ namespace PatternRecognizer
             // Si la intensidad supera un limite asumimos que estamos oyendo un chasquido
             if (max.intensity > minIntensityClickDetection && allFrequencies.intensity > minAllIntensity)
             {
-                // si el silencio que ha habido esta dentro del umbral significa que ha habido dos chasquidos seguidos con lo cual no tiene que contabilizarlo
+                // si el silencio que ha habido y las iteraciones que dura el chasquido
+                // estan dentro del umbral significa que ha habido dos chasquidos seguidos
                 if (countSilenceDetected * Time.deltaTime > minCountSilenceBetweenClicks * Time.deltaTime &&
-                    countSilenceDetected * Time.deltaTime < maxCountSilenceDetection * Time.deltaTime)
+                    countSilenceDetected * Time.deltaTime < maxCountSilenceDetection * Time.deltaTime &&
+                    countFrequencyClickDetected * Time.deltaTime > minCountClickDetection * Time.deltaTime &&
+                    countFrequencyClickDetected * Time.deltaTime < maxCountClickDetection * Time.deltaTime)
                 {
-                    //countFrequencyClickDetected += (uint)maxCountClickDetection;
                     combo++;
                     countFrequencyClickDetected = 0;
                 }
@@ -83,14 +93,17 @@ namespace PatternRecognizer
             else
                 countSilenceDetected++;
 
+            // si las iteraciones que dura el chasquido estan dentro del umbral y ha habido un silencio
+            // lo suficientemente largo entonces contabilizamos que ha acabado el combo (combo puede ser de 1,2,3...)
             if (countFrequencyClickDetected * Time.deltaTime > minCountClickDetection * Time.deltaTime &&
                 countFrequencyClickDetected * Time.deltaTime < maxCountClickDetection * Time.deltaTime &&
                 countSilenceDetected * Time.deltaTime > maxCountSilenceDetection * Time.deltaTime)
             {
                 isClick = true;
                 countFrequencyClickDetected = 0;
-                combo = 0;
             }
+            // si las iteraciones que dura el chasquido estan fuera del umbral de reconocimiento
+            // y ha habido un silencio lo suficientemente largo reiniciemos los contadores de combo e iteraciones
             else if ((countFrequencyClickDetected * Time.deltaTime <= minCountClickDetection * Time.deltaTime ||
                       countFrequencyClickDetected * Time.deltaTime >= maxCountClickDetection * Time.deltaTime) &&
                       countSilenceDetected * Time.deltaTime > maxCountSilenceDetection * Time.deltaTime)

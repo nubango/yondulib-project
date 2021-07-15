@@ -9,7 +9,7 @@ namespace PatternRecognizer
         public abstract bool Recognize(float[] array);
 
         #region SLIDING_WINDOW_REGION
-        public struct WindowUnit
+        protected struct WindowUnit
         {
             // posicion de la ventana en el array de frecuencias
             public int frequency;
@@ -25,7 +25,7 @@ namespace PatternRecognizer
         /*
          * ventana deslizante: https://stackoverflow.com/questions/8269916/what-is-sliding-window-algorithm-examples
          * **/
-        public static WindowUnit SlidingWindow(float[] array, int ancho)
+        protected static WindowUnit SlidingWindow(float[] array, int ancho)
         {
             float total = 0;
             int i = 0;
