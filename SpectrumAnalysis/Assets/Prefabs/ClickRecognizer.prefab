@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07967f2a88282bb4789506bc033d413d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  combo: 0
+  minAllIntensity: 120
   minIntensityClickDetection: 30
   minCountClickDetection: 2
   maxCountClickDetection: 18

@@ -56,7 +56,7 @@ namespace PatternRecognizer
         {
             foreach (SoundRecognizer sr in _soundRecognizers)
             {
-                Debug.Log(sr.name + " combo: "+ (((ClickRecognizer)sr).combo+1) +  " - " + sr.Recognize(_analyzer.logSpectrumSpan.ToArray()));
+                Debug.Log(sr.name + " - " + sr.Recognize(_analyzer.logSpectrumSpan.ToArray()));
             }
         }
         #endregion

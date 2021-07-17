@@ -10,11 +10,13 @@ namespace PatternRecognizer
      * minIntensityClickDetection = 30; 
      * minCountClickDetection = 2;
      * maxCountClickDetection = 18;
+     * minAllIntensity = 120;
      * 
      * -PALMADAS-
      * minIntensityClickDetection = 40; 
      * minCountClickDetection = 25;
      * maxCountClickDetection = 100;
+     * minAllIntensity = 140;
      * **/
 
     public class ClickRecognizer : SoundRecognizer
@@ -23,8 +25,6 @@ namespace PatternRecognizer
         // Tamaño de la ventana en la ventana deslizante (grande para detectar golpes ~20% de la resolucion)
         private int windowSizeBig = 100;
 
-        // maximo tiempo entre chasquidos para que se contabilicen por separado
-        private int maxCountSilenceDetection = 200;
         // minimo tiempo entre chanquidos para que se contabilizen como combo
         private int minCountSilenceBetweenClicks = 10;
 
@@ -32,16 +32,11 @@ namespace PatternRecognizer
         private uint countFrequencyClickDetected = 0;
         // cuenta las veces que detecta silencio
         private uint countSilenceDetected = 0;
-
-        // minimo de la intensidad total de la muestra para no confundirlo con voces y silbidos
-        private int minAllIntensity = 150;
-
-        // numero de chasquidos seguidos
-        [HideInInspector]
-        public int combo = 0;
         #endregion
 
         #region PUBLIC_ATTRIBUTES
+        // minimo de la intensidad total de la muestra para no confundirlo con voces y silbidos
+        public int minAllIntensity = 0;
         // Intensidad minima para considerarse un chasquido
         public int minIntensityClickDetection = 0;
 
@@ -75,17 +70,6 @@ namespace PatternRecognizer
             // Si la intensidad supera un limite asumimos que estamos oyendo un chasquido
             if (max.intensity > minIntensityClickDetection && allFrequencies.intensity > minAllIntensity)
             {
-                // si el silencio que ha habido y las iteraciones que dura el chasquido
-                // estan dentro del umbral significa que ha habido dos chasquidos seguidos
-                if (countSilenceDetected * Time.deltaTime > minCountSilenceBetweenClicks * Time.deltaTime &&
-                    countSilenceDetected * Time.deltaTime < maxCountSilenceDetection * Time.deltaTime &&
-                    countFrequencyClickDetected * Time.deltaTime > minCountClickDetection * Time.deltaTime &&
-                    countFrequencyClickDetected * Time.deltaTime < maxCountClickDetection * Time.deltaTime)
-                {
-                    combo++;
-                    countFrequencyClickDetected = 0;
-                }
-
                 // contamos cuantas iteraciones dura el chasquido para saber si de verdad es un chasquido
                 countFrequencyClickDetected++;
                 countSilenceDetected = 0;
@@ -94,22 +78,19 @@ namespace PatternRecognizer
                 countSilenceDetected++;
 
             // si las iteraciones que dura el chasquido estan dentro del umbral y ha habido un silencio
-            // lo suficientemente largo entonces contabilizamos que ha acabado el combo (combo puede ser de 1,2,3...)
+            // lo suficientemente largo entonces contabilizamos que ha acabado el chasquido
             if (countFrequencyClickDetected * Time.deltaTime > minCountClickDetection * Time.deltaTime &&
                 countFrequencyClickDetected * Time.deltaTime < maxCountClickDetection * Time.deltaTime &&
-                countSilenceDetected * Time.deltaTime > maxCountSilenceDetection * Time.deltaTime)
+                countSilenceDetected * Time.deltaTime > minCountSilenceBetweenClicks * Time.deltaTime)
             {
                 isClick = true;
                 countFrequencyClickDetected = 0;
             }
             // si las iteraciones que dura el chasquido estan fuera del umbral de reconocimiento
-            // y ha habido un silencio lo suficientemente largo reiniciemos los contadores de combo e iteraciones
-            else if ((countFrequencyClickDetected * Time.deltaTime <= minCountClickDetection * Time.deltaTime ||
-                      countFrequencyClickDetected * Time.deltaTime >= maxCountClickDetection * Time.deltaTime) &&
-                      countSilenceDetected * Time.deltaTime > maxCountSilenceDetection * Time.deltaTime)
+            // y ha habido un silencio lo suficientemente largo reiniciemos iteraciones
+            else if (countSilenceDetected * Time.deltaTime > minCountSilenceBetweenClicks * Time.deltaTime)
             {
                 countFrequencyClickDetected = 0;
-                combo = 0;
             }
 
             return isClick;
