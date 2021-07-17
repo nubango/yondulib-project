@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Lasp;
 
 namespace PatternRecognizer
 {
@@ -20,7 +21,7 @@ namespace PatternRecognizer
         #region UNITY_REGION
 
         #region private_attributes
-        private Lasp.SpectrumAnalyzer _analyzer = null;
+        private SpectrumAnalyzer _analyzer = null;
         #endregion
 
         #region public_attributes

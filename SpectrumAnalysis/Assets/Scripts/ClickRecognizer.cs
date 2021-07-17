@@ -26,7 +26,7 @@ namespace PatternRecognizer
         private int windowSizeBig = 100;
 
         // minimo tiempo entre chanquidos para que se contabilizen como combo
-        private int minCountSilenceBetweenClicks = 10;
+        private readonly int minCountSilenceBetweenClicks = 10;
 
         // cuenta de las veces que se ha detectado un posible chasquido
         private uint countFrequencyClickDetected = 0;
@@ -53,9 +53,6 @@ namespace PatternRecognizer
          * El algoritmo cuenta las veces que detecta una intensidad que puede ser un chasquido. (+1 cada vez que se ejecuta el método)
          * Cuando el sumatorio esta dentro del umbral y ha habido el suficiente silencio despues, 
          * se confirma que ha habido un chasquido y devuelve true. 
-         * 
-         * Tambien detecta combos del mismo tipo (dos chasquidos, dos palmadas), utilizando 
-         * un umbral de silencios más corto y en el que si se detecta otro chasquido suma uno al combo
          * 
          * El resto del tiempo devuelve false.
          * **/
