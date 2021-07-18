@@ -50,7 +50,7 @@ namespace PatternRecognizer
         private void Start()
         {
             if (_analyzer == null)
-                _analyzer = GetComponent<Lasp.SpectrumAnalyzer>();
+                _analyzer = GetComponent<SpectrumAnalyzer>();
         }
 
         private void Update()

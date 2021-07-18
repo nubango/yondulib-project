@@ -23,7 +23,7 @@ namespace PatternRecognizer
     {
         #region PRIVATE_ATTRIBUTES
         // Tamaño de la ventana en la ventana deslizante (grande para detectar golpes ~20% de la resolucion)
-        private int windowSizeBig = 100;
+        private int windowSize = 100;
 
         // minimo tiempo entre chanquidos para que se contabilizen como combo
         private readonly int minCountSilenceBetweenClicks = 10;
@@ -61,7 +61,7 @@ namespace PatternRecognizer
             bool isClick = false;
 
             // ventana deslizante con tamaño de ventana grande
-            WindowUnit max = SlidingWindow(array, windowSizeBig);
+            WindowUnit max = SlidingWindow(array, windowSize);
             WindowUnit allFrequencies = SlidingWindow(array, array.Length - 1);
 
             // Si la intensidad supera un limite asumimos que estamos oyendo un chasquido
