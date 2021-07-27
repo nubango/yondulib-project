@@ -84,7 +84,7 @@ namespace PatternRecognizer
                 countFrequencyClickDetected = 0;
             }
             // si las iteraciones que dura el chasquido estan fuera del umbral de reconocimiento
-            // y ha habido un silencio lo suficientemente largo reiniciemos iteraciones
+            // y ha habido un silencio lo suficientemente largo reiniciamos iteraciones
             else if (countSilenceDetected * Time.deltaTime > minCountSilenceBetweenClicks * Time.deltaTime)
             {
                 countFrequencyClickDetected = 0;

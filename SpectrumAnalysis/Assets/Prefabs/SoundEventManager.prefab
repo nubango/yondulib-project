@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _useDefaultDevice: 1
-  _deviceID: 
+  _deviceID: '{0.0.1.00000000}.{219c72ef-3434-40ab-aa85-1f5364b59740}'
   _channel: 0
   _resolution: 512
   _autoGain: 0
@@ -63,4 +63,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a19f07ce02a31b4d8e6d5967de20685, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundRecognizers: []
+  soundRecognizers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

@@ -43,14 +43,16 @@ namespace PatternRecognizer
                 foreach (SoundRecognizer s in soundRecognizers)
                     _soundRecognizers.Add(s);
 
+                if (_analyzer == null)
+                    _analyzer = GetComponent<SpectrumAnalyzer>();
+
                 _instance = this;
             }
         }
 
         private void Start()
         {
-            if (_analyzer == null)
-                _analyzer = GetComponent<SpectrumAnalyzer>();
+            
         }
 
         private void Update()

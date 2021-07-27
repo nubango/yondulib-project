@@ -4,7 +4,13 @@ using UnityEngine;
 
 namespace PatternRecognizer
 {
-    public class WhistleRecognizer : SoundRecognizer
+    /* 
+     * Identificacion de la frecuencia. El resultado final es que se "grabara" el silbido (otra clase por hacer) y hay que identificar 
+     * y guardar la frecuencia. El método Recognize(...) lo que hace es identificar si se silba en la frecuencia grabada.
+     * Tambien guardar el tiempo que dura la frecuencia (tanto la frecuencia como la duracion tienen un margen de error)
+     * 
+     * **/
+    public class WhistleFrequencyRecognizer : SoundRecognizer
     {
         #region PRIVATE_ATTRIBUTES
         private int windowSizeBig = 100;
@@ -27,7 +33,31 @@ namespace PatternRecognizer
         private int minAllIntensity = 20;
         #endregion
 
+        #region PUBLIC_ATTRIBUTES
+        /*
+         * frequency = 250
+         * frequencyDuration = 100
+         * 
+         * **/
+        // Frecuencia que tiene que ser identificada y su duracion
+        public uint frequency;
+        public uint frequencyDuration;
+
+        // debug
+        public int debugFrequency;
+        // debug
+        #endregion
+
+        #region UNITY_REGION
+        private void Start()
+        {
+            offsetFrequency *= SoundEventManager.Instance.GetResolution();
+            maxWrongRangeFrequency = offsetDuration * frequencyDuration > 1000 ? 1000 : (uint)(offsetDuration * frequencyDuration);
+        }
+        #endregion
+
         #region RECOGNIZER_METHODS
+        /*Primera criba en la intensidad. Establecemos un valor maximo y minimo (en ambos tamaños de ventana)**/
         public override bool Recognize(float[] array)
         {
             bool isClick = false;
