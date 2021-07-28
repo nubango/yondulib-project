@@ -63,15 +63,15 @@ namespace PatternRecognizer
             bool isClick = false;
 
             // ventana deslizante con tamaño de ventana grande
-            WindowUnit maxBigSize = SlidingWindow(array, windowSizeBig);
-            WindowUnit allFrequencies = SlidingWindow(array, array.Length - 1);
+            Utils.WindowUnit maxBigSize = Utils.SlidingWindow(array, windowSizeBig);
+            Utils.WindowUnit allFrequencies = Utils.SlidingWindow(array, array.Length - 1);
 
             // Si la intensidad esta entre cierto rango, entonces estamos oyendo un posible silbido
             if (maxBigSize.intensity > minIntensityDetection && allFrequencies.intensity > minAllIntensity
                 && allFrequencies.intensity < maxAllIntensity)
             {
                 // pasamos una ventana mas pequeña para identificar la frecuencia exacta
-                WindowUnit maxSmallSize = SlidingWindow(array, windowSizeSmall);
+                Utils.WindowUnit maxSmallSize = Utils.SlidingWindow(array, windowSizeSmall);
 
                 //debug
                 debugFrequency = maxSmallSize.frequency;

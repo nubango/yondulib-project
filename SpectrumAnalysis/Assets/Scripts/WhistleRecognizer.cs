@@ -4,7 +4,10 @@ using UnityEngine;
 
 namespace PatternRecognizer
 {
-    public class WhistleRecognizer : SoundRecognizer
+    /*
+     * Clase que tiene un método que devuelde la frecuencia del silbido y su duracion
+     * **/
+    public class WhistleRecognizer : MonoBehaviour
     {
         #region PRIVATE_ATTRIBUTES
         private int windowSizeBig = 100;
@@ -16,8 +19,7 @@ namespace PatternRecognizer
         private uint countWrogFrequencyDetected = 0;
         private uint maxWrongRangeFrequency;
 
-        // rango de error al comprobar la duracion y la frecuencia del silbido 
-        private float offsetDuration = 0.5f;
+        // rango de error al comprobar la frecuencia del silbido 
         private float offsetFrequency = 0.01f;
         // minima intensidad que tiene que detectar para que contabilice como que ha habido un silbido
         private int minIntensityDetection = 15;
@@ -25,64 +27,67 @@ namespace PatternRecognizer
         // maxima y minima intensidad de toda la muestra. Valores acordes con los de un silbido
         private int maxAllIntensity = 80;
         private int minAllIntensity = 20;
+
+
+        // frecuencia actual que está sonando
+        private int currentFrequency = -1;
         #endregion
 
-        #region RECOGNIZER_METHODS
-        public override bool Recognize(float[] array)
+        public Utils.Pair<int, uint> Recognize(float[] array)
         {
-            bool isClick = false;
-
+            Utils.Pair<int, uint> res = null;
             // ventana deslizante con tamaño de ventana grande
-            WindowUnit maxBigSize = SlidingWindow(array, windowSizeBig);
-            WindowUnit allFrequencies = SlidingWindow(array, array.Length - 1);
+            Utils.WindowUnit maxBigSize = Utils.SlidingWindow(array, windowSizeBig);
+            Utils.WindowUnit allFrequencies = Utils.SlidingWindow(array, array.Length - 1);
 
             // Si la intensidad esta entre cierto rango, entonces estamos oyendo un posible silbido
             if (maxBigSize.intensity > minIntensityDetection && allFrequencies.intensity > minAllIntensity
                 && allFrequencies.intensity < maxAllIntensity)
             {
                 // pasamos una ventana mas pequeña para identificar la frecuencia exacta
-                WindowUnit maxSmallSize = SlidingWindow(array, windowSizeSmall);
+                Utils.WindowUnit maxSmallSize = Utils.SlidingWindow(array, windowSizeSmall);
 
-                //debug
-                debugFrequency = maxSmallSize.frequency;
-                //debug
-
-                // Comprobamos que fecuencia del input esta dentro del rango de la fecuencia buscada
-                if ((maxSmallSize.frequency < (frequency + offsetFrequency) && maxSmallSize.frequency > (frequency - offsetFrequency)))
+                //Comprobamos si la frecuencia escuchada es la misma que la anterior o si es una nueva
+                //Hay un margen de error para mejorar la precision
+                if (currentFrequency == -1)
+                {
+                    countWrogFrequencyDetected = 0;
+                    countFrequencyDetected = 0;
+                    currentFrequency = maxSmallSize.frequency;
+                    countFrequencyDetected++;
+                }
+                else if ((maxSmallSize.frequency < (currentFrequency + offsetFrequency)
+                     && maxSmallSize.frequency > (currentFrequency - offsetFrequency)))
                 {
                     countFrequencyDetected++;
                     countWrogFrequencyDetected = 0;
                 }
-                // no detecta la frecuencia pero hay cierto margen de error al detectar la frecuencia porque el silbido tiene fluctuaciones
                 else if (countWrogFrequencyDetected * Time.deltaTime < maxWrongRangeFrequency * Time.deltaTime)
                 {
                     countWrogFrequencyDetected++;
                     countFrequencyDetected++;
                 }
-                // si supera el margen de error entonces asumimos que no está silbando en la frecuencia adecuada
                 else
                 {
                     countFrequencyDetected = 0;
                     countWrogFrequencyDetected = 0;
+                    currentFrequency = maxSmallSize.frequency;
+                    countFrequencyDetected++;
                 }
             }
             // si la intensidad es demasiado baja reiniciamos contadores y contabilizamos como silencio
             else if (maxBigSize.intensity < minIntensityDetection && allFrequencies.intensity < minAllIntensity)
             {
+                if (countFrequencyDetected > 0 && currentFrequency > 0) 
+                {
+                    res = new Utils.Pair<int, uint>(currentFrequency, countFrequencyDetected);
+                }
+
                 countFrequencyDetected = 0;
                 countWrogFrequencyDetected = 0;
             }
 
-            // Comprobamos que la duracion de la frecuencia esta dentro del rango establecido
-            if (countFrequencyDetected * Time.deltaTime > (frequencyDuration) * Time.deltaTime)
-            {
-                isClick = true;
-                countFrequencyDetected = 0;
-            }
-
-
-            return isClick;
+            return res;
         }
-        #endregion
     }
 }

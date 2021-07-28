@@ -61,8 +61,8 @@ namespace PatternRecognizer
             bool isClick = false;
 
             // ventana deslizante con tamaño de ventana grande
-            WindowUnit max = SlidingWindow(array, windowSize);
-            WindowUnit allFrequencies = SlidingWindow(array, array.Length - 1);
+            Utils.WindowUnit max = Utils.SlidingWindow(array, windowSize);
+            Utils.WindowUnit allFrequencies = Utils.SlidingWindow(array, array.Length - 1);
 
             // Si la intensidad supera un limite asumimos que estamos oyendo un chasquido
             if (max.intensity > minIntensityClickDetection && allFrequencies.intensity > minAllIntensity)
