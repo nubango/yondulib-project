@@ -430,6 +430,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2852634972149595043, guid: a1f3440f0dddd5c4baa58efa20987c82, type: 3}
+      propertyPath: minAllIntensity
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1f3440f0dddd5c4baa58efa20987c82, type: 3}
 --- !u!1001 &3587030625504239627
@@ -483,6 +487,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3587030624313550579, guid: b459bb26901e72e4cb23f5bcaf88b945, type: 3}
+      propertyPath: minCountClickDetection
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3587030624313550588, guid: b459bb26901e72e4cb23f5bcaf88b945, type: 3}
       propertyPath: m_Name
       value: ClapRecognizer
@@ -511,6 +519,10 @@ PrefabInstance:
     - target: {fileID: 3806856020548371703, guid: e7e963ec39873c2439a7c020fa42ea7d, type: 3}
       propertyPath: m_Name
       value: SoundEventManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3806856020548371704, guid: e7e963ec39873c2439a7c020fa42ea7d, type: 3}
+      propertyPath: _useDefaultDevice
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3806856020548371705, guid: e7e963ec39873c2439a7c020fa42ea7d, type: 3}
       propertyPath: m_RootOrder

@@ -14,7 +14,7 @@ namespace PatternRecognizer
      * 
      * -PALMADAS-
      * minIntensityClickDetection = 40; 
-     * minCountClickDetection = 25;
+     * minCountClickDetection = 20;
      * maxCountClickDetection = 100;
      * minAllIntensity = 140;
      * **/
