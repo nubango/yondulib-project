@@ -10,11 +10,11 @@ namespace PatternRecognizer
      * minIntensityClickDetection = 30; 
      * minCountClickDetection = 2;
      * maxCountClickDetection = 18;
-     * minAllIntensity = 120;
+     * minAllIntensity = 100;
      * 
      * -PALMADAS-
      * minIntensityClickDetection = 40; 
-     * minCountClickDetection = 20;
+     * minCountClickDetection = 10;
      * maxCountClickDetection = 100;
      * minAllIntensity = 140;
      * **/
@@ -39,6 +39,10 @@ namespace PatternRecognizer
         public int minAllIntensity = 0;
         // Intensidad minima para considerarse un chasquido
         public int minIntensityClickDetection = 0;
+
+        //// Frecuencia para distinguir si es palmada o chasquido
+        //public int minFrequency = 0;
+        //public int maxFrequency = 0;
 
         // minimo y maximo de detecciones seguidas que tiene que haber para que se considere un chasquido
         public int minCountClickDetection = 0;
@@ -65,8 +69,10 @@ namespace PatternRecognizer
             Utils.WindowUnit allFrequencies = Utils.SlidingWindow(array, array.Length - 1);
 
             // Si la intensidad supera un limite asumimos que estamos oyendo un chasquido
-            if (max.intensity > minIntensityClickDetection && allFrequencies.intensity > minAllIntensity)
+            if (max.intensity > minIntensityClickDetection && allFrequencies.intensity > minAllIntensity )
+                //&& max.frequency > minFrequency && max.frequency < maxFrequency)
             {
+                //Debug.Log(max.frequency);
                 // contamos cuantas iteraciones dura el chasquido para saber si de verdad es un chasquido
                 countFrequencyClickDetected++;
                 countSilenceDetected = 0;

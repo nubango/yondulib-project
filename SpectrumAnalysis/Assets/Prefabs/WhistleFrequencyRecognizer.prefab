@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   frequency: 250
-  frequencyDuration: 100
+  frequencyDuration: 50
   debugFrequency: 0

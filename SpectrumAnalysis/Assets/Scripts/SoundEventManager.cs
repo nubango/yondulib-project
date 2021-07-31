@@ -26,6 +26,8 @@ namespace PatternRecognizer
 
         #region public_attributes
         public SoundRecognizer[] soundRecognizers;
+
+        public WhistleRecognizer wr;
         #endregion
 
         #region private_methods
@@ -52,15 +54,19 @@ namespace PatternRecognizer
 
         private void Start()
         {
-            
+
         }
 
         private void Update()
         {
             foreach (SoundRecognizer sr in _soundRecognizers)
             {
-                Debug.Log(sr.name + " - " + sr.Recognize(_analyzer.logSpectrumSpan.ToArray()));
+                //Debug.Log(sr.name + " - " + sr.Recognize(_analyzer.logSpectrumSpan.ToArray()));
+                sr.Recognize(_analyzer.logSpectrumSpan.ToArray());
             }
+            var aux = wr.Recognize(_analyzer.logSpectrumSpan.ToArray());
+            if (aux != null)
+                Debug.Log(aux.First + " " + aux.Second);
         }
         #endregion
 

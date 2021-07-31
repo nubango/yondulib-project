@@ -17,7 +17,7 @@ namespace PatternRecognizer
         private uint countFrequencyDetected = 0;
         // cuenta las veces que la frecuencia no es la buscada (se usa porque al silbar no siempre aguantamos la misma frecuencia)
         private uint countWrogFrequencyDetected = 0;
-        private uint maxWrongRangeFrequency;
+        private uint maxWrongRangeFrequency = 15;
 
         // rango de error al comprobar la frecuencia del silbido 
         private float offsetFrequency = 0.01f;
@@ -32,7 +32,6 @@ namespace PatternRecognizer
         // frecuencia actual que está sonando
         private int currentFrequency = -1;
         #endregion
-
         public Utils.Pair<int, uint> Recognize(float[] array)
         {
             Utils.Pair<int, uint> res = null;
@@ -44,6 +43,7 @@ namespace PatternRecognizer
             if (maxBigSize.intensity > minIntensityDetection && allFrequencies.intensity > minAllIntensity
                 && allFrequencies.intensity < maxAllIntensity)
             {
+                //Debug.Log("all = " + allFrequencies.intensity + " - big = " + maxBigSize.intensity);
                 // pasamos una ventana mas pequeña para identificar la frecuencia exacta
                 Utils.WindowUnit maxSmallSize = Utils.SlidingWindow(array, windowSizeSmall);
 
@@ -54,7 +54,6 @@ namespace PatternRecognizer
                     countWrogFrequencyDetected = 0;
                     countFrequencyDetected = 0;
                     currentFrequency = maxSmallSize.frequency;
-                    countFrequencyDetected++;
                 }
                 else if ((maxSmallSize.frequency < (currentFrequency + offsetFrequency)
                      && maxSmallSize.frequency > (currentFrequency - offsetFrequency)))
@@ -78,7 +77,7 @@ namespace PatternRecognizer
             // si la intensidad es demasiado baja reiniciamos contadores y contabilizamos como silencio
             else if (maxBigSize.intensity < minIntensityDetection && allFrequencies.intensity < minAllIntensity)
             {
-                if (countFrequencyDetected > 0 && currentFrequency > 0) 
+                if (countFrequencyDetected > maxWrongRangeFrequency && currentFrequency > 0) 
                 {
                     res = new Utils.Pair<int, uint>(currentFrequency, countFrequencyDetected);
                 }
