@@ -17,7 +17,7 @@ namespace PatternRecognizer
         private uint countFrequencyDetected = 0;
         // cuenta las veces que la frecuencia no es la buscada (se usa porque al silbar no siempre aguantamos la misma frecuencia)
         private uint countWrogFrequencyDetected = 0;
-        private uint maxWrongRangeFrequency = 15;
+        private uint maxWrongRangeFrequency = 30;
 
         // rango de error al comprobar la frecuencia del silbido 
         private float offsetFrequency = 0.01f;
@@ -30,7 +30,7 @@ namespace PatternRecognizer
 
 
         // frecuencia actual que está sonando
-        private int currentFrequency = -1;
+        private int currentFrequency = 0;
         #endregion
         public Utils.Pair<int, uint> Recognize(float[] array)
         {
@@ -49,13 +49,8 @@ namespace PatternRecognizer
 
                 //Comprobamos si la frecuencia escuchada es la misma que la anterior o si es una nueva
                 //Hay un margen de error para mejorar la precision
-                if (currentFrequency == -1)
-                {
-                    countWrogFrequencyDetected = 0;
-                    countFrequencyDetected = 0;
-                    currentFrequency = maxSmallSize.frequency;
-                }
-                else if ((maxSmallSize.frequency < (currentFrequency + offsetFrequency)
+                //Si detecta que ya no está silbando en la frecuencia anterior la devuelve (si es lo suficientemente larga)
+                if ((maxSmallSize.frequency < (currentFrequency + offsetFrequency)
                      && maxSmallSize.frequency > (currentFrequency - offsetFrequency)))
                 {
                     countFrequencyDetected++;
@@ -68,8 +63,15 @@ namespace PatternRecognizer
                 }
                 else
                 {
+                    // si la frecuencia detectada es lo suficientemente larga entonces la devuelve
+                    if (countFrequencyDetected * Time.deltaTime > maxWrongRangeFrequency * Time.deltaTime && currentFrequency > 0)
+                    {
+                        res = new Utils.Pair<int, uint>(currentFrequency, countFrequencyDetected);
+                    }
+
                     countFrequencyDetected = 0;
                     countWrogFrequencyDetected = 0;
+
                     currentFrequency = maxSmallSize.frequency;
                     countFrequencyDetected++;
                 }
@@ -77,7 +79,7 @@ namespace PatternRecognizer
             // si la intensidad es demasiado baja reiniciamos contadores y contabilizamos como silencio
             else if (maxBigSize.intensity < minIntensityDetection && allFrequencies.intensity < minAllIntensity)
             {
-                if (countFrequencyDetected > maxWrongRangeFrequency && currentFrequency > 0) 
+                if (countFrequencyDetected > maxWrongRangeFrequency && currentFrequency > 0)
                 {
                     res = new Utils.Pair<int, uint>(currentFrequency, countFrequencyDetected);
                 }
