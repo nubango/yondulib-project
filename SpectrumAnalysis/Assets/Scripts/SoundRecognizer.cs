@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace PatternRecognizer
 {
-    public abstract class SoundRecognizer : MonoBehaviour
+    abstract class SoundRecognizer
     {
         public abstract bool Recognize(float[] array);
     }

@@ -10,7 +10,7 @@ namespace PatternRecognizer
      * Tambien guardar el tiempo que dura la frecuencia (tanto la frecuencia como la duracion tienen un margen de error)
      * 
      * **/
-    public class WhistleFrequencyRecognizer : SoundRecognizer
+    class WhistleFrequencyRecognizer : SoundRecognizer
     {
         #region PRIVATE_ATTRIBUTES
         private int windowSizeBig = 100;
@@ -31,32 +31,24 @@ namespace PatternRecognizer
         // maxima y minima intensidad de toda la muestra. Valores acordes con los de un silbido
         private int maxAllIntensity = 80;
         private int minAllIntensity = 20;
-        #endregion
 
-        #region PUBLIC_ATTRIBUTES
-        /*
-         * frequency = 250
-         * frequencyDuration = 100
-         * 
-         * **/
         // Frecuencia que tiene que ser identificada y su duracion
-        public uint frequency;
-        public uint frequencyDuration;
-
-        // debug
-        public int debugFrequency;
-        // debug
+        private uint _frequency;
+        private uint _frequencyDuration;
         #endregion
 
-        #region UNITY_REGION
-        private void Start()
+        #region CONTRUCTOR
+        public WhistleFrequencyRecognizer(uint frequency, uint frequencyDuration)
         {
+            _frequency = frequency;
+            _frequencyDuration = frequencyDuration;
+
             offsetFrequency *= SoundEventManager.Instance.GetResolution();
-            maxWrongRangeFrequency = offsetDuration * frequencyDuration > 1000 ? 1000 : (uint)(offsetDuration * frequencyDuration);
+            maxWrongRangeFrequency = offsetDuration * _frequencyDuration > 1000 ? 1000 : (uint)(offsetDuration * _frequencyDuration);
         }
         #endregion
 
-        #region RECOGNIZER_METHODS
+        #region PUBLIC_METHODS
         /*Primera criba en la intensidad. Establecemos un valor maximo y minimo (en ambos tamaños de ventana)**/
         public override bool Recognize(float[] array)
         {
@@ -73,12 +65,8 @@ namespace PatternRecognizer
                 // pasamos una ventana mas pequeña para identificar la frecuencia exacta
                 Utils.WindowUnit maxSmallSize = Utils.SlidingWindow(array, windowSizeSmall);
 
-                //debug
-                debugFrequency = maxSmallSize.frequency;
-                //debug
-
                 // Comprobamos que fecuencia del input esta dentro del rango de la fecuencia buscada
-                if ((maxSmallSize.frequency < (frequency + offsetFrequency) && maxSmallSize.frequency > (frequency - offsetFrequency)))
+                if ((maxSmallSize.frequency < (_frequency + offsetFrequency) && maxSmallSize.frequency > (_frequency - offsetFrequency)))
                 {
                     countFrequencyDetected++;
                     countWrogFrequencyDetected = 0;
@@ -104,7 +92,7 @@ namespace PatternRecognizer
             }
 
             // Comprobamos que la duracion de la frecuencia esta dentro del rango establecido
-            if (countFrequencyDetected * Time.deltaTime > (frequencyDuration) * Time.deltaTime)
+            if (countFrequencyDetected * Time.deltaTime > (_frequencyDuration) * Time.deltaTime)
             {
                 isClick = true;
                 countFrequencyDetected = 0;
@@ -112,6 +100,16 @@ namespace PatternRecognizer
 
 
             return isClick;
+        }
+
+        public uint getFrequency() { return _frequency; }
+        public void setFrequency(uint frequency) { _frequency = frequency; }
+        public uint getFrequencyDuration() { return _frequencyDuration; }
+        public void setFrequencyDuration(uint frequencyDuration) 
+        { 
+            _frequencyDuration = frequencyDuration; 
+            maxWrongRangeFrequency = offsetDuration * _frequencyDuration > 1000 ? 1000 : (uint)(offsetDuration * _frequencyDuration);
+
         }
         #endregion
     }

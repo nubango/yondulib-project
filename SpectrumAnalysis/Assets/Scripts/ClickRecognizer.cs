@@ -19,7 +19,7 @@ namespace PatternRecognizer
      * minAllIntensity = 140;
      * **/
 
-    public class ClickRecognizer : SoundRecognizer
+    class ClickRecognizer : SoundRecognizer
     {
         #region PRIVATE_ATTRIBUTES
         // Tamaño de la ventana en la ventana deslizante (grande para detectar golpes ~20% de la resolucion)
@@ -32,23 +32,35 @@ namespace PatternRecognizer
         private uint countFrequencyClickDetected = 0;
         // cuenta las veces que detecta silencio
         private uint countSilenceDetected = 0;
-        #endregion
 
-        #region PUBLIC_ATTRIBUTES
         // minimo de la intensidad total de la muestra para no confundirlo con voces y silbidos
-        public int minAllIntensity = 0;
+        private int _minAllIntensity = 0;
         // Intensidad minima para considerarse un chasquido
-        public int minIntensityClickDetection = 0;
+        private int _minIntensityClickDetection = 0;
 
         //// Frecuencia para distinguir si es palmada o chasquido
         //public int minFrequency = 0;
         //public int maxFrequency = 0;
 
         // minimo y maximo de detecciones seguidas que tiene que haber para que se considere un chasquido
-        public int minCountClickDetection = 0;
-        public int maxCountClickDetection = 0;
+        private int _minCountClickDetection = 0;
+        private int _maxCountClickDetection = 0;
         #endregion
 
+        public string _name;
+
+        #region CONSTRUCTOR
+        public ClickRecognizer(string name, int minAllIntensity, int minIntensityClickDetection, int minCountClickDetection, int maxCountClickDetection)
+        {
+            _name = name;
+            _minAllIntensity = minAllIntensity;
+            _minIntensityClickDetection = minIntensityClickDetection;
+            _minCountClickDetection = minCountClickDetection;
+            _maxCountClickDetection = maxCountClickDetection;
+        }
+        #endregion
+
+        #region RECOGNIZE_METHODS
         /*
          * Utilizamos una ventana deslizante de tamaño grande para diferenciar los golpes de los silbidos.
          * Tambien realizamos la suma de todas las frecuencias de la muestra (tamaño maximo de la ventana)
@@ -69,8 +81,8 @@ namespace PatternRecognizer
             Utils.WindowUnit allFrequencies = Utils.SlidingWindow(array, array.Length - 1);
 
             // Si la intensidad supera un limite asumimos que estamos oyendo un chasquido
-            if (max.intensity > minIntensityClickDetection && allFrequencies.intensity > minAllIntensity )
-                //&& max.frequency > minFrequency && max.frequency < maxFrequency)
+            if (max.intensity > _minIntensityClickDetection && allFrequencies.intensity > _minAllIntensity)
+            //&& max.frequency > minFrequency && max.frequency < maxFrequency)
             {
                 //Debug.Log(max.frequency);
                 // contamos cuantas iteraciones dura el chasquido para saber si de verdad es un chasquido
@@ -82,8 +94,8 @@ namespace PatternRecognizer
 
             // si las iteraciones que dura el chasquido estan dentro del umbral y ha habido un silencio
             // lo suficientemente largo entonces contabilizamos que ha acabado el chasquido
-            if (countFrequencyClickDetected * Time.deltaTime > minCountClickDetection * Time.deltaTime &&
-                countFrequencyClickDetected * Time.deltaTime < maxCountClickDetection * Time.deltaTime &&
+            if (countFrequencyClickDetected * Time.deltaTime > _minCountClickDetection * Time.deltaTime &&
+                countFrequencyClickDetected * Time.deltaTime < _maxCountClickDetection * Time.deltaTime &&
                 countSilenceDetected * Time.deltaTime > minCountSilenceBetweenClicks * Time.deltaTime)
             {
                 isClick = true;
@@ -98,5 +110,6 @@ namespace PatternRecognizer
 
             return isClick;
         }
+        #endregion
     }
 }

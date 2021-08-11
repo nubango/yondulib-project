@@ -7,7 +7,7 @@ namespace PatternRecognizer
     /*
      * Clase que tiene un método que devuelde la frecuencia del silbido y su duracion
      * **/
-    public class WhistleRecognizer : MonoBehaviour
+    class WhistleRecognizer : MonoBehaviour
     {
         #region PRIVATE_ATTRIBUTES
         private int windowSizeBig = 100;
@@ -28,10 +28,11 @@ namespace PatternRecognizer
         private int maxAllIntensity = 80;
         private int minAllIntensity = 20;
 
-
         // frecuencia actual que está sonando
         private int currentFrequency = 0;
         #endregion
+
+        #region RECOGNIZE_METHODS
         public Utils.Pair<int, uint> Recognize(float[] array)
         {
             Utils.Pair<int, uint> res = null;
@@ -90,5 +91,6 @@ namespace PatternRecognizer
 
             return res;
         }
+        #endregion
     }
 }
