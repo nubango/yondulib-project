@@ -17,7 +17,7 @@ namespace PatternRecognizer
         private uint countFrequencyDetected = 0;
         // cuenta las veces que la frecuencia no es la buscada (se usa porque al silbar no siempre aguantamos la misma frecuencia)
         private uint countWrogFrequencyDetected = 0;
-        private uint maxWrongRangeFrequency = 30;
+        private uint maxWrongRangeFrequency = 20;
 
         // rango de error al comprobar la frecuencia del silbido 
         private float offsetFrequency = 0.01f;
