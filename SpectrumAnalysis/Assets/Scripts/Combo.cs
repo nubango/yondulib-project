@@ -7,7 +7,7 @@ namespace PatternRecognizer
     public enum ComboName { Clap, Click, Whistle, Silence }
     public struct WhistleData
     {
-        public WhistleData(uint frequency, uint duration)
+        public WhistleData(int frequency, uint duration)
         {
             f = frequency;
             d = duration;
@@ -26,11 +26,18 @@ namespace PatternRecognizer
         private float offsetFrequency = 0.01f;
         private uint maxWrongRangeFrequency;
         #endregion
+        // Debug
+        public string _name;
+        // Debug
 
-        public Combo(ComboName[] combo, WhistleData[] data)
+        public Combo(string name, ComboName[] combo, WhistleData[] data)
         {
+            _name = name;
             _combo = combo;
-            _data = data;
+            if (data == null)
+                _data = new WhistleData[0];
+            else
+                _data = data;
 
             offsetFrequency *= SoundEventManager.Instance.GetResolution();
         }
@@ -54,7 +61,7 @@ namespace PatternRecognizer
                 if (combo[i] == ComboName.Whistle)
                 {
                     // comprobamos si la duracion y la frecuencia se salen del intervalo de error
-                    if ((data[j].d > _data[j].d + (_data[j].d * 0.1) || data[j].d < _data[j].d - (_data[j].d * 0.1) )&&
+                    if ((data[j].d > _data[j].d + (_data[j].d * 0.1) || data[j].d < _data[j].d - (_data[j].d * 0.1)) &&
                         (data[j].f > _data[j].f + offsetFrequency || data[j].f < _data[j].f - offsetFrequency))
                     {
                         correct = false;

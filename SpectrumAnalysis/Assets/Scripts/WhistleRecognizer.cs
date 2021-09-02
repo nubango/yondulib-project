@@ -19,6 +19,8 @@ namespace PatternRecognizer
         private uint countWrogFrequencyDetected = 0;
         private uint maxWrongRangeFrequency = 20;
 
+        private uint minDurationFrequency = 40;
+
         // rango de error al comprobar la frecuencia del silbido 
         private float offsetFrequency = 0.01f;
         // minima intensidad que tiene que detectar para que contabilice como que ha habido un silbido
@@ -65,7 +67,7 @@ namespace PatternRecognizer
                 else
                 {
                     // si la frecuencia detectada es lo suficientemente larga entonces la devuelve
-                    if (countFrequencyDetected * Time.deltaTime > maxWrongRangeFrequency * Time.deltaTime && currentFrequency > 0)
+                    if (countFrequencyDetected * Time.deltaTime > minDurationFrequency * Time.deltaTime && currentFrequency > 0)
                     {
                         res = new Utils.Pair<int, uint>(currentFrequency, countFrequencyDetected);
                     }
@@ -80,7 +82,7 @@ namespace PatternRecognizer
             // si la intensidad es demasiado baja reiniciamos contadores y contabilizamos como silencio
             else if (maxBigSize.intensity < minIntensityDetection && allFrequencies.intensity < minAllIntensity)
             {
-                if (countFrequencyDetected > maxWrongRangeFrequency && currentFrequency > 0)
+                if (countFrequencyDetected * Time.deltaTime > minDurationFrequency * Time.deltaTime && currentFrequency > 0)
                 {
                     res = new Utils.Pair<int, uint>(currentFrequency, countFrequencyDetected);
                 }

@@ -48,6 +48,19 @@ namespace PatternRecognizer
                     _clickRecognizer = new ClickRecognizer("Click", 100, 30, 2, 18);
                     _whistleRecognizer = new WhistleRecognizer();
                     _whistleFrequencyRecognizer = new WhistleFrequencyRecognizer(0, 0);
+                    _combos = new List<Combo>();
+                    _currentCombosNames = new List<ComboName>();
+                    _currentCombosDatas = new List<WhistleData>();
+
+                    List<ComboName> combo1 = new List<ComboName>();
+                    combo1.Add(ComboName.Click);
+                    combo1.Add(ComboName.Click);
+                    _combos.Add(new Combo("Combo1", combo1.ToArray(), null));
+
+                    List<ComboName> combo2 = new List<ComboName>();
+                    combo2.Add(ComboName.Click);
+                    combo2.Add(ComboName.Clap);
+                    _combos.Add(new Combo("Combo2", combo2.ToArray(), null));
                 }
 
             }
@@ -55,19 +68,19 @@ namespace PatternRecognizer
 
         private void Update()
         {
-            // Debug----------------------------------------------
-            //_clickRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray());
-            Debug.Log(_clickRecognizer._name + " - " + _clickRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray()));
+            //// Debug----------------------------------------------
+            ////_clickRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray());
+            //Debug.Log(_clickRecognizer._name + " - " + _clickRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray()));
 
-            //_clapRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray());
-            Debug.Log(_clapRecognizer._name + " - " + _clapRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray()));
+            ////_clapRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray());
+            //Debug.Log(_clapRecognizer._name + " - " + _clapRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray()));
 
-            var aux = _whistleRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray());
-            if (aux != null)
-                Debug.Log(aux.First + " " + aux.Second);
-            // Debug----------------------------------------------
+            //var aux = _whistleRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray());
+            //if (aux != null)
+            //    Debug.Log(aux.First + " " + aux.Second);
+            //// Debug----------------------------------------------
 
-            ComboComparison(ComboIdentification(_analyzer.logSpectrumSpan.ToArray()));
+            CompareCombos(ComboIdentification(_analyzer.logSpectrumSpan.ToArray()));
 
         }
         #endregion
@@ -92,23 +105,64 @@ namespace PatternRecognizer
         #endregion
 
         #region PRIVATE_METHODS
+        #region COMBO_IDENTIFICATION
+        private List<ComboName> _currentCombosNames;
+        private List<WhistleData> _currentCombosDatas;
+        private int _countSilenceDetected = 0;
+        private int _minSilenceToCombo = 200;
+
         private Pair<ComboName[], WhistleData[]> ComboIdentification(float[] array)
         {
             // analizamos el buffer y vamos concretando que patrones se identifican, si hay mucho silencio o no se identifica nada
             // significa que el combo ha acabado, entonces se devuelve. _currentcombo y currentdata sirven para ir guardando el combo
             // entre vueltas de bucle y no perder la informacion de la vuelta anterior
 
-            return null;
-        }
+            Pair<ComboName[], WhistleData[]> combo = null;
 
-        private void ComboComparison(Pair<ComboName[], WhistleData[]> combo)
+            //var aux = _whistleRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray());
+            //if (aux != null)
+            //{
+            //    _currentCombosNames.Add(ComboName.Whistle);
+            //    _currentCombosDatas.Add(new WhistleData(aux.First, aux.Second));
+            //    _countSilenceDetected = 0;
+            //}
+            //else 
+            if (_clapRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray()))
+            {
+                _currentCombosNames.Add(ComboName.Clap);
+                _countSilenceDetected = 0;
+            }
+            else if (_clickRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray()))
+            {
+                _currentCombosNames.Add(ComboName.Click);
+                _countSilenceDetected = 0;
+            }
+            else
+            {
+                _countSilenceDetected++;
+            }
+
+
+            if (_countSilenceDetected * Time.deltaTime > _minSilenceToCombo * Time.deltaTime && _currentCombosNames.Count > 0)
+            {
+                combo = new Pair<ComboName[], WhistleData[]>(_currentCombosNames.ToArray(), _currentCombosDatas.ToArray());
+                Debug.Log(_currentCombosNames.ToArray() + " " + _countSilenceDetected);
+                _currentCombosDatas.Clear();
+                _currentCombosNames.Clear();
+            }
+
+            return combo;
+        }
+        #endregion
+
+        private void CompareCombos(Pair<ComboName[], WhistleData[]> combo)
         {
             if (combo == null)
                 return;
 
-            foreach(Combo c in _combos)
+            foreach (Combo c in _combos)
             {
-                c.Recognizer(combo.First, combo.Second);
+                Debug.Log(c._name + " -> " + c.Recognizer(combo.First, combo.Second));
             }
         }
 
@@ -131,10 +185,7 @@ namespace PatternRecognizer
         private ClickRecognizer _clapRecognizer;
         private ClickRecognizer _clickRecognizer;
 
-        private Combo[] _combos;
-
-        private ComboName[] _currentCombo;
-        private WhistleData[] _currentData;
+        private List<Combo> _combos;
         #endregion
     }
 }

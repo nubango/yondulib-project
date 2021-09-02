@@ -326,6 +326,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: SoundEventManager
       objectReference: {fileID: 0}
+    - target: {fileID: 3806856020548371704, guid: e7e963ec39873c2439a7c020fa42ea7d, type: 3}
+      propertyPath: _deviceID
+      value: '{0.0.1.00000000}.{df152fd9-ff3c-42db-b3c2-032f0fa5d456}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3806856020548371704, guid: e7e963ec39873c2439a7c020fa42ea7d, type: 3}
+      propertyPath: _useDefaultDevice
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3806856020548371705, guid: e7e963ec39873c2439a7c020fa42ea7d, type: 3}
       propertyPath: m_RootOrder
       value: 2
