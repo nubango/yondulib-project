@@ -39,7 +39,7 @@ namespace PatternRecognizer
         /*
          * ventana deslizante: https://stackoverflow.com/questions/8269916/what-is-sliding-window-algorithm-examples
          * **/
-        public static WindowUnit SlidingWindow(float[] array, int ancho)
+        public static WindowUnit SlidingWindowMax(float[] array, int ancho)
         {
             float total = 0;
             int i = 0;

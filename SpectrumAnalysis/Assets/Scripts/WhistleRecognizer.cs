@@ -16,7 +16,7 @@ namespace PatternRecognizer
         // cuenta de las veces que se detecta una frecuencia
         private uint countFrequencyDetected = 0;
         // cuenta las veces que la frecuencia no es la buscada (se usa porque al silbar no siempre aguantamos la misma frecuencia)
-        private uint countWrogFrequencyDetected = 0;
+        private uint countWrongFrequencyDetected = 0;
         private uint maxWrongRangeFrequency = 20;
 
         private uint minDurationFrequency = 40;
@@ -39,8 +39,8 @@ namespace PatternRecognizer
         {
             Utils.Pair<int, uint> res = null;
             // ventana deslizante con tamaño de ventana grande
-            Utils.WindowUnit maxBigSize = Utils.SlidingWindow(array, windowSizeBig);
-            Utils.WindowUnit allFrequencies = Utils.SlidingWindow(array, array.Length - 1);
+            Utils.WindowUnit maxBigSize = Utils.SlidingWindowMax(array, windowSizeBig);
+            Utils.WindowUnit allFrequencies = Utils.SlidingWindowMax(array, array.Length - 1);
 
             // Si la intensidad esta entre cierto rango, entonces estamos oyendo un posible silbido
             if (maxBigSize.intensity > minIntensityDetection && allFrequencies.intensity > minAllIntensity
@@ -48,7 +48,7 @@ namespace PatternRecognizer
             {
                 //Debug.Log("all = " + allFrequencies.intensity + " - big = " + maxBigSize.intensity);
                 // pasamos una ventana mas pequeña para identificar la frecuencia exacta
-                Utils.WindowUnit maxSmallSize = Utils.SlidingWindow(array, windowSizeSmall);
+                Utils.WindowUnit maxSmallSize = Utils.SlidingWindowMax(array, windowSizeSmall);
 
                 //Comprobamos si la frecuencia escuchada es la misma que la anterior o si es una nueva
                 //Hay un margen de error para mejorar la precision
@@ -57,11 +57,11 @@ namespace PatternRecognizer
                      && maxSmallSize.frequency > (currentFrequency - offsetFrequency)))
                 {
                     countFrequencyDetected++;
-                    countWrogFrequencyDetected = 0;
+                    countWrongFrequencyDetected = 0;
                 }
-                else if (countWrogFrequencyDetected * Time.deltaTime < maxWrongRangeFrequency * Time.deltaTime)
+                else if (countWrongFrequencyDetected * Time.deltaTime < maxWrongRangeFrequency * Time.deltaTime)
                 {
-                    countWrogFrequencyDetected++;
+                    countWrongFrequencyDetected++;
                     countFrequencyDetected++;
                 }
                 else
@@ -73,7 +73,7 @@ namespace PatternRecognizer
                     }
 
                     countFrequencyDetected = 0;
-                    countWrogFrequencyDetected = 0;
+                    countWrongFrequencyDetected = 0;
 
                     currentFrequency = maxSmallSize.frequency;
                     countFrequencyDetected++;
@@ -88,7 +88,7 @@ namespace PatternRecognizer
                 }
 
                 countFrequencyDetected = 0;
-                countWrogFrequencyDetected = 0;
+                countWrongFrequencyDetected = 0;
             }
 
             return res;

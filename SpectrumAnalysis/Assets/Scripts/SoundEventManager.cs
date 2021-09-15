@@ -48,6 +48,7 @@ namespace PatternRecognizer
                     _clickRecognizer = new ClickRecognizer("Click", 100, 30, 2, 18);
                     _whistleRecognizer = new WhistleRecognizer();
                     _whistleFrequencyRecognizer = new WhistleFrequencyRecognizer(0, 0);
+
                     _combos = new List<Combo>();
                     _currentCombosNames = new List<ComboName>();
                     _currentCombosDatas = new List<WhistleData>();
@@ -61,6 +62,11 @@ namespace PatternRecognizer
                     combo2.Add(ComboName.Click);
                     combo2.Add(ComboName.Clap);
                     _combos.Add(new Combo("Combo2", combo2.ToArray(), null));
+
+                    List<ComboName> combo3 = new List<ComboName>();
+                    combo3.Add(ComboName.Clap);
+                    combo3.Add(ComboName.Clap);
+                    _combos.Add(new Combo("Combo3", combo2.ToArray(), null));
                 }
 
             }
@@ -109,7 +115,7 @@ namespace PatternRecognizer
         private List<ComboName> _currentCombosNames;
         private List<WhistleData> _currentCombosDatas;
         private int _countSilenceDetected = 0;
-        private int _minSilenceToCombo = 200;
+        private int _minSilenceToCombo = 250;
 
         private Pair<ComboName[], WhistleData[]> ComboIdentification(float[] array)
         {
