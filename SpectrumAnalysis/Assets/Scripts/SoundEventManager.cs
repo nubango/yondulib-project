@@ -74,20 +74,22 @@ namespace PatternRecognizer
 
         private void Update()
         {
-            //// Debug----------------------------------------------
-            ////_clickRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray());
-            //Debug.Log(_clickRecognizer._name + " - " + _clickRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray()));
+            // Debug----------------------------------------------
+            //_clickRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray());
+            // Debug.Log(_clickRecognizer._name + " - " + _clickRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray()));
 
-            ////_clapRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray());
-            //Debug.Log(_clapRecognizer._name + " - " + _clapRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray()));
+            //_clapRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray());
+            // Debug.Log(_clapRecognizer._name + " - " + _clapRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray()));
 
             //var aux = _whistleRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray());
             //if (aux != null)
             //    Debug.Log(aux.First + " " + aux.Second);
-            //// Debug----------------------------------------------
+            // Debug----------------------------------------------
 
-            CompareCombos(ComboIdentification(_analyzer.logSpectrumSpan.ToArray()));
+            //CompareCombos(ComboIdentification(_analyzer.logSpectrumSpan.ToArray()));
 
+            //_clickRecognizer2.WhistleIdentifier(_analyzer.logSpectrumSpan.ToArray());
+            Debug.Log(_clickRecognizer2.WhistleIdentifier(_analyzer.logSpectrumSpan.ToArray()));
         }
         #endregion
 
@@ -190,6 +192,7 @@ namespace PatternRecognizer
         private WhistleFrequencyRecognizer _whistleFrequencyRecognizer;
         private ClickRecognizer _clapRecognizer;
         private ClickRecognizer _clickRecognizer;
+        public WhistleRecognizer2 _clickRecognizer2;
 
         private List<Combo> _combos;
         #endregion
