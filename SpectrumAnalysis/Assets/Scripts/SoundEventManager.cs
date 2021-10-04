@@ -47,6 +47,7 @@ namespace PatternRecognizer
                     _clapRecognizer = new ClickRecognizer("Clap", 140, 40, 10, 100);
                     _clickRecognizer = new ClickRecognizer("Click", 100, 30, 2, 18);
                     _whistleRecognizer = new WhistleRecognizer();
+                    _whistleRecognizer2 = new WhistleRecognizer2();
                     _whistleFrequencyRecognizer = new WhistleFrequencyRecognizer(0, 0);
 
                     _combos = new List<Combo>();
@@ -89,7 +90,7 @@ namespace PatternRecognizer
             //CompareCombos(ComboIdentification(_analyzer.logSpectrumSpan.ToArray()));
 
             //_clickRecognizer2.WhistleIdentifier(_analyzer.logSpectrumSpan.ToArray());
-            Debug.Log(_clickRecognizer2.WhistleIdentifier(_analyzer.logSpectrumSpan.ToArray()));
+            Debug.Log(_whistleRecognizer2.WhistleIdentifier(_analyzer.logSpectrumSpan.ToArray()));
         }
         #endregion
 
@@ -192,7 +193,7 @@ namespace PatternRecognizer
         private WhistleFrequencyRecognizer _whistleFrequencyRecognizer;
         private ClickRecognizer _clapRecognizer;
         private ClickRecognizer _clickRecognizer;
-        public WhistleRecognizer2 _clickRecognizer2;
+        private WhistleRecognizer2 _whistleRecognizer2;
 
         private List<Combo> _combos;
         #endregion
