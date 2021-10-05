@@ -37,14 +37,18 @@ namespace PatternRecognizer
          *      parámetros deberian usarse para elaborar el indice de acierto del audio escuchado en relacion con si lo que suena es un silbido o no.
          * 
          * **/
-
+        /// <summary>
+        /// Factor de escala que representa la dimension de la ventana deslizante.
+        /// <remarks>
+        /// factorScaleWindow = 0.2 -> extension de la ventana es el 20% de la dimension total del array.
+        /// </remarks>
+        /// </summary>
         public float factorScaleWindow = 0.2f;
-        public float maxDiffValue = 0.2f;
 
         /// <summary>
         /// Clase que alberga una frecuencia y su intensidad.
         /// </summary>
-        private class Note : System.IComparable
+        public class Note : System.IComparable
         {
             /// <summary>
             /// Intensidad de la frecuencia. El valor oscila entre 0 y 1.
@@ -63,7 +67,7 @@ namespace PatternRecognizer
             }
 
             /// <summary>
-            /// Compara el objeto instancia con el objeto pasado por parámetro. 
+            /// Compara el objeto instancia con el objeto pasado por parametro. 
             /// Ambos son tienen que ser de tipo Nota y se comparan en funcion de la intensidad. Lo usamos en el método WhistleIdentifier para poder ordenar las colas de prioridad.
             /// </summary>
             /// <param name="obj">Objeto Nota con el que queremos comparar la instancia</param>
@@ -91,22 +95,22 @@ namespace PatternRecognizer
         ///     Para identificar el silbido/nota musical se analizan tres parametros. 
         /// </para>
         ///     <para>
-        ///         Parámetro 1: número de picos que contiene el array. Cuantos más picos contenga menos probabilidades hay de que sea un silbido/nota musical y viceversa.
+        ///         Parametro 1: numero de picos que contiene el array. Cuantos mas picos contenga menos probabilidades hay de que sea un silbido/nota musical y viceversa.
         ///         Para ello recorremos todo el array comparando la posicion actual con la anterior y la posterior para saber cuando deja de crecer la intensidad y empieza
         ///         a decrecer.
         ///     </para>
         ///     <para>
-        ///         Parámetro 2: máxima amplitud de la frecuencia con mayor intensidad. Si la amplitud es grande hay mas probabilidades de que sea un silbido. Al lo
-        ///         contrario, si la amplitud es pequeña lo más probable es que haya sido un golpe.
+        ///         Parametro 2: maxima amplitud de la frecuencia con mayor intensidad. Si la amplitud es grande hay mas probabilidades de que sea un silbido. Al lo
+        ///         contrario, si la amplitud es baja lo mas probable es que haya sido un golpe.
         ///     </para>
         ///     <para>
-        ///         Parámetro 3: posicion de la frecuencia. Un silbido no llega a notas ni muy graves ni muy agudas, se queda en el centro, mas especificamente entre el 
+        ///         Parametro 3: posicion de la frecuencia. Un silbido no llega a notas ni muy graves ni muy agudas, se queda en el centro, mas especificamente entre el 
         ///         primer cuarto y la mitad del array (1/4 - 1/2) { --[---]-----} 
         ///     </para>
         ///     <para>
-        ///         Para hayar los parámetros 2 y 3 usamos el patron de ventana deslizante ligeramente modificado. Utilizamos dos colas de prioridad, una creciente y otra
-        ///         decreciente, para ordenar las freciencias por intensidad y poder obtener el maximo y el minimo de las frecuencias que abarca la ventana. El tamaño de la
-        ///         ventana es de el 20% de la longitud del array que es mas o menos lo que ocupa un pico cuando se silba o se toca una nota musical.
+        ///         Para hayar los parametros 2 y 3 usamos el patron de ventana deslizante ligeramente modificado. Utilizamos dos colas de prioridad, una creciente y otra
+        ///         decreciente, para ordenar las freciencias por intensidad y poder obtener el maximo y el minimo de las frecuencias que abarca la ventana. La dimension de
+        ///         la ventana es de el 20% de la longitud del array que es mas o menos lo que ocupa un pico cuando se silba o se toca una nota musical.
         ///     </para>
         /// </remarks>
         /// <param name="array">Array de frecuancias e intensidades que proporciona SpectrumAnalizer</param>
@@ -115,7 +119,7 @@ namespace PatternRecognizer
         ///     Devuelve un float entre 0 y 1 incluidos. {0 -> ninguna coincidencia | 1 -> 100% de coincidencia}
         /// </para>
         /// <para>
-        ///     El valor devuelto lo componen la suma de los tres factores comentados anteriormente. Cada uno de ellos aportará un valor maximo de 0.33 aproximadamente, por
+        ///     El valor devuelto lo componen la suma de los tres factores comentados anteriormente. Cada uno de ellos aportara un valor maximo de 0.33 aproximadamente, por
         ///     lo que la suma de los tres dara como maximo ~1~.
         /// </para>
         /// </returns>
