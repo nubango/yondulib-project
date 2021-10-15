@@ -152,9 +152,11 @@ Public Attributes</h2></td></tr>
 <p >Parametro 3: posicion de la frecuencia. Un silbido no llega a notas ni muy graves ni muy agudas, se queda en el centro, mas especificamente entre el primer cuarto y la mitad del array (1/4 - 1/2) <br  />
 { - - [ - - - ] - - - - - } </p>
 <p >Para hayar los parametros 2 y 3 usamos el patron de ventana deslizante ligeramente modificado. Utilizamos dos colas de prioridad, una creciente y otra decreciente, para ordenar las freciencias por intensidad y poder obtener el maximo y el minimo de las frecuencias que abarca la ventana. La dimension de la ventana es de el 20% de la longitud del array que es mas o menos lo que ocupa un pico cuando se silba o se toca una nota musical. </p>
+<p >Parametro 4: diferencia de intensidad entre los picos maximos. Cuanta mas diferencia haya entre los picos maximos registrados mas probabilidades hay de que sea un silbido. </p>
+<p >Diferencias entre los parametros 2 y 4: el parametro 2 sirve para detectar la amplitud del pico mas pronunciado y el 4 sirve para detectar la diferencia de amplitud entre los picos mas altos. Los valores fluctuan en de manera parecida, pero en el caso de que por ejemplo toquemos notas con una flauta dulce, el parametro 2 no variara mucho, devolviendo valores altos, pero en cambio el parametro 4 si que detectara los picos resonantes y devolvera un valor un poco inferior. Donde el p2 devuelve 0.20 el p4 devuelve 0.14 </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">array</td><td>Array de frecuancias e intensidades que proporciona SpectrumAnalizer</td></tr>
+    <tr><td class="paramname">array</td><td>Array de frecuencias e intensidades que proporciona SpectrumAnalizer</td></tr>
   </table>
   </dd>
 </dl>
@@ -190,7 +192,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_pattern_recognizer.html">PatternRecognizer</a></li><li class="navelem"><a class="el" href="class_pattern_recognizer_1_1_whistle_recognizer2.html">WhistleRecognizer2</a></li>
-    <li class="footer">Generated on Fri Oct 15 2021 15:05:43 for TOGAGUI by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2 </li>
+    <li class="footer">Generated on Fri Oct 15 2021 21:09:04 for TOGAGUI by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2 </li>
   </ul>
 </div>
 </body>

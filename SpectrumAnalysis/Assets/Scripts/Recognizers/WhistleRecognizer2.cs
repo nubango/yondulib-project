@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+using UnityEngine;
+
 namespace PatternRecognizer
 {
     /// <summary>
@@ -40,7 +42,7 @@ namespace PatternRecognizer
          *      parámetros deberian usarse para elaborar el indice de acierto del audio escuchado en relacion con si lo que suena es un silbido o no.
          * 
          * **/
-        
+
 
         /// <summary>
         /// Factor de escala que representa la dimension de la ventana deslizante.
@@ -112,13 +114,24 @@ namespace PatternRecognizer
         ///         Parametro 3: posicion de la frecuencia. Un silbido no llega a notas ni muy graves ni muy agudas, se queda en el centro, mas especificamente entre el 
         ///         primer cuarto y la mitad del array (1/4 - 1/2) \n{ - - [ - - - ] - - - - - } 
         ///     </para>
-        ///     <para>
+        ///      <para>
         ///         Para hayar los parametros 2 y 3 usamos el patron de ventana deslizante ligeramente modificado. Utilizamos dos colas de prioridad, una creciente y otra
         ///         decreciente, para ordenar las freciencias por intensidad y poder obtener el maximo y el minimo de las frecuencias que abarca la ventana. La dimension de
         ///         la ventana es de el 20% de la longitud del array que es mas o menos lo que ocupa un pico cuando se silba o se toca una nota musical.
         ///     </para>
+        ///     <para>
+        ///         Parametro 4: diferencia de intensidad entre los picos maximos. Cuanta mas diferencia haya entre los picos maximos registrados mas probabilidades hay de 
+        ///         que sea un silbido. 
+        ///     </para>
+        ///     <para>
+        ///         Diferencias entre los parametros 2 y 4: el parametro 2 sirve para detectar la amplitud del pico mas pronunciado y el 4 sirve para detectar la diferencia
+        ///         de amplitud entre los picos mas altos. Los valores fluctuan en de manera parecida, pero en el caso de que por ejemplo toquemos notas con una flauta 
+        ///         dulce, el parametro 2 no variara mucho, devolviendo valores altos, pero en cambio el parametro 4 si que detectara los picos resonantes y devolvera un
+        ///         valor un poco inferior. Donde el p2 devuelve 0.20 el p4 devuelve 0.14
+        ///     </para>
+        ///    
         /// </remarks>
-        /// <param name="array">Array de frecuancias e intensidades que proporciona SpectrumAnalizer</param>
+        /// <param name="array">Array de frecuencias e intensidades que proporciona SpectrumAnalizer</param>
         /// <returns>
         /// <para>
         ///     Devuelve un float entre 0 y 1 incluidos. {0 -> ninguna coincidencia | 1 -> 100% de coincidencia}
@@ -147,10 +160,10 @@ namespace PatternRecognizer
             // si no hay sonido (countFrecActivas = 0) -> factor = 0
             // si hay sonido (countFrecActivas > 0) -> countFrecActivas = 1 => factor = 0,333
             //                                      -> countFrecActivas = array.Length => factor = 0,000001
-            // ((-x/(length/4)) + 1) * 0.33 (length/4 => ¿1 de cada 4 son picos?-> 0% afinidad)
+            // ((-x/(length/6)) + 1) * 0.33 (length/6 => ¿1 de cada 6 son picos?-> 0% afinidad)
             float factor1 = countFrecActivas == 0 ? 0 : (-((float)countFrecActivas / (array.Length / 6)) + 1) * 0.33f;
 
-            //Debug.Log(factor1);
+            //Debug.Log("Factor 1: " + factor1);
             #endregion
 
 
@@ -161,14 +174,19 @@ namespace PatternRecognizer
             Note maxi = new Note(array[0], i);
             Note min = new Note(array[0], i);
 
-            Utils.PriorityQueue<float> pqAllMax = new Utils.PriorityQueue<float>(true);
+            // cola con todas las frecuencias ordenadas de mayor a menor
+            Utils.PriorityQueue<Note> pqAllFeq = new Utils.PriorityQueue<Note>(true);
+
+            // cola auxiliar de maximos
             Utils.PriorityQueue<Note> pqMaxs = new Utils.PriorityQueue<Note>(true);
+
+            // cola auxiliar de minimos
             Utils.PriorityQueue<Note> pqMins = new Utils.PriorityQueue<Note>();
 
             // buscamos las frecuencias maxima y minima de la ventana para saber cual es la diferencia
             do
             {
-                pqAllMax.Enqueue(array[i]);
+                pqAllFeq.Enqueue(new Note(array[i], i));
                 if (array[i] > maxi.intensity)
                 {
                     maxi.intensity = array[i];
@@ -188,7 +206,7 @@ namespace PatternRecognizer
             //a [b c d] e f
             while (i < array.Length)
             {
-                pqAllMax.Enqueue(array[i]);
+                pqAllFeq.Enqueue(new Note(array[i], i));
 
                 if (array[i] > maxi.intensity)
                 {
@@ -216,39 +234,71 @@ namespace PatternRecognizer
                 i++;
             }
 
-            // los valores de los elementos del array estan entre 0 y 1 por lo que el valor de maxDiff.intensity oscila mas o menos entre 0 y 0.5.
-            // Este valor lo multiplicamos por 0.6 para obtener unos valores entre 0 y 0.33 aproximadamente.
-            float factor2 = maxDiff.intensity * 0.6f;
 
+            // los valores de los elementos del array estan entre 0 y 1 por lo que el valor de maxDiff.intensity oscila entre 0 y 1.
+            // Este valor lo multiplicamos por 0.25 para obtener unos valores entre 0 y 0.25 aproximadamente.
+            float factor2 = maxDiff.intensity * 0.25f;
+
+            //Debug.Log("Factor 2: " + factor2);
 
             // factor3 analiza la posicion en frecuencia del valor mas alto del array. El valor normal de un silbido esta comprendido entre 1/4 y 1/2 del array, por lo que
-            // los valores entre ese rango obtendrán 0.33. Los valores que estan por encima o por debajo de ese intervalo obtienen una puntuacion entre 0.15 y 0, siendo
+            // los valores entre ese rango obtendrán 0.25. Los valores que estan por encima o por debajo de ese intervalo obtienen una puntuacion entre 0.15 y 0, siendo
             // 0.15 el valor mas proximo al intervalo y 0 el valor mas alejado.
             float factor3 = 0;
-            if (maxDiff.frequency == 0) { }
-            else if ((maxDiff.frequency < array.Length * 0.5f) && (maxDiff.frequency > array.Length * 0.25f)) factor3 = 0.33f;
-            else if (maxDiff.frequency > array.Length * 0.5f)
-                factor3 = ((-(maxDiff.frequency - (0.5f * array.Length)) / array.Length) + 1) * 0.15f;
-            else if (maxDiff.frequency < array.Length * 0.25f)
-                factor3 = (maxDiff.frequency / array.Length) * 0.15f;
+            if (maxDiff.frequency != 0)
+            {
+                if ((maxDiff.frequency < array.Length * 0.5f) && (maxDiff.frequency > array.Length * 0.25f))
+                    factor3 = 0.25f;
+                else if (maxDiff.frequency > array.Length * 0.5f)
+                    factor3 = ((-(maxDiff.frequency - (0.5f * array.Length)) / array.Length) + 1) * 0.125f;
+                else if (maxDiff.frequency < array.Length * 0.25f)
+                    factor3 = (maxDiff.frequency / array.Length) * 0.125f;
+            }
 
+            //Debug.Log("Factor 3: " + factor3);
             #endregion
 
-            #region factor 4? comparacion de los picos máximos
+            #region factor 4: comparacion de los picos máximos
 
-            //for (int x = 0; x < pqAllMax.Count; i++)
-            //{
-            //    float aux = pqAllMax.Dequeue();
-            //    float dif = aux - pqAllMax.Peek();
-            //}
-            
-            
+            // Usamos la cola de prioridad que contiene todas las frecuencias de la muestra, ordenadas de mayor a menor. 
+            // Compararemos sus valores para identificar la diferencia que hay entre unos maximos(picos) y otros.
+            //
+            // Es probable que cuando se detecta una subida, haya mas picos cerca por lo que dicha diferencia no es significativa. Nos interesa comparar los maximos que
+            // esten distanciados. El valor limite utilizado es el ancho de la ventana deslizante (usada para detectar dichos maximos). 
+
+            Note top = pqAllFeq.Dequeue();
+            float dif = 0;
+            // Solo usamos las frecuencias con valor superior a 0
+            while (pqAllFeq.Count > 0 && pqAllFeq.Peek().intensity > 0)
+            {
+                // si las frecuencias estan demasiado juntas se desecha la menor (ancho ventana deslixante como limite minimo)
+                while (pqAllFeq.Count > 0 && Mathf.Abs(top.frequency - pqAllFeq.Peek().frequency) < ancho)
+                {
+                    pqAllFeq.Dequeue();
+                }
+
+                if (pqAllFeq.Count > 0)
+                {
+                    dif = top.intensity - pqAllFeq.Peek().intensity > dif ? top.intensity - pqAllFeq.Peek().intensity : dif;
+                    top = pqAllFeq.Dequeue();
+                }
+            }
+
+            // si dif es 0 significa que solo hay un pico por lo que la diferencia es el valor mismo del pico
+            dif = dif == 0 ? top.intensity : dif;
+
+            // el valor de dif oscila entre 0 y 0.6, por lo tanto 0.6 equivale a 0.25
+            // hay ocasiones que el valor de dif supera 0.6 por lo que redondeamos a 0.6 para que no supere el 0.25 de valor maximo
+            float factor4 = ((dif > 0.6f ? 0.6f : dif) / 0.6f) * 0.25f;
+
+            //Debug.Log("Factor 4: " + factor4);
             #endregion
 
+            //Debug.Log("Factor 2: " + factor2 + " - Factor 4: " + factor4);
 
-            return factor1 + factor2 + factor3;
+
+            return factor1 + factor2 + factor3 + factor4;
         }
-
 
 
         /*

@@ -91,6 +91,7 @@ namespace PatternRecognizer
 
             //_clickRecognizer2.WhistleIdentifier(_analyzer.logSpectrumSpan.ToArray());
             Debug.Log(_whistleRecognizer2.WhistleIdentifier(_analyzer.logSpectrumSpan.ToArray()));
+            //_whistleRecognizer2.WhistleIdentifier(_analyzer.logSpectrumSpan.ToArray());
         }
         #endregion
 
