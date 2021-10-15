@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['basefilestring_0',['BaseFileString',['../class_doxygen_window.html#a7a4acfac0a07a2a05f183e4f0bc53b62',1,'DoxygenWindow']]]
+  ['intensity_0',['intensity',['../struct_pattern_recognizer_1_1_utils_1_1_window_unit.html#a03d9604fc9697cacd164b12af0c62273',1,'PatternRecognizer::Utils::WindowUnit']]],
+  ['isdescending_1',['IsDescending',['../class_pattern_recognizer_1_1_utils_1_1_priority_queue.html#ae3140fe497afd57c6ac2db8c2a855ca3',1,'PatternRecognizer::Utils::PriorityQueue']]]
 ];

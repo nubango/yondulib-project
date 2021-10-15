@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['enqueue_0',['Enqueue',['../class_pattern_recognizer_1_1_utils_1_1_priority_queue.html#a40c589dffaa7fa15055d189e2c4a85d8',1,'PatternRecognizer::Utils::PriorityQueue']]],
-  ['escapearguments_1',['EscapeArguments',['../class_doxy_runner.html#a9e1ad0bb37f42899aeac2e2fb59cb769',1,'DoxyRunner']]],
-  ['exe_2',['EXE',['../class_doxy_runner.html#a9661f03da50c7783e9bc99e2a92f14e6',1,'DoxyRunner']]]
+  ['getfrequency_0',['getFrequency',['../class_pattern_recognizer_1_1_whistle_frequency_recognizer.html#ae7ed11b5fe12744d7156a3ba04ccbf70',1,'PatternRecognizer::WhistleFrequencyRecognizer']]],
+  ['getfrequencyduration_1',['getFrequencyDuration',['../class_pattern_recognizer_1_1_whistle_frequency_recognizer.html#ad6c589b67dc4d6c4a2584c6fed2218dd',1,'PatternRecognizer::WhistleFrequencyRecognizer']]],
+  ['getresolution_2',['GetResolution',['../class_pattern_recognizer_1_1_sound_event_manager.html#aa2e3366b47aff21b9a7f380d5785781f',1,'PatternRecognizer::SoundEventManager']]]
 ];

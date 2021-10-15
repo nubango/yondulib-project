@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace PatternRecognizer
 {
+    /// <summary>
+    /// Clase que se encarga de identificar silbidos
+    /// </summary>
     public class WhistleRecognizer2
     {
 
@@ -37,6 +40,8 @@ namespace PatternRecognizer
          *      parámetros deberian usarse para elaborar el indice de acierto del audio escuchado en relacion con si lo que suena es un silbido o no.
          * 
          * **/
+        
+
         /// <summary>
         /// Factor de escala que representa la dimension de la ventana deslizante.
         /// <remarks>
@@ -48,7 +53,7 @@ namespace PatternRecognizer
         /// <summary>
         /// Clase que alberga una frecuencia y su intensidad.
         /// </summary>
-        public class Note : System.IComparable
+        private class Note : System.IComparable
         {
             /// <summary>
             /// Intensidad de la frecuencia. El valor oscila entre 0 y 1.
@@ -105,7 +110,7 @@ namespace PatternRecognizer
         ///     </para>
         ///     <para>
         ///         Parametro 3: posicion de la frecuencia. Un silbido no llega a notas ni muy graves ni muy agudas, se queda en el centro, mas especificamente entre el 
-        ///         primer cuarto y la mitad del array (1/4 - 1/2) { --[---]-----} 
+        ///         primer cuarto y la mitad del array (1/4 - 1/2) \n{ - - [ - - - ] - - - - - } 
         ///     </para>
         ///     <para>
         ///         Para hayar los parametros 2 y 3 usamos el patron de ventana deslizante ligeramente modificado. Utilizamos dos colas de prioridad, una creciente y otra
@@ -127,7 +132,7 @@ namespace PatternRecognizer
         {
 
             #region factor 1: numero de picos
-            
+
             // cuenta los picos que hay y despues saca el porcentaje de afinidad con el silbido (pocos picos -> muy afin con silbido)
             // lo multiplicamos por 0.33 porque hay otros dos factores que sumados conforman el 100% 
             int countFrecActivas = 0;
@@ -156,12 +161,14 @@ namespace PatternRecognizer
             Note maxi = new Note(array[0], i);
             Note min = new Note(array[0], i);
 
+            Utils.PriorityQueue<float> pqAllMax = new Utils.PriorityQueue<float>(true);
             Utils.PriorityQueue<Note> pqMaxs = new Utils.PriorityQueue<Note>(true);
             Utils.PriorityQueue<Note> pqMins = new Utils.PriorityQueue<Note>();
 
             // buscamos las frecuencias maxima y minima de la ventana para saber cual es la diferencia
             do
             {
+                pqAllMax.Enqueue(array[i]);
                 if (array[i] > maxi.intensity)
                 {
                     maxi.intensity = array[i];
@@ -181,6 +188,8 @@ namespace PatternRecognizer
             //a [b c d] e f
             while (i < array.Length)
             {
+                pqAllMax.Enqueue(array[i]);
+
                 if (array[i] > maxi.intensity)
                 {
                     maxi.intensity = array[i];
@@ -225,8 +234,36 @@ namespace PatternRecognizer
 
             #endregion
 
+            #region factor 4? comparacion de los picos máximos
+
+            //for (int x = 0; x < pqAllMax.Count; i++)
+            //{
+            //    float aux = pqAllMax.Dequeue();
+            //    float dif = aux - pqAllMax.Peek();
+            //}
+            
+            
+            #endregion
+
 
             return factor1 + factor2 + factor3;
+        }
+
+
+
+        /*
+        IDEAS:
+        Posibles factores:
+            - numero de picos: las onomatopeyas suelen tener muchos picos en todas las frecuencias
+            - diferencia de intensidad entre max-min: la diferencia entre el pico maximo y el minimo suele ser menos que en un silbido
+            - intendidad general: los picos máximos suelen tener poca diferencia de intensidad entre ellos.
+
+         
+         */
+        public float ClickIdentifier(float[] array)
+        {
+
+            return 0.0f;
         }
     }
 }

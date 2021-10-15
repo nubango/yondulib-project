@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['doxygenconfig_0',['DoxygenConfig',['../class_doxygen_config.html',1,'']]],
-  ['doxygenwindow_1',['DoxygenWindow',['../class_doxygen_window.html',1,'']]],
-  ['doxyrunner_2',['DoxyRunner',['../class_doxy_runner.html',1,'']]],
-  ['doxythreadsafeoutput_3',['DoxyThreadSafeOutput',['../class_doxy_thread_safe_output.html',1,'']]]
+  ['pair_0',['Pair',['../class_pair.html',1,'Pair&lt; T, U &gt;'],['../class_pattern_recognizer_1_1_utils_1_1_pair.html',1,'PatternRecognizer.Utils.Pair&lt; T, U &gt;']]],
+  ['priorityqueue_1',['PriorityQueue',['../class_pattern_recognizer_1_1_utils_1_1_priority_queue.html',1,'PatternRecognizer::Utils']]],
+  ['prueba_2',['Prueba',['../class_prueba.html',1,'']]]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['args_0',['Args',['../class_doxy_runner.html#a015e8e8211c24140065dfc92f5fba71b',1,'DoxyRunner']]],
-  ['assestsfolder_1',['AssestsFolder',['../class_doxygen_window.html#a470870b3c6a44b3fe2f57870e39cfe55',1,'DoxygenWindow']]]
+  ['factorscalewindow_0',['factorScaleWindow',['../class_pattern_recognizer_1_1_whistle_recognizer2.html#a7c08cf4a22204f13989d846bc6dc6bbb',1,'PatternRecognizer::WhistleRecognizer2']]],
+  ['frequency_1',['frequency',['../struct_pattern_recognizer_1_1_utils_1_1_window_unit.html#aad5d556d18bec641acad64b4769fa2ab',1,'PatternRecognizer::Utils::WindowUnit']]]
 ];

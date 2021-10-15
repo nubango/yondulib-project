@@ -1,12 +1,7 @@
 var searchData=
 [
-  ['d_0',['d',['../struct_pattern_recognizer_1_1_whistle_data.html#a3d58555d2fe6a34fdb4ae17f6d4ea18b',1,'PatternRecognizer::WhistleData']]],
-  ['dequeue_1',['Dequeue',['../class_pattern_recognizer_1_1_utils_1_1_priority_queue.html#a05162437829c23fd1c2bf9247effb5d4',1,'PatternRecognizer::Utils::PriorityQueue']]],
-  ['docdirectory_2',['DocDirectory',['../class_doxygen_config.html#aea9ba41fe61487effafbeb77120749f0',1,'DoxygenConfig']]],
-  ['doxygenconfig_3',['DoxygenConfig',['../class_doxygen_config.html',1,'']]],
-  ['doxygenoutputstring_4',['DoxygenOutputString',['../class_doxygen_window.html#a20e7d1bdb1f32c97f600bf0f0bdb2358',1,'DoxygenWindow']]],
-  ['doxygenwindow_5',['DoxygenWindow',['../class_doxygen_window.html',1,'']]],
-  ['doxygenwindow_2ecs_6',['DoxygenWindow.cs',['../_doxygen_window_8cs.html',1,'']]],
-  ['doxyrunner_7',['DoxyRunner',['../class_doxy_runner.html',1,'DoxyRunner'],['../class_doxy_runner.html#aed7742f6732027e7427393d727898eba',1,'DoxyRunner.DoxyRunner()']]],
-  ['doxythreadsafeoutput_8',['DoxyThreadSafeOutput',['../class_doxy_thread_safe_output.html',1,'']]]
+  ['f_0',['f',['../struct_pattern_recognizer_1_1_whistle_data.html#a0f55c336586b5d1e1f772a66793e9e65',1,'PatternRecognizer::WhistleData']]],
+  ['factorscalewindow_1',['factorScaleWindow',['../class_pattern_recognizer_1_1_whistle_recognizer2.html#a7c08cf4a22204f13989d846bc6dc6bbb',1,'PatternRecognizer::WhistleRecognizer2']]],
+  ['first_2',['First',['../class_pair.html#ad311af7556ebf83707c9a662a4aa8e17',1,'Pair.First()'],['../class_pattern_recognizer_1_1_utils_1_1_pair.html#a73c90dab182f6b53be5a02af27a7afb4',1,'PatternRecognizer.Utils.Pair.First()']]],
+  ['frequency_3',['frequency',['../struct_pattern_recognizer_1_1_utils_1_1_window_unit.html#aad5d556d18bec641acad64b4769fa2ab',1,'PatternRecognizer::Utils::WindowUnit']]]
 ];

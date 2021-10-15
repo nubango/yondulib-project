@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['init_0',['Init',['../class_doxygen_window.html#a48f456c44b07cc9283a0583579b1d65a',1,'DoxygenWindow']]],
-  ['isfinished_1',['isFinished',['../class_doxy_thread_safe_output.html#a676622488e7bec792b66693fc1f20e73',1,'DoxyThreadSafeOutput']]],
-  ['isstarted_2',['isStarted',['../class_doxy_thread_safe_output.html#afc9e32fd7203a5c6c74ee914241c3e79',1,'DoxyThreadSafeOutput']]]
+  ['recognize_0',['Recognize',['../class_pattern_recognizer_1_1_click_recognizer.html#a83aa680c0590fede5442f1e0aeba45ea',1,'PatternRecognizer.ClickRecognizer.Recognize()'],['../class_pattern_recognizer_1_1_whistle_frequency_recognizer.html#a5937f530f483b2275e57ed719ae77e90',1,'PatternRecognizer.WhistleFrequencyRecognizer.Recognize()'],['../class_pattern_recognizer_1_1_whistle_recognizer.html#a624fe44386ccd9557c5178956e181ee0',1,'PatternRecognizer.WhistleRecognizer.Recognize()'],['../class_pattern_recognizer_1_1_sound_recognizer.html#a000ef31d8b462b7eaee1d9786aabc79d',1,'PatternRecognizer.SoundRecognizer.Recognize()']]],
+  ['recognizer_1',['Recognizer',['../class_pattern_recognizer_1_1_combo.html#a429119e9fe21c7a82a80c1ada6d77ba3',1,'PatternRecognizer::Combo']]]
 ];

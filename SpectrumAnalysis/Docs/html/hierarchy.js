@@ -1,15 +1,6 @@
 var hierarchy =
 [
     [ "PatternRecognizer.Combo", "class_pattern_recognizer_1_1_combo.html", null ],
-    [ "DoxygenConfig", "class_doxygen_config.html", null ],
-    [ "DoxyRunner", "class_doxy_runner.html", null ],
-    [ "DoxyThreadSafeOutput", "class_doxy_thread_safe_output.html", null ],
-    [ "EditorWindow", null, [
-      [ "DoxygenWindow", "class_doxygen_window.html", null ]
-    ] ],
-    [ "System.IComparable", null, [
-      [ "PatternRecognizer.WhistleRecognizer2.Note", "class_pattern_recognizer_1_1_whistle_recognizer2_1_1_note.html", null ]
-    ] ],
     [ "MonoBehaviour", null, [
       [ "PatternRecognizer.SoundEventManager", "class_pattern_recognizer_1_1_sound_event_manager.html", null ],
       [ "PatternRecognizer.WhistleRecognizer", "class_pattern_recognizer_1_1_whistle_recognizer.html", null ],
