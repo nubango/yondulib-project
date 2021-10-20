@@ -3,7 +3,6 @@ var hierarchy =
     [ "PatternRecognizer.Combo", "class_pattern_recognizer_1_1_combo.html", null ],
     [ "MonoBehaviour", null, [
       [ "PatternRecognizer.SoundEventManager", "class_pattern_recognizer_1_1_sound_event_manager.html", null ],
-      [ "PatternRecognizer.WhistleRecognizer", "class_pattern_recognizer_1_1_whistle_recognizer.html", null ],
       [ "Prueba", "class_prueba.html", null ]
     ] ],
     [ "Pair< T, U >", "class_pair.html", null ],
@@ -15,6 +14,6 @@ var hierarchy =
     ] ],
     [ "PatternRecognizer.Utils", "class_pattern_recognizer_1_1_utils.html", null ],
     [ "PatternRecognizer.WhistleData", "struct_pattern_recognizer_1_1_whistle_data.html", null ],
-    [ "PatternRecognizer.WhistleRecognizer2", "class_pattern_recognizer_1_1_whistle_recognizer2.html", null ],
+    [ "PatternRecognizer.WhistleRecognizer", "class_pattern_recognizer_1_1_whistle_recognizer.html", null ],
     [ "PatternRecognizer.Utils.WindowUnit", "struct_pattern_recognizer_1_1_utils_1_1_window_unit.html", null ]
 ];

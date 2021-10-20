@@ -8,7 +8,6 @@ var namespace_pattern_recognizer =
     [ "WhistleData", "struct_pattern_recognizer_1_1_whistle_data.html", "struct_pattern_recognizer_1_1_whistle_data" ],
     [ "WhistleFrequencyRecognizer", "class_pattern_recognizer_1_1_whistle_frequency_recognizer.html", "class_pattern_recognizer_1_1_whistle_frequency_recognizer" ],
     [ "WhistleRecognizer", "class_pattern_recognizer_1_1_whistle_recognizer.html", "class_pattern_recognizer_1_1_whistle_recognizer" ],
-    [ "WhistleRecognizer2", "class_pattern_recognizer_1_1_whistle_recognizer2.html", "class_pattern_recognizer_1_1_whistle_recognizer2" ],
     [ "ComboName", "namespace_pattern_recognizer.html#a389683503a90675386bf9c54630ebe1a", [
       [ "Clap", "namespace_pattern_recognizer.html#a389683503a90675386bf9c54630ebe1aaba317cc5bacc33ec252fbdf1aada8c0d", null ],
       [ "Click", "namespace_pattern_recognizer.html#a389683503a90675386bf9c54630ebe1aa316853cc3718335f11c048e33b9be98a", null ],

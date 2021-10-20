@@ -47,8 +47,6 @@ namespace PatternRecognizer
                     _clapRecognizer = new ClickRecognizer("Clap", 140, 40, 10, 100);
                     _clickRecognizer = new ClickRecognizer("Click", 100, 30, 2, 18);
                     _whistleRecognizer = new WhistleRecognizer();
-                    _whistleRecognizer2 = new WhistleRecognizer2();
-                    _whistleFrequencyRecognizer = new WhistleFrequencyRecognizer(0, 0);
 
                     _combos = new List<Combo>();
                     _currentCombosNames = new List<ComboName>();
@@ -69,7 +67,6 @@ namespace PatternRecognizer
                     combo3.Add(ComboName.Clap);
                     _combos.Add(new Combo("Combo3", combo2.ToArray(), null));
                 }
-
             }
         }
 
@@ -82,16 +79,12 @@ namespace PatternRecognizer
             //_clapRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray());
             // Debug.Log(_clapRecognizer._name + " - " + _clapRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray()));
 
-            //var aux = _whistleRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray());
-            //if (aux != null)
-            //    Debug.Log(aux.First + " " + aux.Second);
             // Debug----------------------------------------------
 
             //CompareCombos(ComboIdentification(_analyzer.logSpectrumSpan.ToArray()));
 
-            //_clickRecognizer2.WhistleIdentifier(_analyzer.logSpectrumSpan.ToArray());
-            Debug.Log(_whistleRecognizer2.WhistleIdentifier(_analyzer.logSpectrumSpan.ToArray()));
-            //_whistleRecognizer2.WhistleIdentifier(_analyzer.logSpectrumSpan.ToArray());
+            Debug.Log(_whistleRecognizer.WhistleIdentifier(_analyzer.logSpectrumSpan.ToArray()));
+            //_whistleRecognizer.WhistleIdentifier(_analyzer.logSpectrumSpan.ToArray());
         }
         #endregion
 
@@ -190,11 +183,9 @@ namespace PatternRecognizer
         // Clase que contiene el array con el sonido de entrada
         private SpectrumAnalyzer _analyzer = null;
 
-        private WhistleRecognizer _whistleRecognizer;
-        private WhistleFrequencyRecognizer _whistleFrequencyRecognizer;
         private ClickRecognizer _clapRecognizer;
         private ClickRecognizer _clickRecognizer;
-        private WhistleRecognizer2 _whistleRecognizer2;
+        private WhistleRecognizer _whistleRecognizer;
 
         private List<Combo> _combos;
         #endregion

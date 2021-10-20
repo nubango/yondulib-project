@@ -8,8 +8,5 @@ var dir_612baaa9d60ece2aa6d981ddf1cebab1 =
     ] ],
     [ "WhistleRecognizer.cs", "_whistle_recognizer_8cs.html", [
       [ "PatternRecognizer.WhistleRecognizer", "class_pattern_recognizer_1_1_whistle_recognizer.html", "class_pattern_recognizer_1_1_whistle_recognizer" ]
-    ] ],
-    [ "WhistleRecognizer2.cs", "_whistle_recognizer2_8cs.html", [
-      [ "PatternRecognizer.WhistleRecognizer2", "class_pattern_recognizer_1_1_whistle_recognizer2.html", "class_pattern_recognizer_1_1_whistle_recognizer2" ]
     ] ]
 ];
