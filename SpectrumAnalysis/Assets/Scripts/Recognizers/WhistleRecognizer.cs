@@ -45,61 +45,11 @@ namespace PatternRecognizer
 
 
         /// <summary>
-        /// Factor de escala que representa la dimension de la ventana deslizante.
-        /// <remarks>
-        /// factorScaleWindow = 0.1 -> extension de la ventana es el 10% de la dimension total del array.
-        /// </remarks>
-        /// </summary>
-        public float factorScaleWindow = 0.1f;
-
-        /// <summary>
-        /// Clase que alberga una frecuencia y su intensidad.
-        /// </summary>
-        private class Note : System.IComparable
-        {
-            /// <summary>
-            /// Intensidad de la frecuencia. El valor oscila entre 0 y 1.
-            /// </summary>
-            public float intensity;
-
-            /// <summary>
-            /// Frecuencia en cuestion. Equivale al identificador del array que obtenemos del SpectrumAnalizer.
-            /// </summary>
-            public int frequency;
-
-            public Note(float i, int f)
-            {
-                intensity = i;
-                frequency = f;
-            }
-
-            /// <summary>
-            /// Compara el objeto instancia con el objeto pasado por parametro. 
-            /// Ambos son tienen que ser de tipo Nota y se comparan en funcion de la intensidad. Lo usamos en el método WhistleIdentifier para poder ordenar las colas de prioridad.
-            /// </summary>
-            /// <param name="obj">Objeto Nota con el que queremos comparar la instancia</param>
-            /// <returns>
-            /// -1 si obj es mayor que la instancia
-            /// 0 si obj es igual a la instancia
-            /// 1 si obj es menor que la instancia
-            /// </returns>
-            public int CompareTo(object obj)
-            {
-                int val = 0;
-                if (((Note)obj).intensity < intensity) val = 1;
-                else if (((Note)obj).intensity > intensity) val = -1;
-
-                return val;
-            }
-        }
-
-
-        /// <summary>
         /// Identifica si ha habido un silbido/nota musical.
         /// </summary>
         /// <remarks>
         /// <para>
-        ///     Para identificar el silbido/nota musical se analizan tres parametros. 
+        ///     Para identificar el silbido/nota musical se analizan cuatro parametros. 
         /// </para>
         ///     <para>
         ///         Parametro 1: numero de picos que contiene el array. Cuantos mas picos contenga menos probabilidades hay de que sea un silbido/nota musical y viceversa.
@@ -116,8 +66,8 @@ namespace PatternRecognizer
         ///     </para>
         ///      <para>
         ///         Para hayar los parametros 2 y 3 usamos el patron de ventana deslizante ligeramente modificado. Utilizamos dos colas de prioridad, una creciente y otra
-        ///         decreciente, para ordenar las freciencias por intensidad y poder obtener el maximo y el minimo de las frecuencias que abarca la ventana. La dimension de
-        ///         la ventana es de el 20% de la longitud del array que es mas o menos lo que ocupa un pico cuando se silba o se toca una nota musical.
+        ///         decreciente, para ordenar las frecuencias por intensidad y poder obtener el maximo y el minimo de las frecuencias que abarca la ventana. La dimension de
+        ///         la ventana es de el 10% de la longitud del array que es mas o menos lo que ocupa un pico cuando se silba o se toca una nota musical.
         ///     </para>
         ///     <para>
         ///         Parametro 4: diferencia de intensidad entre los picos maximos. Cuanta mas diferencia haya entre los picos maximos registrados mas probabilidades hay de 
@@ -137,8 +87,8 @@ namespace PatternRecognizer
         ///     Devuelve un float entre 0 y 1 incluidos. {0 -> ninguna coincidencia | 1 -> 100% de coincidencia}
         /// </para>
         /// <para>
-        ///     El valor devuelto lo componen la suma de los tres factores comentados anteriormente. Cada uno de ellos aportara un valor maximo de 0.33 aproximadamente, por
-        ///     lo que la suma de los tres dara como maximo ~1~.
+        ///     El valor devuelto lo componen la suma de los cuatro factores comentados anteriormente. Cada uno de ellos aportara un valor maximo de 0.25 aproximadamente, 
+        ///     por lo que la suma de los cuatro dara como maximo ~1~.
         /// </para>
         /// </returns>
         public float WhistleIdentifier(float[] array)
@@ -161,13 +111,17 @@ namespace PatternRecognizer
             // si hay sonido (countFrecActivas > 0) -> countFrecActivas = 1 => factor = 0,333
             //                                      -> countFrecActivas = array.Length => factor = 0,000001
             // ((-x/(length/6)) + 1) * 0.33 (length/6 => ¿1 de cada 6 son picos?-> 0% afinidad)
-            float factor1 = countFrecActivas == 0 ? 0 : (-((float)countFrecActivas / (array.Length / 6)) + 1) * 0.33f;
+            float factor1 = countFrecActivas == 0 ? 0 : (1 - ((float)countFrecActivas / (array.Length / 6))) * 0.33f;
 
             //Debug.Log("Factor 1: " + factor1);
             #endregion
 
 
             #region factor 2 y 3: diferencia de entre intensidad max-min y estudio posicion de la frecuencia
+
+            // Factor de escala que representa la dimension de la ventana deslizante.
+            // factorScaleWindow = 0.1 -> extension de la ventana es el 10% de la dimension total del array.
+            float factorScaleWindow = 0.1f;
             int ancho = (int)(factorScaleWindow * array.Length);
 
             int i = 0;
@@ -249,18 +203,16 @@ namespace PatternRecognizer
             float factor3 = 0;
             if (maxDiff.frequency != 0)
             {
-                if ((maxDiff.frequency < array.Length * 0.5f) && (maxDiff.frequency > array.Length * 0.25f))
+                if ((maxDiff.frequency < array.Length * 0.6f) && (maxDiff.frequency > array.Length * 0.2f))
                     factor3 = 0.25f;
-                else if (maxDiff.frequency > array.Length * 0.5f)
-                    factor3 = ((-(maxDiff.frequency - (0.5f * array.Length)) / array.Length) + 1) * 0.125f;
-                else if (maxDiff.frequency < array.Length * 0.25f)
+                else if (maxDiff.frequency > array.Length * 0.6f)
+                    factor3 = ((-(maxDiff.frequency - (0.6f * array.Length)) / array.Length) + 1) * 0.125f;
+                else if (maxDiff.frequency < array.Length * 0.2f)
                     factor3 = (maxDiff.frequency / array.Length) * 0.125f;
             }
 
             //Debug.Log("Factor 3: " + factor3);
             #endregion
-
-
 
 
             #region factor 4: comparacion de los picos máximos
@@ -277,7 +229,7 @@ namespace PatternRecognizer
             while (pqAllFeq.Count > 0 && pqAllFeq.Peek().intensity > 0)
             {
                 // si las frecuencias estan demasiado juntas se desecha la menor (ancho ventana deslixante como limite minimo)
-                while (pqAllFeq.Count > 0 && Mathf.Abs(top.frequency - pqAllFeq.Peek().frequency) < ancho)
+                while (pqAllFeq.Count > 0 && Mathf.Abs(top.frequency - pqAllFeq.Peek().frequency) < ancho * 2)
                 {
                     pqAllFeq.Dequeue();
                 }
@@ -298,8 +250,6 @@ namespace PatternRecognizer
 
             //Debug.Log("Factor 4: " + factor4);
             #endregion
-
-            //Debug.Log("Factor 2: " + factor2 + " - Factor 4: " + factor4);
 
 
             return factor1 + factor2 + factor3 + factor4;

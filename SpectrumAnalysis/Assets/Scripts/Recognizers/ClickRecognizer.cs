@@ -4,112 +4,211 @@ using UnityEngine;
 
 namespace PatternRecognizer
 {
-    /*
-     * Clase que sirve para detectar palmadas y chasquidos en funcion de los valores que se pongan a los atributos publicos
-     * -CHASQUIDOS DE DEDOS-
-     * minIntensityClickDetection = 30; 
-     * minCountClickDetection = 2;
-     * maxCountClickDetection = 18;
-     * minAllIntensity = 100;
-     * 
-     * -PALMADAS-
-     * minIntensityClickDetection = 40; 
-     * minCountClickDetection = 10;
-     * maxCountClickDetection = 100;
-     * minAllIntensity = 140;
-     * **/
 
-    class ClickRecognizer : SoundRecognizer
+    /// <summary>
+    /// Clase que se encarga de identificar golpes, chasquidos o similares
+    /// </summary>
+    class ClickRecognizer
     {
-        #region PRIVATE_ATTRIBUTES
-        // Tamaño de la ventana en la ventana deslizante (grande para detectar golpes ~20% de la resolucion)
-        private int windowSize = 100;
-
-        // minimo tiempo entre chanquidos para que se contabilizen como combo
-        private readonly int minCountSilenceBetweenClicks = 10;
-
-        // cuenta de las veces que se ha detectado un posible chasquido
-        private uint countFrequencyClickDetected = 0;
-        // cuenta las veces que detecta silencio
-        private uint countSilenceDetected = 0;
-
-        // minimo de la intensidad total de la muestra para no confundirlo con voces y silbidos
-        private int _minAllIntensity = 0;
-        // Intensidad minima para considerarse un chasquido
-        private int _minIntensityClickDetection = 0;
-
-        //// Frecuencia para distinguir si es palmada o chasquido
-        //public int minFrequency = 0;
-        //public int maxFrequency = 0;
-
-        // minimo y maximo de detecciones seguidas que tiene que haber para que se considere un chasquido
-        private int _minCountClickDetection = 0;
-        private int _maxCountClickDetection = 0;
-        #endregion
-
-        public string _name;
-
-        #region CONSTRUCTOR
-        public ClickRecognizer(string name, int minAllIntensity, int minIntensityClickDetection, int minCountClickDetection, int maxCountClickDetection)
-        {
-            _name = name;
-            _minAllIntensity = minAllIntensity;
-            _minIntensityClickDetection = minIntensityClickDetection;
-            _minCountClickDetection = minCountClickDetection;
-            _maxCountClickDetection = maxCountClickDetection;
-        }
-        #endregion
-
-        #region RECOGNIZE_METHODS
         /*
-         * Utilizamos una ventana deslizante de tamaño grande para diferenciar los golpes de los silbidos.
-         * Tambien realizamos la suma de todas las frecuencias de la muestra (tamaño maximo de la ventana)
-         * para afinar más y evitar confusiones con ciertos silbidos graves.
-         * 
-         * El algoritmo cuenta las veces que detecta una intensidad que puede ser un chasquido. (+1 cada vez que se ejecuta el método)
-         * Cuando el sumatorio esta dentro del umbral y ha habido el suficiente silencio despues, 
-         * se confirma que ha habido un chasquido y devuelve true. 
-         * 
-         * El resto del tiempo devuelve false.
-         * **/
-        public override bool Recognize(float[] array)
+        IDEAS:
+        Posibles factores:
+            - numero de picos: las onomatopeyas suelen tener muchos picos
+            - diferencia de intensidad entre max-min: diferencia entre el pico max y el min es menor que en un sibido
+            - intensidad general: los picos maximos suelen tener poca difernecia de intensidad entre ellos (comparacion de los picos máximos)
+
+        tener en cuenta valores anteriores -> si el valor de intensidad total es bajo y no existen picos pronunciados entonces no cuenta nada, si no, devuelve el valor medio de los factores que va sumando en cada vuelta de bucle
+         
+         */
+
+        /// <summary>
+        /// Identifica si ha habido un golpe, chasquido o similar
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        ///     Para identificar el golpe/chasquido se analizan tres parametros. 
+        /// </para>
+        ///     <para>
+        ///         Parametro 1: numero de picos que contiene el array. Cuantos mas picos contenga mas probabilidades hay de que sea un golpe/chasquido y viceversa.
+        ///         Para ello recorremos todo el array comparando la posicion actual con la anterior y la posterior para saber cuando deja de crecer la intensidad y empieza
+        ///         a decrecer.
+        ///     </para>
+        ///     <para>
+        ///         Parametro 2: maxima amplitud de la frecuencia con mayor intensidad. Si la amplitud es pequeña hay mas probabilidades de que sea un golpe/chasquido.
+        ///     </para>
+        ///      <para>
+        ///         Para hayar este parametro usamos el patron de ventana deslizante ligeramente modificado. Utilizamos dos colas de prioridad, una creciente y otra
+        ///         decreciente, para ordenar las frecuencias por intensidad y poder obtener el maximo y el minimo de las frecuencias que abarca la ventana. La dimension de
+        ///         la ventana es de el 10% de la longitud del array que es mas o menos lo que ocupa un pico cuando se silba o se toca una nota musical.
+        ///     </para>
+        ///     <para>
+        ///         Parametro 3: comparacion de los picos maximos. Los picos maximos suelen tener poca diferencia de intensidad entre ellos en golpes o chasquidos
+        ///     </para>
+        ///    
+        /// </remarks>
+        /// <param name="array">Array de frecuencias e intensidades que proporciona SpectrumAnalizer</param>
+        /// <returns>
+        /// <para>
+        ///     Devuelve un float entre 0 y 1 incluidos. {0 -> ninguna coincidencia | 1 -> 100% de coincidencia}
+        /// </para>
+        /// <para>
+        ///     El valor devuelto lo componen la suma de los tres factores comentados anteriormente. Cada uno de ellos aportara un valor maximo de 0.33 aproximadamente, por
+        ///     lo que la suma de los tres dara como maximo ~1~.
+        /// </para>
+        /// </returns>
+        public float HitIdentifier(float[] array)
         {
-            bool isClick = false;
+            #region factor 1: numero de picos
 
-            // ventana deslizante con tamaño de ventana grande
-            Utils.WindowUnit max = Utils.SlidingWindowMax(array, windowSize);
-            Utils.WindowUnit allFrequencies = Utils.SlidingWindowMax(array, array.Length - 1);
-
-            // Si la intensidad supera un limite asumimos que estamos oyendo un chasquido
-            if (max.intensity > _minIntensityClickDetection && allFrequencies.intensity > _minAllIntensity)
-            //&& max.frequency > minFrequency && max.frequency < maxFrequency)
+            // cuenta los picos que hay y despues saca el porcentaje de afinidad con los chasquidos (muchos picos -> muy afin con chasquidos)
+            // lo multiplicamos por 0.33 porque hay otros dos factores que sumados conforman el 100% 
+            int countFrecActivas = 0;
+            float last = 0.01f;
+            for (int j = 0; j < array.Length; j++)
             {
-                //Debug.Log(max.frequency);
-                // contamos cuantas iteraciones dura el chasquido para saber si de verdad es un chasquido
-                countFrequencyClickDetected++;
-                countSilenceDetected = 0;
-            }
-            else
-                countSilenceDetected++;
-
-            // si las iteraciones que dura el chasquido estan dentro del umbral y ha habido un silencio
-            // lo suficientemente largo entonces contabilizamos que ha acabado el chasquido
-            if (countFrequencyClickDetected * Time.deltaTime > _minCountClickDetection * Time.deltaTime &&
-                countFrequencyClickDetected * Time.deltaTime < _maxCountClickDetection * Time.deltaTime &&
-                countSilenceDetected * Time.deltaTime > minCountSilenceBetweenClicks * Time.deltaTime)
-            {
-                isClick = true;
-                countFrequencyClickDetected = 0;
-            }
-            // si las iteraciones que dura el chasquido estan fuera del umbral de reconocimiento
-            // y ha habido un silencio lo suficientemente largo reiniciamos iteraciones
-            else if (countSilenceDetected * Time.deltaTime > minCountSilenceBetweenClicks * Time.deltaTime)
-            {
-                countFrequencyClickDetected = 0;
+                if (array[j] > last && j + 1 < array.Length && array[j] > array[j + 1])
+                    countFrecActivas++;
+                last = array[j];
             }
 
-            return isClick;
+
+            // si no hay sonido (countFrecActivas = 0) -> factor = 0
+            // si hay sonido (countFrecActivas > 0) -> countFrecActivas = 1 => factor = 0,000001
+            //                                      -> countFrecActivas = array.Length => factor = 0.33
+            // (x/(length/7)) * 0.33   (length/7 => ¿1 de cada 7 son picos?-> 100% afinidad)
+
+            if (countFrecActivas > array.Length / 7) countFrecActivas = array.Length / 7;
+
+            float factor1 = countFrecActivas == 0 ? 0 : ((float)countFrecActivas / (array.Length / (float)7)) * 0.33f;
+
+            //if (factor1 > 0.3)
+            //    Debug.Log("Factor 1: " + factor1);
+            #endregion
+
+
+            #region factor 2: diferencia de entre intensidad max-min
+
+            // Factor de escala que representa la dimension de la ventana deslizante.
+            // factorScaleWindow = 0.1 -> extension de la ventana es el 10% de la dimension total del array.
+            float factorScaleWindow = 0.1f;
+            int ancho = (int)(factorScaleWindow * array.Length);
+
+            int i = 0;
+            Note maxi = new Note(array[0], i);
+            Note min = new Note(array[0], i);
+
+            // cola con todas las frecuencias ordenadas de mayor a menor
+            Utils.PriorityQueue<Note> pqAllFeq = new Utils.PriorityQueue<Note>(true);
+
+            // cola auxiliar de maximos
+            Utils.PriorityQueue<Note> pqMaxs = new Utils.PriorityQueue<Note>(true);
+
+            // cola auxiliar de minimos
+            Utils.PriorityQueue<Note> pqMins = new Utils.PriorityQueue<Note>();
+
+            // buscamos las frecuencias maxima y minima de la ventana para saber cual es la diferencia
+            do
+            {
+                pqAllFeq.Enqueue(new Note(array[i], i));
+                if (array[i] > maxi.intensity)
+                {
+                    maxi.intensity = array[i];
+                    maxi.frequency = i;
+                }
+                else if (array[i] < min.intensity) min.intensity = array[i];
+            } while (i++ < ancho);
+
+            Note maxDiff = new Note(maxi.intensity - min.intensity, maxi.frequency);
+
+            // metemos el maximo y el minimo en las colas de prioridad
+            pqMaxs.Enqueue(maxi);
+            pqMins.Enqueue(min);
+
+            // calculamos la diferencia de intensidad de todo el espectro
+            //[a b c] d e f
+            //a [b c d] e f
+            while (i < array.Length)
+            {
+                pqAllFeq.Enqueue(new Note(array[i], i));
+
+                if (array[i] > maxi.intensity)
+                {
+                    maxi.intensity = array[i];
+                    maxi.frequency = i;
+                }
+                // si el elemento que sale es el maximo o el minimo lo sacamos de la cola
+                if (pqMaxs.Peek().intensity == array[i - ancho])
+                    pqMaxs.Dequeue();
+                else if (pqMins.Peek().intensity == array[i - ancho])
+                    pqMins.Dequeue();
+
+                // introducimos el nuevo elemento a la cola
+                pqMaxs.Enqueue(new Note(array[i], i));
+                pqMins.Enqueue(new Note(array[i], i));
+
+                // comprobamos si la dif de esta ventana supera a la dif maxima hasta ahora
+                float aux = pqMaxs.Peek().intensity - pqMins.Peek().intensity;
+                if (aux > maxDiff.intensity)
+                {
+                    maxDiff.intensity = aux;
+                    maxDiff.frequency = pqMaxs.Peek().frequency;
+                }
+
+                i++;
+            }
+
+
+            // el valor de maxDiff oscila entre 0 y 0.8, por lo tanto 0.8 equivale a 0.0
+            // si el valor es menor a 0.4 le damos lo maximo 0.33
+
+            float factor2 = maxDiff.intensity < 0.1 ? 0 : (maxDiff.intensity < 0.4f ? 1.0f : 1 - (maxDiff.intensity - 0.4f)) * 0.33f;
+
+            //if (maxDiff.intensity > 0.2f)
+            //    Debug.Log("MaxDiff: " + maxDiff.intensity);
+            //if (factor2 > 0.1)
+            //    Debug.Log("Factor 2: " + factor2);
+            #endregion
+
+
+            #region factor 3: comparacion de los picos máximos
+            // Usamos la cola de prioridad que contiene todas las frecuencias de la muestra, ordenadas de mayor a menor. 
+            // Compararemos sus valores para identificar la diferencia que hay entre unos maximos(picos) y otros.
+            //
+            // Es probable que cuando se detecta una subida, haya mas picos cerca por lo que dicha diferencia no es significativa. Nos interesa comparar los maximos que
+            // esten distanciados. El valor limite utilizado es el ancho de la ventana deslizante (usada para detectar dichos maximos). 
+
+            Note top = pqAllFeq.Dequeue();
+            float dif = 0;
+            // Solo usamos las frecuencias con valor superior a 0
+            while (pqAllFeq.Count > 0 && pqAllFeq.Peek().intensity > 0)
+            {
+                // si las frecuencias estan demasiado juntas se desecha la menor (ancho ventana deslixante como limite minimo)
+                while (pqAllFeq.Count > 0 && Mathf.Abs(top.frequency - pqAllFeq.Peek().frequency) < ancho * 2)
+                {
+                    pqAllFeq.Dequeue();
+                }
+
+                if (pqAllFeq.Count > 0)
+                {
+                    dif = top.intensity - pqAllFeq.Peek().intensity > dif ? top.intensity - pqAllFeq.Peek().intensity : dif;
+                    top = pqAllFeq.Dequeue();
+                }
+            }
+
+            // si dif es 0 significa que solo hay un pico por lo que la diferencia es el valor mismo del pico
+            dif = dif == 0 ? top.intensity : dif;
+
+            // el valor de dif oscila entre 0 y 0.6, por lo tanto 0.6 equivale a 0.0
+            // si el valor es menor a 0.25 le damos lo maximo 0.33
+            float factor3 = dif == 0.0f ? 0.0f : (dif < 0.25f ? 1 : 1 - dif) * 0.33f;
+
+            //Debug.Log("Diferencia: " + dif);
+            //if (factor1 > 0.1)
+            //    Debug.Log("Factor 3: " + factor3);
+            #endregion
+
+
+            return factor1 + factor2 + factor3;
         }
-        #endregion
     }
 }
