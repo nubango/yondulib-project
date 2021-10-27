@@ -8,7 +8,7 @@ namespace PatternRecognizer
     /// <summary>
     /// Clase que se encarga de identificar golpes, chasquidos o similares
     /// </summary>
-    class ClickRecognizer
+    class ClickRecognizer : SoundRecognizer
     {
         /*
         IDEAS:
@@ -56,7 +56,7 @@ namespace PatternRecognizer
         ///     lo que la suma de los tres dara como maximo ~1~.
         /// </para>
         /// </returns>
-        public float HitIdentifier(float[] array)
+        public float Recognize(float[] array)
         {
             #region factor 1: numero de picos
 
@@ -206,7 +206,6 @@ namespace PatternRecognizer
             //if (factor1 > 0.1)
             //    Debug.Log("Factor 3: " + factor3);
             #endregion
-
 
             return factor1 + factor2 + factor3;
         }

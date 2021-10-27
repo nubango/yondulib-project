@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PatternRecognizer
 {
-    abstract class SoundRecognizer
+    public interface SoundRecognizer
     {
-        public abstract bool Recognize(float[] array);
+        public float Recognize(float[] array);
     }
 }

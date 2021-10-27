@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Lasp;
+using UnityEngine.UI;
 
 /*
  Clase combo:
@@ -21,6 +22,20 @@ no) y se reinicia todo.
  */
 
 
+/*
+Combo:
+ silbar -> moverse hacia la derecha
+ silbar+chasquido -> cambio de sentido
+ chasquido -> saltar
+ chasquido+chasquido -> accionX
+ silbido ascendente -> accionY (whistlerecognizer guarda la frecuencia con mayor intensidad de la muestra)
+
+Efecto visual para feedback:
+ crear una clase que tenga un metodo que admita por parámetro un float (0-1) y que lo tranforme en un cambio visual en el atributo visual de la clase (asignado desde el editor?).
+ Estos objetos se asignan en el editor al SoundEventManager, uno para cada recognizer
+ */
+
+
 namespace PatternRecognizer
 {
     /*
@@ -29,6 +44,12 @@ namespace PatternRecognizer
     public class SoundEventManager : MonoBehaviour
     {
         #region UNITY_REGION
+        public Image medidorClick;
+        public Image medidorWhistle;
+
+        private Vector3 medidorInitClickSize;
+        private Vector3 medidorInitWhistleSize;
+
         private void Awake()
         {
             if (_instance != null && _instance != this)
@@ -46,6 +67,9 @@ namespace PatternRecognizer
                 {
                     _clickRecognizer = new ClickRecognizer();
                     _whistleRecognizer = new WhistleRecognizer();
+
+                    medidorInitClickSize = medidorClick.transform.localScale;
+                    medidorInitWhistleSize = medidorWhistle.transform.localScale;
 
                     /*
                     _combos = new List<Combo>();
@@ -71,12 +95,30 @@ namespace PatternRecognizer
 
         private void Update()
         {
-            //Debug.Log(_clickRecognizer.HitIdentifier(_analyzer.logSpectrumSpan.ToArray()));
+            float valeuClick = _clickRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray());
+            float valeuWhistle = _whistleRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray());
 
-            Debug.Log(_whistleRecognizer.WhistleIdentifier(_analyzer.logSpectrumSpan.ToArray()));
+            updateMedidor(valeuClick, valeuWhistle);
+        }
 
-            //CompareCombos(ComboIdentification(_analyzer.logSpectrumSpan.ToArray()));
+        Vector3 velocity = Vector3.zero;
 
+
+        private void updateMedidor(float c, float w)
+        {
+            if (medidorClick != null)
+            {
+                //medidorClick.transform.localScale = Vector3.SmoothDamp(medidorClick.transform.localScale, new Vector3(medidorInitClickSize.x, medidorInitClickSize.y * c, medidorInitClickSize.z), ref velocity, 0.5f);
+                medidorClick.transform.localScale = new Vector3(medidorInitClickSize.x, medidorInitClickSize.y * c, medidorInitClickSize.z);
+                medidorClick.color = Color.Lerp(Color.red, Color.green, c);
+            }
+
+            if (medidorWhistle != null)
+            {
+                //medidorWhistle.transform.localScale = Vector3.SmoothDamp(medidorWhistle.transform.localScale, new Vector3(medidorInitWhistleSize.x, medidorInitWhistleSize.y * w, medidorInitWhistleSize.z), ref velocity, 0.5f);
+                medidorWhistle.transform.localScale = new Vector3(medidorInitWhistleSize.x, medidorInitWhistleSize.y * w, medidorInitWhistleSize.z);
+                medidorWhistle.color = Color.Lerp(Color.red, Color.green, w);
+            }
         }
         #endregion
 

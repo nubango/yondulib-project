@@ -8,12 +8,11 @@ namespace PatternRecognizer
     /// <summary>
     /// Clase que se encarga de identificar silbidos
     /// </summary>
-    public class WhistleRecognizer
+    public class WhistleRecognizer : SoundRecognizer
     {
-
         /*
-         * ventana deslizante: https://stackoverflow.com/questions/8269916/what-is-sliding-window-algorithm-examples
-         * **/
+ * ventana deslizante: https://stackoverflow.com/questions/8269916/what-is-sliding-window-algorithm-examples
+ * **/
         /* IDEAS:
          * Analizamos el espectro de frecuencias y con el patron de ventana deslizante
          * hayamos el desfase entre la maxima y minima frecuencia. Si el desfase es mayor que un valor 
@@ -91,7 +90,7 @@ namespace PatternRecognizer
         ///     por lo que la suma de los cuatro dara como maximo ~1~.
         /// </para>
         /// </returns>
-        public float WhistleIdentifier(float[] array)
+        public float Recognize(float[] array)
         {
 
             #region factor 1: numero de picos
