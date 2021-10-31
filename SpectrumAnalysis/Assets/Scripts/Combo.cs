@@ -4,50 +4,61 @@ using UnityEngine;
 
 namespace PatternRecognizer
 {
-    public enum ComboName { Clap, Click, Whistle, Silence }
-    public struct WhistleData
-    {
-        public WhistleData(int frequency, uint duration)
-        {
-            f = frequency;
-            d = duration;
-        }
-
-        public double f { get; }
-        public double d { get; }
-    }
     public class Combo
     {
         #region PRIVATE_ATTRIBUTES
-        private ComboName[] _combo;
-        private WhistleData[] _data;
+        private EventName[] _combo;
+        private float[] _frequencies;
 
-        private float offsetDuration = 0.5f;
         private float offsetFrequency = 0.01f;
-        private uint maxWrongRangeFrequency;
         #endregion
         // Debug
         public string _name;
+
+        public Combo(string name, EventName[] namesEvents, float[] frequencies)
+        {
+            string s = "";
+            for (int i = 0; i < namesEvents.Length; i++)
+            {
+                s += namesEvents[i] + " ";
+            }
+            Debug.Log("Events: " + s);
+
+            s = "";
+            for (int i = 0; i < frequencies.Length; i++)
+            {
+                s += frequencies[i] + " ";
+            }
+            Debug.Log("Frecuencias: " + s);
+
+            _name = name;
+            _combo = namesEvents;
+            if (frequencies == null)
+                _frequencies = new float[0];
+            else
+                _frequencies = frequencies;
+
+            offsetFrequency *= SoundEventManager.Instance.GetResolution();
+        }
         // Debug
 
-        public Combo(string name, ComboName[] combo, WhistleData[] data)
+        public Combo(EventName[] namesEvents, float[] frequencies)
         {
-            _name = name;
-            _combo = combo;
-            if (data == null)
-                _data = new WhistleData[0];
+            _combo = namesEvents;
+            if (frequencies == null)
+                _frequencies = new float[0];
             else
-                _data = data;
+                _frequencies = frequencies;
 
             offsetFrequency *= SoundEventManager.Instance.GetResolution();
         }
 
-        public bool Recognizer(ComboName[] combo, WhistleData[] data)
+        public bool Recognizer(EventName[] combo, float[] frequencies)
         {
             if (combo.Length != _combo.Length)
                 return false;
 
-            if (data.Length != _data.Length)
+            if (frequencies.Length != _frequencies.Length)
                 return false;
 
             bool correct = true;
@@ -58,11 +69,10 @@ namespace PatternRecognizer
                 if (combo[i] != _combo[i])
                     correct = false;
 
-                if (combo[i] == ComboName.Whistle)
+                if (combo[i] == EventName.Whistle)
                 {
                     // comprobamos si la duracion y la frecuencia se salen del intervalo de error
-                    if ((data[j].d > _data[j].d + (_data[j].d * 0.1) || data[j].d < _data[j].d - (_data[j].d * 0.1)) &&
-                        (data[j].f > _data[j].f + offsetFrequency || data[j].f < _data[j].f - offsetFrequency))
+                    if (frequencies[j] > _frequencies[j] + offsetFrequency || frequencies[j] < _frequencies[j] - offsetFrequency)
                     {
                         correct = false;
                     }

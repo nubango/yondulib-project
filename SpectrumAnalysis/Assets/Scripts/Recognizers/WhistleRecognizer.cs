@@ -10,9 +10,13 @@ namespace PatternRecognizer
     /// </summary>
     public class WhistleRecognizer : SoundRecognizer
     {
+        public WhistleRecognizer(EventName name) : base(name)
+        {
+        }
+
         /*
- * ventana deslizante: https://stackoverflow.com/questions/8269916/what-is-sliding-window-algorithm-examples
- * **/
+* ventana deslizante: https://stackoverflow.com/questions/8269916/what-is-sliding-window-algorithm-examples
+* **/
         /* IDEAS:
          * Analizamos el espectro de frecuencias y con el patron de ventana deslizante
          * hayamos el desfase entre la maxima y minima frecuencia. Si el desfase es mayor que un valor 
@@ -41,7 +45,6 @@ namespace PatternRecognizer
          *      parámetros deberian usarse para elaborar el indice de acierto del audio escuchado en relacion con si lo que suena es un silbido o no.
          * 
          * **/
-
 
         /// <summary>
         /// Identifica si ha habido un silbido/nota musical.
@@ -90,7 +93,7 @@ namespace PatternRecognizer
         ///     por lo que la suma de los cuatro dara como maximo ~1~.
         /// </para>
         /// </returns>
-        public float Recognize(float[] array)
+        protected override float AnalizeSpectrum(float[] array)
         {
 
             #region factor 1: numero de picos
@@ -124,8 +127,8 @@ namespace PatternRecognizer
             int ancho = (int)(factorScaleWindow * array.Length);
 
             int i = 0;
-            Note maxi = new Note(array[0], i);
-            Note min = new Note(array[0], i);
+            maxFrequency = new Note(array[0], i);
+            Note minFrequency = new Note(array[0], i);
 
             // cola con todas las frecuencias ordenadas de mayor a menor
             Utils.PriorityQueue<Note> pqAllFeq = new Utils.PriorityQueue<Note>(true);
@@ -140,19 +143,19 @@ namespace PatternRecognizer
             do
             {
                 pqAllFeq.Enqueue(new Note(array[i], i));
-                if (array[i] > maxi.intensity)
+                if (array[i] > maxFrequency.intensity)
                 {
-                    maxi.intensity = array[i];
-                    maxi.frequency = i;
+                    maxFrequency.intensity = array[i];
+                    maxFrequency.frequency = i;
                 }
-                else if (array[i] < min.intensity) min.intensity = array[i];
+                else if (array[i] < minFrequency.intensity) minFrequency.intensity = array[i];
             } while (i++ < ancho);
 
-            Note maxDiff = new Note(maxi.intensity - min.intensity, maxi.frequency);
+            Note maxDiff = new Note(maxFrequency.intensity - minFrequency.intensity, maxFrequency.frequency);
 
             // metemos el maximo y el minimo en las colas de prioridad
-            pqMaxs.Enqueue(maxi);
-            pqMins.Enqueue(min);
+            pqMaxs.Enqueue(maxFrequency);
+            pqMins.Enqueue(minFrequency);
 
             // calculamos la diferencia de intensidad de todo el espectro
             //[a b c] d e f
@@ -161,10 +164,10 @@ namespace PatternRecognizer
             {
                 pqAllFeq.Enqueue(new Note(array[i], i));
 
-                if (array[i] > maxi.intensity)
+                if (array[i] > maxFrequency.intensity)
                 {
-                    maxi.intensity = array[i];
-                    maxi.frequency = i;
+                    maxFrequency.intensity = array[i];
+                    maxFrequency.frequency = i;
                 }
                 // si el elemento que sale es el maximo o el minimo lo sacamos de la cola
                 if (pqMaxs.Peek().intensity == array[i - ancho])
@@ -200,14 +203,14 @@ namespace PatternRecognizer
             // los valores entre ese rango obtendrán 0.25. Los valores que estan por encima o por debajo de ese intervalo obtienen una puntuacion entre 0.15 y 0, siendo
             // 0.15 el valor mas proximo al intervalo y 0 el valor mas alejado.
             float factor3 = 0;
-            if (maxDiff.frequency != 0)
+            if (maxFrequency.frequency != 0)
             {
-                if ((maxDiff.frequency < array.Length * 0.6f) && (maxDiff.frequency > array.Length * 0.2f))
+                if ((maxFrequency.frequency < array.Length * 0.6f) && (maxFrequency.frequency > array.Length * 0.2f))
                     factor3 = 0.25f;
-                else if (maxDiff.frequency > array.Length * 0.6f)
-                    factor3 = ((-(maxDiff.frequency - (0.6f * array.Length)) / array.Length) + 1) * 0.125f;
-                else if (maxDiff.frequency < array.Length * 0.2f)
-                    factor3 = (maxDiff.frequency / array.Length) * 0.125f;
+                else if (maxFrequency.frequency > array.Length * 0.6f)
+                    factor3 = ((-(maxFrequency.frequency - (0.6f * array.Length)) / array.Length) + 1) * 0.125f;
+                else if (maxFrequency.frequency < array.Length * 0.2f)
+                    factor3 = (maxFrequency.frequency / array.Length) * 0.125f;
             }
 
             //Debug.Log("Factor 3: " + factor3);

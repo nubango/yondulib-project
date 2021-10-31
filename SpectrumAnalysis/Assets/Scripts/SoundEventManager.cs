@@ -44,11 +44,9 @@ namespace PatternRecognizer
     public class SoundEventManager : MonoBehaviour
     {
         #region UNITY_REGION
-        public Image medidorClick;
-        public Image medidorWhistle;
+        public GameObject[] medidor;
 
-        private Vector3 medidorInitClickSize;
-        private Vector3 medidorInitWhistleSize;
+        private Vector3[] medidorInitSize;
 
         private void Awake()
         {
@@ -63,63 +61,80 @@ namespace PatternRecognizer
                 if (_analyzer == null)
                     _analyzer = GetComponent<SpectrumAnalyzer>();
 
-                if (_clickRecognizer == null || _whistleRecognizer == null)
+                if (_recognizers == null)
                 {
-                    _clickRecognizer = new ClickRecognizer();
-                    _whistleRecognizer = new WhistleRecognizer();
+                    _recognizers = new List<SoundRecognizer>();
 
-                    medidorInitClickSize = medidorClick.transform.localScale;
-                    medidorInitWhistleSize = medidorWhistle.transform.localScale;
-
-                    /*
-                    _combos = new List<Combo>();
-
-                    List<ComboName> combo1 = new List<ComboName>();
-                    combo1.Add(ComboName.Click);
-                    combo1.Add(ComboName.Click);
-                    _combos.Add(new Combo("Combo1", combo1.ToArray(), null));
-
-                    List<ComboName> combo2 = new List<ComboName>();
-                    combo2.Add(ComboName.Click);
-                    combo2.Add(ComboName.Clap);
-                    _combos.Add(new Combo("Combo2", combo2.ToArray(), null));
-
-                    List<ComboName> combo3 = new List<ComboName>();
-                    combo3.Add(ComboName.Clap);
-                    combo3.Add(ComboName.Clap);
-                    _combos.Add(new Combo("Combo3", combo2.ToArray(), null));
-                    */
+                    // El orden en el que de meten debe ser el mismo del enum COMBONAME
+                    // de la clase COMBO para que la creacion de los combos sea correcta
+                    _recognizers.Add(new ClickRecognizer(EventName.Click));
+                    //_recognizers.Add(new WhistleRecognizer(eventName.Whistle));
                 }
+
+                if (medidor != null && medidorInitSize == null)
+                {
+                    visibleMedidor = new bool[medidor.Length];
+                    medidorInitSize = new Vector3[medidor.Length];
+                    for (int i = 0; i < medidor.Length; i++)
+                    {
+                        if (medidor[i] != null)
+                        {
+                            medidorInitSize[i] = medidor[i].transform.localScale;
+                            visibleMedidor[i] = true;
+                        }
+                    }
+                }
+                _combos = new List<Combo>();
+                _currentEventsNames = new List<EventName>();
+                _currentEventsFrequencies = new List<float>();
+                _countSilenceDetected = new int[_recognizers.Count];
+
             }
         }
 
         private void Update()
         {
-            float valeuClick = _clickRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray());
-            float valeuWhistle = _whistleRecognizer.Recognize(_analyzer.logSpectrumSpan.ToArray());
+            float[] array = _analyzer.logSpectrumSpan.ToArray();
 
-            updateMedidor(valeuClick, valeuWhistle);
-        }
+            int minCountSilence = _countSilenceDetected[0];
 
-        Vector3 velocity = Vector3.zero;
-
-
-        private void updateMedidor(float c, float w)
-        {
-            if (medidorClick != null)
+            for (int i = 0; i < _recognizers.Count; i++)
             {
-                //medidorClick.transform.localScale = Vector3.SmoothDamp(medidorClick.transform.localScale, new Vector3(medidorInitClickSize.x, medidorInitClickSize.y * c, medidorInitClickSize.z), ref velocity, 0.5f);
-                medidorClick.transform.localScale = new Vector3(medidorInitClickSize.x, medidorInitClickSize.y * c, medidorInitClickSize.z);
-                medidorClick.color = Color.Lerp(Color.red, Color.green, c);
+                float valueRecognize = _recognizers[i].Recognize(array);
+
+
+                RecordCombo(i);
+                minCountSilence = _countSilenceDetected[i] < minCountSilence ? _countSilenceDetected[i] : minCountSilence;
+
+
+                if (medidor != null && medidor[i] != null)
+                {
+                    medidor[i].SetActive(visibleMedidor[i]);
+                    if (visibleMedidor[i]) updateMedidor(valueRecognize, i);
+                }
             }
 
-            if (medidorWhistle != null)
+
+            if (minCountSilence * Time.deltaTime > _minSilenceToCombo * Time.deltaTime && _currentEventsNames.Count > 0)
             {
-                //medidorWhistle.transform.localScale = Vector3.SmoothDamp(medidorWhistle.transform.localScale, new Vector3(medidorInitWhistleSize.x, medidorInitWhistleSize.y * w, medidorInitWhistleSize.z), ref velocity, 0.5f);
-                medidorWhistle.transform.localScale = new Vector3(medidorInitWhistleSize.x, medidorInitWhistleSize.y * w, medidorInitWhistleSize.z);
-                medidorWhistle.color = Color.Lerp(Color.red, Color.green, w);
+                if (isRecordCombo)
+                    _combos.Add(new Combo((++aux).ToString(), _currentEventsNames.ToArray(), _currentEventsFrequencies.ToArray()));
+                else
+                    // comparar el combo con los combos que ya hay
+                    foreach (Combo c in _combos)
+                    {
+                        Debug.Log(c._name + " -> " + c.Recognizer(_currentEventsNames.ToArray(), _currentEventsFrequencies.ToArray()));
+                    }
+
+                _currentEventsNames.Clear();
+                _currentEventsFrequencies.Clear();
             }
         }
+
+        //debug
+        int aux = 0;
+        //debug
+
         #endregion
 
         #region PUBLIC_METHODS
@@ -139,21 +154,92 @@ namespace PatternRecognizer
         {
         }
         public int GetResolution() => _analyzer.resolution;
+
+        public void SetVisibleMedidor(int i, bool b) { visibleMedidor[i] = b; }
+        public bool IsVisibleMedidor(int i) { return visibleMedidor[i]; }
         #endregion
 
         #region PRIVATE_METHODS
+        /*
+         * Metodo que se encarga de actualizar los medidores graficos de los recognizers
+         * **/
+        private void updateMedidor(float valueRecognize, int it)
+        {
+            if (medidor == null || it >= medidor.Length || medidor[it] == null)
+                return;
 
-        //private void CompareCombos(Pair<ComboName[], WhistleData[]> combo)
-        //{
-        //    if (combo == null)
-        //        return;
+            Image i = medidor[it].GetComponentInChildren<Image>();
+            MeshRenderer m = medidor[it].GetComponentInChildren<MeshRenderer>();
 
-        //    foreach (Combo c in _combos)
-        //    {
-        //        Debug.Log(c._name + " -> " + c.Recognizer(combo.First, combo.Second));
-        //    }
-        //}
+            if (i != null)
+            {
+                i.transform.localScale = new Vector3(medidorInitSize[it].x, medidorInitSize[it].y * valueRecognize, medidorInitSize[it].z);
+                i.color = Color.Lerp(Color.red, Color.green, valueRecognize);
+            }
+            else if (m != null)
+            {
+                m.transform.localScale = new Vector3(medidorInitSize[it].x, medidorInitSize[it].y * valueRecognize, medidorInitSize[it].z);
+                m.material.color = Color.Lerp(Color.red, Color.green, valueRecognize);
+            }
+        }
 
+        /*
+         * Metodo que se encarga de guardar cada uno de los eventos para la posterior creacion del combo
+         * **/
+        private void RecordCombo(int it)
+        {
+            SoundEvent ev = _recognizers[it].GetEvent();
+            if (ev.name != EventName.Null && ev.name != EventName.Silence)
+            {
+                _countSilenceDetected[it] = 0;
+                _currentEventsNames.Add(ev.name);
+                _currentEventsFrequencies.Add(ev.frequency);
+            }
+            else if (ev.name == EventName.Silence)
+            {
+                _countSilenceDetected[it]++;
+            }
+        }
+
+        /*
+        metodo en cada recognizer que gestiones la salida de recognize(...) y que inicialice los dos atributos(name y data) y que haya otros dos metodos que devuelvan 
+        dichos atributos, respectivamente, y que sean metodos destructivos, es decir, que cuando se llamen, devuelven la informacion y ponen a null los atributos.Mientras 
+        no reconozca nada estaran a null pero cuando reconoce el evento lo mete en el atributo. Esta estructura obliga a llamar en cada vuelta a los metodos ya que si no se
+        llaman es posible que se pierdan eventos porque en cada tick se sobreescriben los datos del tick anterior.
+
+        La creacion del combo la hace SoundEventManager y es el que junta la salida de todos los recognizers (teniendo en cuenta el tiempo y eso)
+
+        */
+        #endregion
+
+
+        #region PUBLIC_ATTRIBUTES
+        // flag para grabar los combos
+        public bool isRecordCombo = false;
+        public bool[] visibleMedidor = null;
+        #endregion
+
+        #region PRIVATE_ATTRIBUTES
+        // Clase que contiene el array con el sonido de entrada
+        private SpectrumAnalyzer _analyzer = null;
+
+        // Lista con los reconocedores que hay
+        private List<SoundRecognizer> _recognizers = null;
+
+        // lista que guarda los combos grabados
+        private List<Combo> _combos;
+
+        // lista de los items del combo que se esta creando en este momento
+        private List<EventName> _currentEventsNames;
+
+        // lista de los datos del combo que se esta creando en este momento
+        private List<float> _currentEventsFrequencies;
+
+        // contador de silencio por cada recognizer
+        int[] _countSilenceDetected;
+
+        // minimo silencio que tiene que haber para que el combo se de por acabado
+        int _minSilenceToCombo = 100;
         #endregion
 
         #region SINGLETON_REGION
@@ -162,16 +248,6 @@ namespace PatternRecognizer
          * **/
         private static SoundEventManager _instance = null;
         public static SoundEventManager Instance => _instance;
-        #endregion
-
-        #region PRIVATE_ATTRIBUTES
-        // Clase que contiene el array con el sonido de entrada
-        private SpectrumAnalyzer _analyzer = null;
-
-        private ClickRecognizer _clickRecognizer;
-        private WhistleRecognizer _whistleRecognizer;
-
-        //private List<Combo> _combos;
         #endregion
     }
 }
