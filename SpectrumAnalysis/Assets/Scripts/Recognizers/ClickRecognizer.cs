@@ -12,6 +12,13 @@ namespace PatternRecognizer
     {
         public ClickRecognizer(EventName name) : base(name)
         {
+            _offsetFrequency = SoundEventManager.Instance.GetResolution();
+        }
+
+        public override SoundEvent GetEvent()
+        {
+            _currentFrequency = -1;
+            return base.GetEvent();
         }
 
         /*

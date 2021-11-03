@@ -10,7 +10,7 @@ namespace PatternRecognizer
         private EventName[] _combo;
         private float[] _frequencies;
 
-        private float offsetFrequency = 0.01f;
+        private float offsetFrequency = 0.05f;
         #endregion
         // Debug
         public string _name;

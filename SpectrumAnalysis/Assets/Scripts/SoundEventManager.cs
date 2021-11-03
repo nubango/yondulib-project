@@ -68,7 +68,7 @@ namespace PatternRecognizer
                     // El orden en el que de meten debe ser el mismo del enum COMBONAME
                     // de la clase COMBO para que la creacion de los combos sea correcta
                     _recognizers.Add(new ClickRecognizer(EventName.Click));
-                    //_recognizers.Add(new WhistleRecognizer(eventName.Whistle));
+                    _recognizers.Add(new WhistleRecognizer(EventName.Whistle));
                 }
 
                 if (medidor != null && medidorInitSize == null)
@@ -104,7 +104,7 @@ namespace PatternRecognizer
 
 
                 RecordCombo(i);
-                minCountSilence = _countSilenceDetected[i] < minCountSilence ? _countSilenceDetected[i] : minCountSilence;
+                minCountSilence = minCountSilence > 0 && _countSilenceDetected[i] < minCountSilence ? _countSilenceDetected[i] : minCountSilence;
 
 
                 if (medidor != null && medidor[i] != null)

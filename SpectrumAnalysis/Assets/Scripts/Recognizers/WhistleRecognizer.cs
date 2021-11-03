@@ -12,6 +12,7 @@ namespace PatternRecognizer
     {
         public WhistleRecognizer(EventName name) : base(name)
         {
+            _offsetFrequency = 0.05f * SoundEventManager.Instance.GetResolution();
         }
 
         /*
