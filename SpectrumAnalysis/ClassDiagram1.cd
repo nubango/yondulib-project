@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PatternRecognizer.ClickRecognizer" Collapsed="true">
+    <Position X="6.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Recognizers\ClickRecognizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PatternRecognizer.SoundRecognizer" Collapsed="true">
+    <Position X="5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAgCAABAQAAAAAABAAAEACAAAAACAAQACgA=</HashCode>
+      <FileName>Assets\Scripts\Recognizers\SoundRecognizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PatternRecognizer.WhistleRecognizer" Collapsed="true">
+    <Position X="3.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Recognizers\WhistleRecognizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="PatternRecognizer.SoundEvent" Collapsed="true">
+    <Position X="9.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAACAAAAQAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Recognizers\SoundRecognizer.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="PatternRecognizer.EventName" Collapsed="true">
+    <Position X="8.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQIAAAIAAgA=</HashCode>
+      <FileName>Assets\Scripts\Recognizers\SoundRecognizer.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

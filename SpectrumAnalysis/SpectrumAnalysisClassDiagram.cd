@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PatternRecognizer.SoundRecognizer">
+    <Position X="9.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAgCAABAQAAAAAABAAAEACAAAAACAAQACgA=</HashCode>
+      <FileName>Assets\Scripts\Recognizers\SoundRecognizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PatternRecognizer.ClickRecognizer">
+    <Position X="11.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Recognizers\ClickRecognizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PatternRecognizer.WhistleRecognizer">
+    <Position X="8.25" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Recognizers\WhistleRecognizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PatternRecognizer.Combo">
+    <Position X="10" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAQAAABAAAAAAAAAAQAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Combo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PatternRecognizer.SoundEventManager">
+    <Position X="0.5" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>gAQEAAAQCAAIgBAAhCAAAgAAAAAAQQAAQAEASCIAAEA=</HashCode>
+      <FileName>Assets\Scripts\SoundEventManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PatternRecognizer.Utils">
+    <Position X="4.75" Y="5" Width="1.5" />
+    <NestedTypes>
+      <Class Name="PatternRecognizer.Utils.Pair&lt;T, U&gt;" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Utils.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="PatternRecognizer.Utils.PriorityQueue&lt;T&gt;" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Utils.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Utils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Note" BaseTypeListCollapsed="true">
+    <Position X="4.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAACACAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Note.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Struct Name="PatternRecognizer.SoundEvent">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAACAAAAQAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Recognizers\SoundRecognizer.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="PatternRecognizer.EventName">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQIAAAIAAgA=</HashCode>
+      <FileName>Assets\Scripts\Recognizers\SoundRecognizer.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
