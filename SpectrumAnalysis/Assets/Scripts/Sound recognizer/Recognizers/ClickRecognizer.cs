@@ -17,20 +17,11 @@ namespace PatternRecognizer
 
         public override SoundEvent GetEvent()
         {
-            _currentFrequency = -1;
+            _currentEventFrequency = -1;
             return base.GetEvent();
         }
 
-        /*
-IDEAS:
-Posibles factores:
-   - numero de picos: las onomatopeyas suelen tener muchos picos
-   - diferencia de intensidad entre max-min: diferencia entre el pico max y el min es menor que en un sibido
-   - intensidad general: los picos maximos suelen tener poca difernecia de intensidad entre ellos (comparacion de los picos máximos)
 
-tener en cuenta valores anteriores -> si el valor de intensidad total es bajo y no existen picos pronunciados entonces no cuenta nada, si no, devuelve el valor medio de los factores que va sumando en cada vuelta de bucle
-
-*/
 
         /// <summary>
         /// Identifica si ha habido un golpe, chasquido o similar

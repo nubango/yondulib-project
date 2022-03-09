@@ -23,7 +23,7 @@ namespace PatternRecognizer
         protected SoundRecognizer(EventName name)
         {
             this.name = name;
-            _currentName = EventName.Null;
+            _currentEventName = EventName.Null;
         }
 
 
@@ -38,15 +38,15 @@ namespace PatternRecognizer
         protected float _offsetFrequency = 10.0f;
 
         // frecuencia mas alta del reconocedor
-        protected float _currentFrequency = -1.0f;
+        protected float _currentEventFrequency = -1.0f;
         #endregion
 
 
         #region PRIVATE_ATTRIBUTES
         // evento reconocido ahora
-        private EventName _currentName;
-        // datos de reconocimiento
-        private float _currentData = 0.0f;
+        private EventName _currentEventName;
+        // nivel de reconocimiento
+        private float _recognitionLevel = 0.0f;
 
         // contador de silencio
         private int _countNotSoundDetected = 0;
@@ -68,9 +68,9 @@ namespace PatternRecognizer
         // metodo que devuelve el evento reconocido al llamar a recognize. Es destructivo, una vez le llamas la infomracion se resetea.
         public virtual SoundEvent GetEvent()
         {
-            SoundEvent s = new SoundEvent(_currentName, _currentFrequency, _currentData);
+            SoundEvent s = new SoundEvent(_currentEventName, _currentEventFrequency, _recognitionLevel);
 
-            _currentName = EventName.Null;
+            _currentEventName = EventName.Null;
 
             return s;
         }
@@ -81,13 +81,21 @@ namespace PatternRecognizer
         // trata de reconocer el evento que le corresponda y devuelve el porcentaje de reconocimiento
         public float Recognize(float[] array)
         {
-            _currentData = AnalizeSpectrum(array);
+            _recognitionLevel = AnalizeSpectrum(array);
 
             float freq = maxFrequency.frequency;
-            if (_currentFrequency == -1)
-                _currentFrequency = freq;
+            if (_currentEventFrequency == -1)
+                _currentEventFrequency = freq;
 
-            if (_currentData > 0.87f && freq > _currentFrequency - _offsetFrequency && freq < _currentFrequency + _offsetFrequency)
+
+
+
+            // Analizamos el dato de reconocimiento del reconocedor para generar
+            // el evento correspondiente.
+            // si el grado de reconocimiento es superior al 87% y si la frecuencia
+            // del sonido esta dentro del rango se genera un evento del tipo correspondiente
+            if (_recognitionLevel > 0.87f && freq > _currentEventFrequency - _offsetFrequency 
+                && freq < _currentEventFrequency + _offsetFrequency)
             {
                 _soundRecognize = true;
                 _countNotSoundDetected = 0;
@@ -98,27 +106,46 @@ namespace PatternRecognizer
             }
             //Debug.Log(freq);
 
+
+
+
+            // si el tiempo que ha pasado sin reconocerse ningun sonido es mayor a 25,
+            // de resetean los flags y el evento actual se le da el valor de silencio
             if (_countNotSoundDetected * Time.deltaTime > 25 * Time.deltaTime)
             {
                 _soundRecognize = false;
                 _eventRecording = false;
-                _currentName = EventName.Silence;
-                _currentFrequency = -1;
+                _currentEventName = EventName.Silence;
+                _currentEventFrequency = -1;
             }
 
 
+
+            // Si se ha reconocido el sonido y no estamos generando el evento ya,
+            // se genera el evento correspondiente
             if (_soundRecognize && !_eventRecording)
             {
                 _countNotSoundDetected = 0;
                 _eventRecording = true;
 
-                _currentName = name;
+                _currentEventName = name;
 
-                _currentFrequency = freq;
+                // AQUI DEBERIA IR LA GENERACION DE UN EVENTO DE TIPO "name"
+                /*
+                https://docs.unity3d.com/Packages/com.unity.inputsystem@1.0/manual/Events.html
+                InputEventPtr eventPtr;
+                using (StateEvent.From(myDevice, out eventPtr))
+                {
+                    ((AxisControl) myDevice["myControl"]).WriteValueIntoEvent(0.5f, eventPtr);
+                    InputSystem.QueueEvent(eventPtr);
+                }
+                */
+
+                _currentEventFrequency = freq;
                 Debug.Log(name.ToString() + " " + freq);
             }
 
-            return _currentData;
+            return _recognitionLevel;
         }
     }
     #endregion

@@ -30,8 +30,29 @@ Combo:
  silbido ascendente -> accionY (whistlerecognizer guarda la frecuencia con mayor intensidad de la muestra)
 
 Efecto visual para feedback:
- crear una clase que tenga un metodo que admita por par�metro un float (0-1) y que lo tranforme en un cambio visual en el atributo visual de la clase (asignado desde el editor?).
+ crear una clase que tenga un metodo que admita por par�metro un float (0-1) y que lo tranforme en un cambio visual en el atributo visual de la clase 
+(asignado desde el editor?).
  Estos objetos se asignan en el editor al SoundEventManager, uno para cada recognizer
+ */
+
+
+/*
+IMPORTANTE:
+  Lo de los combos seguramente cambie porque al meter los eventos del customedevice 
+  dentro del soundrecognizer ya no nos hace falta el metodo getEvent()
+
+  A lo mejor hay que revisar como generamos el evento de silbido por que 
+  ahora se genera un evento de silvido al detectar una frecuencia pero si estamos 
+  silbando 10 segundos en la misma frecuencia solo se generará el primer evento y luego nada.
+
+  El funcionamiento debe ser como un joystick que se mueve en una sola direccion, 
+  puede estar quieto en el centro (no se silba), puede estar arriba (silbido agudo)
+  o puede estar abajo (silbido grave) y debe de estar mandando eventos constantemente 
+  mientras se detecte dicha frecuencia. 
+
+  Ahora mismo se genera un evento silbido con una deadzon (_offsetFrequency) 
+  excesivamente alta; deadzone del 5% de la resolucion, es decir, con resolucion 
+  de 256 la deadzone es de 12 por arriba y 12 por abajo que equivale a 24.
  */
 
 
@@ -42,7 +63,7 @@ namespace PatternRecognizer
      * **/
     public class SoundEventManager : MonoBehaviour
     {
-        #region UNITY_REGION
+        #region UNITY_IMPLEMENTTION
         public GameObject[] medidor;
 
         private Vector3[] medidorInitSize;

@@ -14,6 +14,12 @@ public sealed class SpectrumAnalyzer : MonoBehaviour
 
     #endregion
 
+    #region Public properties
+
+    public float CurrentGain { get; set; } = -13;
+    public float DynamicRange { get; set; } = 55;
+    #endregion
+
     #region Internal objects
 
     public readonly int resolution = 256;
@@ -39,9 +45,6 @@ public sealed class SpectrumAnalyzer : MonoBehaviour
     // Log scale resampler with lazy initialization
     LogScaler LogScaler => _logScaler ??= new LogScaler();
     LogScaler _logScaler;
-
-    float currentGain = 0;
-    float dynamicRange = 80;
 
     #endregion
 
@@ -69,8 +72,10 @@ public sealed class SpectrumAnalyzer : MonoBehaviour
 
         // FFT
         _fft?.Push(_selector.AudioDataSpan);
-        _fft?.Analyze(-currentGain -dynamicRange, -currentGain);
+        _fft?.Analyze(-CurrentGain -DynamicRange, -CurrentGain);
     }
+
+
 
     #endregion
 }

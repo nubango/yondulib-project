@@ -16,36 +16,8 @@ namespace PatternRecognizer
         }
 
         /*
-* ventana deslizante: https://stackoverflow.com/questions/8269916/what-is-sliding-window-algorithm-examples
-* **/
-        /* IDEAS:
-         * Analizamos el espectro de frecuencias y con el patron de ventana deslizante
-         * hayamos el desfase entre la maxima y minima frecuencia. Si el desfase es mayor que un valor 
-         * entonces supondremos que es un silbido. 
-         *      para conseguir esto analizamos el caso base de la primera ventana hayando el maximo y el minimo
-         *      para calcular la diferencia que sera la maxima hasta ahora.
-         *      
-         *      para calcular los maximos y minimos al mover la ventana usamos colas de prioridad para tener 
-         *      todos los elementos ordenados y que el primer elemento sea el maximo o el minimo. 
-         *      
-         *      Quitar un elemento de la cola de prioridad que no sea el primero es complicado pero en realidad 
-         *      lo unico que nos importa es el primer elemento de cada cola por lo que cuando se mueva la ventana 
-         *      lo unico que tenemos que hacer es saber si el elemento que sale de la ventana es un maximo o un minimo. 
-         *      Si estamos en este supuesto, lo que tenemos que hacer es sacar ese elemento de la cola e introducir el nuevo.
-         *      
-         *      Si el elemento que sale de la ventana no es ni maximo ni minimo no nos importa por lo que no lo sacamos y lo unico que hacemos es
-         *      meter el nuevo elemento ya que el antiguo no interfiere en nada.
-         * 
-         * Devolvemos un valor entre 0 y 1, siendo 1 deteccion silbido al 100%, 0 no deteccion silbido y 
-         * 0.5 posible deteccion de silbido al 50%
-         * 
-         * 
-         * cosas utiles y como hacerlo:
-         *      fijarse en la cantidad de picos que hay. En un silbido deberia de haber pocos picos. Puede darse el supuesto de que haya un poco de ruido, por lo que 
-         *      aqui entraria la diferencia entre maximos y minimos. Tambien hay que ver que los picos en un silbido estan en la parte central del espectro. Estos tres 
-         *      parámetros deberian usarse para elaborar el indice de acierto del audio escuchado en relacion con si lo que suena es un silbido o no.
-         * 
-         * **/
+        * ventana deslizante: https://stackoverflow.com/questions/8269916/what-is-sliding-window-algorithm-examples
+        **/
 
         /// <summary>
         /// Identifica si ha habido un silbido/nota musical.
