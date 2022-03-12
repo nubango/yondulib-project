@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
+
 
 namespace PatternRecognizer
 {
@@ -94,7 +98,7 @@ namespace PatternRecognizer
             // el evento correspondiente.
             // si el grado de reconocimiento es superior al 87% y si la frecuencia
             // del sonido esta dentro del rango se genera un evento del tipo correspondiente
-            if (_recognitionLevel > 0.87f && freq > _currentEventFrequency - _offsetFrequency 
+            if (_recognitionLevel > 0.87f && freq > _currentEventFrequency - _offsetFrequency
                 && freq < _currentEventFrequency + _offsetFrequency)
             {
                 _soundRecognize = true;
@@ -120,6 +124,14 @@ namespace PatternRecognizer
             }
 
 
+            /*
+            Al generar el evento recogemos la mayor cantidad de parámetros y mas arriba decidiran que valor tener en cuenta 
+                - Silbido: intensidad y frecuencia (TODO: si silbas de seguido mucho tiempo se generan muchos eventos)
+                - Chasquido: intensidad
+
+             
+             */
+
 
             // Si se ha reconocido el sonido y no estamos generando el evento ya,
             // se genera el evento correspondiente
@@ -130,19 +142,27 @@ namespace PatternRecognizer
 
                 _currentEventName = name;
 
-                // AQUI DEBERIA IR LA GENERACION DE UN EVENTO DE TIPO "name"
-                /*
-                https://docs.unity3d.com/Packages/com.unity.inputsystem@1.0/manual/Events.html
-                InputEventPtr eventPtr;
-                using (StateEvent.From(myDevice, out eventPtr))
-                {
-                    ((AxisControl) myDevice["myControl"]).WriteValueIntoEvent(0.5f, eventPtr);
-                    InputSystem.QueueEvent(eventPtr);
-                }
-                */
-
                 _currentEventFrequency = freq;
                 Debug.Log(name.ToString() + " " + freq);
+
+
+
+                // AQUI DEBERIA IR LA GENERACION DE UN EVENTO DE TIPO "name"
+                //https://docs.unity3d.com/Packages/com.unity.inputsystem@1.0/manual/Events.html
+
+                InputEventPtr eventPtr;
+                using (StateEvent.From(CustomeDevice.MyDevice.current, out eventPtr))
+                {
+                    if (name == EventName.Whistle)
+                        ((AxisControl)CustomeDevice.MyDevice.current["whistle"]).WriteValueIntoEvent(freq, eventPtr);
+                    else
+                        ((ButtonControl)CustomeDevice.MyDevice.current["click"]).WriteValueIntoEvent(freq, eventPtr);
+
+                    InputSystem.QueueEvent(eventPtr);
+                }
+
+
+
             }
 
             return _recognitionLevel;

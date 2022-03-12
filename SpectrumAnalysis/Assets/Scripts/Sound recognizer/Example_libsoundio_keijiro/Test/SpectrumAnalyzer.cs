@@ -17,7 +17,7 @@ public sealed class SpectrumAnalyzer : MonoBehaviour
     #region Public properties
 
     public float CurrentGain { get; set; } = -13;
-    public float DynamicRange { get; set; } = 55;
+    public float DynamicRange { get; set; } = 75;
     #endregion
 
     #region Internal objects
