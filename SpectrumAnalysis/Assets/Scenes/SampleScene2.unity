@@ -531,7 +531,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2015397129}
+      - m_Target: {fileID: 681989175}
         m_TargetAssemblyTypeName: SpectrumAnalyzer, Assembly-CSharp
         m_MethodName: set_DynamicRange
         m_Mode: 0
@@ -707,6 +707,50 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -121}
   m_SizeDelta: {x: 0, y: 40}
   m_Pivot: {x: 0, y: 1}
+--- !u!1 &681989173
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 681989174}
+  - component: {fileID: 681989175}
+  m_Layer: 0
+  m_Name: SpectrumAnalizer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &681989174
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681989173}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2015397131}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &681989175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681989173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf5623de3e7cf6b43853aac632c16ecd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _selector: {fileID: 953206719}
 --- !u!224 &752746108 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8100777235437148337, guid: 035fab46789542042a3b609a431e16dd, type: 3}
@@ -839,6 +883,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3806856020548371702, guid: e7e963ec39873c2439a7c020fa42ea7d, type: 3}
+      propertyPath: analyzer
+      value: 
+      objectReference: {fileID: 681989175}
+    - target: {fileID: 3806856020548371702, guid: e7e963ec39873c2439a7c020fa42ea7d, type: 3}
       propertyPath: medidorClick
       value: 
       objectReference: {fileID: 1679652646}
@@ -872,6 +920,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3806856020548371702, guid: e7e963ec39873c2439a7c020fa42ea7d, type: 3}
       propertyPath: visibleMedidor.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3806856020548371702, guid: e7e963ec39873c2439a7c020fa42ea7d, type: 3}
+      propertyPath: visibleMedidor.Array.data[1]
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3806856020548371702, guid: e7e963ec39873c2439a7c020fa42ea7d, type: 3}
@@ -1518,7 +1570,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2015397129}
+      - m_Target: {fileID: 681989175}
         m_TargetAssemblyTypeName: SpectrumAnalyzer, Assembly-CSharp
         m_MethodName: set_CurrentGain
         m_Mode: 0
@@ -2028,24 +2080,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1882855865}
   m_CullTransparentMesh: 0
---- !u!1 &2015397128 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3806856020548371703, guid: e7e963ec39873c2439a7c020fa42ea7d, type: 3}
+--- !u!4 &2015397131 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3806856020548371705, guid: e7e963ec39873c2439a7c020fa42ea7d, type: 3}
   m_PrefabInstance: {fileID: 907459356}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2015397129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2015397128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf5623de3e7cf6b43853aac632c16ecd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _selector: {fileID: 953206719}
 --- !u!1 &2081620556
 GameObject:
   m_ObjectHideFlags: 0

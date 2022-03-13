@@ -10,24 +10,13 @@ using UnityEngine.UI;
 namespace PatternRecognizer
 {
     public enum EventName { Click, Whistle, Silence, Null }
-    public struct SoundEvent
-    {
-        public SoundEvent(EventName n, float f, float d)
-        {
-            name = n;
-            frequency = f;
-            data = d;
-        }
-        public EventName name { get; }
-        public float frequency { get; }
-        public float data { get; }
-    }
+
+
     public abstract class SoundRecognizer
     {
         protected SoundRecognizer(EventName name)
         {
             this.name = name;
-            _currentEventName = EventName.Null;
         }
 
 
@@ -42,18 +31,25 @@ namespace PatternRecognizer
         protected float _offsetFrequency = 10.0f;
 
         // frecuencia mas alta del reconocedor
-        protected float _currentEventFrequency = -1.0f;
+        protected float _eventFrequency = -1.0f;
+
+        // Representa la duracion de un unico evento. Si una palmada se da muy fuerte
+        // el sonido permanece un tiempo y si el valor de este atributo es muy bajo entonces
+        // se generarán varios eventos CLICK cuento en realidad solo se ha producido una sola palmada.
+        // El valor se inicializa en los contructores de cada reconocedor
+        protected int _eventDuration = 100;
         #endregion
 
 
         #region PRIVATE_ATTRIBUTES
         // evento reconocido ahora
-        private EventName _currentEventName;
         // nivel de reconocimiento
         private float _recognitionLevel = 0.0f;
 
         // contador de silencio
         private int _countNotSoundDetected = 0;
+        // contador de sonido
+        private int _countSoundDetected = 0;
         // flag que se activa cuando se ha reconocido algo para que se cree un solo evento mientas dure el reconocimineto
         private bool _eventRecording = false;
 
@@ -69,15 +65,6 @@ namespace PatternRecognizer
 
 
         #region PUBLIC_METHODS
-        // metodo que devuelve el evento reconocido al llamar a recognize. Es destructivo, una vez le llamas la infomracion se resetea.
-        public virtual SoundEvent GetEvent()
-        {
-            SoundEvent s = new SoundEvent(_currentEventName, _currentEventFrequency, _recognitionLevel);
-
-            _currentEventName = EventName.Null;
-
-            return s;
-        }
 
         // devuelve la maxima frecuencia encontrada al analizar el espectro
         //private float GetMaxFrequency() { return maxFrequency.frequency; }
@@ -87,19 +74,22 @@ namespace PatternRecognizer
         {
             _recognitionLevel = AnalizeSpectrum(array);
 
+            // maxFrequency contiene la frecuencia maxima en cada vuelta de bucle
             float freq = maxFrequency.frequency;
-            if (_currentEventFrequency == -1)
-                _currentEventFrequency = freq;
 
-
+            // si eventFrequency es -1 significa que estamos ante la primera vuelta
+            // despues de un reconocimiento positivo por lo que asignamos la frecuencia
+            // maxima en esta vuelta a la frecuencia del posible evento actual
+            if (_eventFrequency == -1)
+                _eventFrequency = freq;
 
 
             // Analizamos el dato de reconocimiento del reconocedor para generar
             // el evento correspondiente.
             // si el grado de reconocimiento es superior al 87% y si la frecuencia
             // del sonido esta dentro del rango se genera un evento del tipo correspondiente
-            if (_recognitionLevel > 0.87f && freq > _currentEventFrequency - _offsetFrequency
-                && freq < _currentEventFrequency + _offsetFrequency)
+            if (_recognitionLevel > 0.87f && freq > _eventFrequency - _offsetFrequency
+                && freq < _eventFrequency + _offsetFrequency)
             {
                 _soundRecognize = true;
                 _countNotSoundDetected = 0;
@@ -108,47 +98,43 @@ namespace PatternRecognizer
             {
                 _countNotSoundDetected++;
             }
-            //Debug.Log(freq);
 
 
 
+            // cuenta el tiempo que esta reconociendo un sonido
+            if (_soundRecognize)
+            {
+                _countSoundDetected++;
+            }
 
-            // si el tiempo que ha pasado sin reconocerse ningun sonido es mayor a 25,
+            // si el tiempo que ha pasado sin reconocerse ningun sonido es mayor a 25 
             // de resetean los flags y el evento actual se le da el valor de silencio
             if (_countNotSoundDetected * Time.deltaTime > 25 * Time.deltaTime)
             {
+                _countNotSoundDetected = 0;
                 _soundRecognize = false;
                 _eventRecording = false;
-                _currentEventName = EventName.Silence;
-                _currentEventFrequency = -1;
+                _eventFrequency = -1;
             }
 
 
-            /*
-            Al generar el evento recogemos la mayor cantidad de parámetros y mas arriba decidiran que valor tener en cuenta 
-                - Silbido: intensidad y frecuencia (TODO: si silbas de seguido mucho tiempo se generan muchos eventos)
-                - Chasquido: intensidad
-
-             
-             */
+            // Si se lleva reconociendo un sonido mas de 100 entonces se genera otro evento
+            if (_countSoundDetected * Time.deltaTime > _eventDuration * Time.deltaTime)
+            {
+                _countSoundDetected = 0;
+                _eventRecording = false;
+            }
 
 
             // Si se ha reconocido el sonido y no estamos generando el evento ya,
             // se genera el evento correspondiente
             if (_soundRecognize && !_eventRecording)
             {
-                _countNotSoundDetected = 0;
                 _eventRecording = true;
 
-                _currentEventName = name;
-
-                _currentEventFrequency = freq;
+                _eventFrequency = freq;
                 Debug.Log(name.ToString() + " " + freq);
 
-
-
-                // AQUI DEBERIA IR LA GENERACION DE UN EVENTO DE TIPO "name"
-                //https://docs.unity3d.com/Packages/com.unity.inputsystem@1.0/manual/Events.html
 
                 InputEventPtr eventPtr;
                 using (StateEvent.From(CustomeDevice.MyDevice.current, out eventPtr))
@@ -160,9 +146,6 @@ namespace PatternRecognizer
 
                     InputSystem.QueueEvent(eventPtr);
                 }
-
-
-
             }
 
             return _recognitionLevel;

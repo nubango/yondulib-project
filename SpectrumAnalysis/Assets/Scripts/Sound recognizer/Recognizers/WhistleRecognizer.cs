@@ -13,11 +13,18 @@ namespace PatternRecognizer
         public WhistleRecognizer(EventName name) : base(name)
         {
             _offsetFrequency = 0.05f * SoundEventManager.Instance.GetResolution();
+            _eventDuration = 10;
         }
 
         /*
         * ventana deslizante: https://stackoverflow.com/questions/8269916/what-is-sliding-window-algorithm-examples
         **/
+
+        /*
+        TODO: Mejorar el reconocimiento de silbidos configurando los valores 
+        de los distintos parámetros en funcion de la frecuencia a la que se silbe. 
+        Actualmente se reconocen mejor los silbidos agudos que los graves
+         */
 
         /// <summary>
         /// Identifica si ha habido un silbido/nota musical.
@@ -112,6 +119,7 @@ namespace PatternRecognizer
             // cola auxiliar de minimos
             Utils.PriorityQueue<Note> pqMins = new Utils.PriorityQueue<Note>();
 
+            // caso base
             // buscamos las frecuencias maxima y minima de la ventana para saber cual es la diferencia
             do
             {
@@ -121,7 +129,8 @@ namespace PatternRecognizer
                     maxFrequency.intensity = array[i];
                     maxFrequency.frequency = i;
                 }
-                else if (array[i] < minFrequency.intensity) minFrequency.intensity = array[i];
+                else if (array[i] < minFrequency.intensity)
+                    minFrequency.intensity = array[i];
             } while (i++ < ancho);
 
             Note maxDiff = new Note(maxFrequency.intensity - minFrequency.intensity, maxFrequency.frequency);
@@ -137,16 +146,25 @@ namespace PatternRecognizer
             {
                 pqAllFeq.Enqueue(new Note(array[i], i));
 
+                // Actualizamos la frecuencia maxima
                 if (array[i] > maxFrequency.intensity)
                 {
                     maxFrequency.intensity = array[i];
                     maxFrequency.frequency = i;
                 }
-                // si el elemento que sale es el maximo o el minimo lo sacamos de la cola
+
+                // si el elemento que sale es el maximo lo sacamos de la cola
                 if (pqMaxs.Peek().intensity == array[i - ancho])
                     pqMaxs.Dequeue();
+                // si el elemento que sale es el minimo lo sacamos de la cola
                 else if (pqMins.Peek().intensity == array[i - ancho])
                     pqMins.Dequeue();
+
+                //pqMaxs = DeleteValorFromQueue(array[i - ancho], pqMaxs);
+                //pqMins = DeleteValorFromQueue(array[i - ancho], pqMins);
+
+
+
 
                 // introducimos el nuevo elemento a la cola
                 pqMaxs.Enqueue(new Note(array[i], i));
@@ -203,7 +221,7 @@ namespace PatternRecognizer
             // Solo usamos las frecuencias con valor superior a 0
             while (pqAllFeq.Count > 0 && pqAllFeq.Peek().intensity > 0)
             {
-                // si las frecuencias estan demasiado juntas se desecha la menor (ancho ventana deslixante como limite minimo)
+                // si las frecuencias estan demasiado juntas se desecha la menor (ancho ventana deslizante como limite minimo)
                 while (pqAllFeq.Count > 0 && Mathf.Abs(top.frequency - pqAllFeq.Peek().frequency) < ancho * 2)
                 {
                     pqAllFeq.Dequeue();
@@ -228,6 +246,38 @@ namespace PatternRecognizer
 
 
             return factor1 + factor2 + factor3 + factor4;
+        }
+
+        // elimina el valor v de la cola c
+        private Utils.PriorityQueue<Note> DeleteValorFromQueue(float v, Utils.PriorityQueue<Note> c)
+        {
+            bool find = false;
+            Utils.PriorityQueue<Note> aux = new Utils.PriorityQueue<Note>();
+            while (!find && c.Count > 0)
+            {
+                Note p = c.Peek();
+                if (p.intensity == v)
+                {
+                    c.Dequeue();
+                    find = true;
+                }
+                else
+                {
+                    aux.Enqueue(p);
+                    c.Dequeue();
+                }
+            } 
+
+            if (aux.Count > c.Count)
+            {
+                while (c.Count > 0) aux.Enqueue(c.Dequeue());
+                return aux;
+            }
+            else
+            {
+                while (aux.Count > 0) c.Enqueue(aux.Dequeue());
+                return c;
+            }
         }
     }
 }

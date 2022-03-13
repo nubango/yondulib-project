@@ -1,9 +1,22 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace PatternRecognizer
 {
+    /*
+Combo:
+ silbar -> moverse hacia la derecha
+ silbar+chasquido -> cambio de sentido
+ chasquido -> saltar
+ chasquido+chasquido -> accionX
+ silbido ascendente -> accionY (whistlerecognizer guarda la frecuencia con mayor intensidad de la muestra)
+
+Efecto visual para feedback:
+ crear una clase que tenga un metodo que admita por par�metro un float (0-1) y que lo tranforme en un cambio visual en el atributo visual de la clase 
+(asignado desde el editor?).
+ Estos objetos se asignan en el editor al SoundEventManager, uno para cada recognizer
+ */
     public class Combo
     {
         #region PRIVATE_ATTRIBUTES
