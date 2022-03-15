@@ -261,6 +261,17 @@
                     "action": "Fire",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "952d456e-d76c-4620-aa12-ba13496dfc7f",
+                    "path": "<MyDevice>/{click}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "My device control scheme",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

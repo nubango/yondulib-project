@@ -47,12 +47,12 @@ namespace CustomeDevice
         // InputControlAttribute.format property determines which format the
         // data is stored in. If omitted, the system generally infers it from the value
         // type of the field.
-        [InputControl(name = "click", layout = "Button", bit = 3)]
+        [InputControl(name = "click", displayName = "Click Button", layout = "Button", bit = 3)]
         public ushort buttons;
 
         // Create a floating-point axis. If a name is not supplied, it is taken
         // from the field.
-        [InputControl(name = "whistle", layout = "Axis")]
+        [InputControl(name = "whistle", displayName = "Whistle Axis", layout = "Axis")]
         public short axis;
     }
 

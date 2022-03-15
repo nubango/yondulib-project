@@ -33,8 +33,30 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "abb776f3-f329-4f7b-bbf8-b577d13be018",
+                    "id": "bf0aaf6d-9cec-427d-9b8e-ff425088bb22",
                     "path": "*/{PrimaryAction}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "53582a77-8aa4-421f-86a3-b962dcf9cb5f",
+                    "path": "<MyDevice>/click",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b07e3d1c-4309-4ca4-8c0b-d7ccbc462fb4",
+                    "path": "<MyDevice>/whistle",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -127,6 +149,17 @@
                     "processors": "ScaleVector2(x=2,y=2)",
                     "groups": "",
                     "action": "look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fdec379e-594b-4786-8a31-846009bfdc7b",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "fire",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
