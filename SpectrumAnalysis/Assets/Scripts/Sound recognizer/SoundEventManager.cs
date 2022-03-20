@@ -29,6 +29,11 @@ Al generar el evento recogemos la mayor cantidad de parámetros y mas arriba dec
 - Chasquido: intensidad
 */
 
+/*
+ SoundEventManager tambien se encarga de añadir un dispositivo al inputSystem de tipo MyDevice. 
+ Ahora lo añadimos de forma manual desde el editor. Si no lo añadimos da error al intentar crear el evento correspondiente
+ */
+
 namespace PatternRecognizer
 {
     /*
@@ -51,6 +56,8 @@ namespace PatternRecognizer
             else
             {
                 _instance = this;
+
+                //CustomeDevice.MyDevice.Initialize();
 
                 if (analyzer == null)
                     // TODO: cambiar a un hijo spectrumAnalizer que tenga el componente y asignarselo a esta clase por el editor

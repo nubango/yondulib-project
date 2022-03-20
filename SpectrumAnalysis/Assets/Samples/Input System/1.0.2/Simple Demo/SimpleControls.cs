@@ -59,7 +59,7 @@ public class @SimpleControls : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""53582a77-8aa4-421f-86a3-b962dcf9cb5f"",
                     ""path"": ""<MyDevice>/click"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""fire"",

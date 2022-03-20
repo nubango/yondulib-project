@@ -80,8 +80,9 @@ namespace CustomeDevice
         // get added to the Device either way. When you expose them as properties,
         // it is easier to get to the Controls in code.
 
-        public ButtonControl button { get; private set; }
-        public AxisControl axis { get; private set; }
+        [InputControl(parameters = "pressPoint=1.0")]
+        public ButtonControl click { get; private set; }
+        public AxisControl whistle { get; private set; }
 
         // The Input System calls this method after it constructs the Device,
         // but before it adds the device to the system. Do any last-minute setup
@@ -93,8 +94,8 @@ namespace CustomeDevice
             // NOTE: The Input System creates the Controls automatically.
             //       This is why don't do `new` here but rather just look
             //       the Controls up.
-            button = GetChildControl<ButtonControl>("click");
-            axis = GetChildControl<AxisControl>("whistle");
+            click = GetChildControl<ButtonControl>("click");
+            whistle = GetChildControl<AxisControl>("whistle");
         }
 
         static MyDevice()
@@ -107,6 +108,7 @@ namespace CustomeDevice
         }
 
 
+        // Revisar porque este metodo no sale en la docuemntacion oficial
         [MenuItem("Tools/Add MyDevice")]
         public static void Initialize()
         {

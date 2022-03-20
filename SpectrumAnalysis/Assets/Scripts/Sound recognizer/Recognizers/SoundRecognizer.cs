@@ -7,6 +7,13 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 
 
+/*
+emitimos un evento al reconocer y otro al dejar de reconocer.
+dispara con los dos eventos (aun poniendo un minimo (interactions) en el actionAsset)
+ 
+Investigar sobre como generamos el evento y como escribimos los valores.
+ */
+
 namespace PatternRecognizer
 {
     public enum EventName { Click, Whistle, Silence, Null }
@@ -109,13 +116,27 @@ namespace PatternRecognizer
 
             // si el tiempo que ha pasado sin reconocerse ningun sonido es mayor a 25 
             // de resetean los flags y el evento actual se le da el valor de silencio
-            if (_countNotSoundDetected * Time.deltaTime > 25 * Time.deltaTime)
+            if (_soundRecognize && _countNotSoundDetected * Time.deltaTime > 25 * Time.deltaTime)
             {
                 _countNotSoundDetected = 0;
                 _soundRecognize = false;
                 _eventRecording = false;
                 _eventFrequency = -1;
+
+                Debug.Log("Silencio");
+
+                // generamos el evento de release 
+                InputEventPtr eventPtr;
+                using (StateEvent.From(CustomeDevice.MyDevice.current, out eventPtr))
+                {
+                    string buttonName = EventName.Click.ToString().ToLower();
+                    ((ButtonControl)CustomeDevice.MyDevice.current[buttonName]).WriteValueIntoEvent(0.0f, eventPtr);
+
+                    InputSystem.QueueEvent(eventPtr);
+                }
             }
+            else if (!_soundRecognize)
+                _eventFrequency = -1;
 
 
             // Si se lleva reconociendo un sonido mas de 100 entonces se genera otro evento
@@ -135,14 +156,12 @@ namespace PatternRecognizer
                 _eventFrequency = freq;
                 Debug.Log(name.ToString() + " " + freq);
 
-
+                // TODO: tal vez habria que tratar el valor de freq para que se adecue a el formato de cada evento
                 InputEventPtr eventPtr;
                 using (StateEvent.From(CustomeDevice.MyDevice.current, out eventPtr))
                 {
-                    if (name == EventName.Whistle)
-                        ((AxisControl)CustomeDevice.MyDevice.current["whistle"]).WriteValueIntoEvent(freq, eventPtr);
-                    else
-                        ((ButtonControl)CustomeDevice.MyDevice.current["click"]).WriteValueIntoEvent(freq, eventPtr);
+                    string buttonName = EventName.Click.ToString().ToLower();
+                    ((ButtonControl)CustomeDevice.MyDevice.current[buttonName]).WriteValueIntoEvent(freq == -1 ? 1 : freq, eventPtr);
 
                     InputSystem.QueueEvent(eventPtr);
                 }
