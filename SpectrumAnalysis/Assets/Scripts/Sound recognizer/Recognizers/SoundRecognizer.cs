@@ -126,14 +126,7 @@ namespace PatternRecognizer
                 Debug.Log("Silencio");
 
                 // generamos el evento de release 
-                InputEventPtr eventPtr;
-                using (StateEvent.From(CustomeDevice.MyDevice.current, out eventPtr))
-                {
-                    string buttonName = EventName.Click.ToString().ToLower();
-                    ((ButtonControl)CustomeDevice.MyDevice.current[buttonName]).WriteValueIntoEvent(0.0f, eventPtr);
-
-                    InputSystem.QueueEvent(eventPtr);
-                }
+                EnqueueEvent(0.0f);
             }
             else if (!_soundRecognize)
                 _eventFrequency = -1;
@@ -156,18 +149,30 @@ namespace PatternRecognizer
                 _eventFrequency = freq;
                 Debug.Log(name.ToString() + " " + freq);
 
-                // TODO: tal vez habria que tratar el valor de freq para que se adecue a el formato de cada evento
-                InputEventPtr eventPtr;
-                using (StateEvent.From(CustomeDevice.MyDevice.current, out eventPtr))
-                {
-                    string buttonName = EventName.Click.ToString().ToLower();
-                    ((ButtonControl)CustomeDevice.MyDevice.current[buttonName]).WriteValueIntoEvent(freq == -1 ? 1 : freq, eventPtr);
-
-                    InputSystem.QueueEvent(eventPtr);
-                }
+                EnqueueEvent(freq == -1 ? 1.0f : freq);
             }
 
             return _recognitionLevel;
+        }
+
+        private void EnqueueEvent(float freq)
+        {
+            // TODO: tal vez habria que tratar el valor de freq para que se adecue a el formato de cada evento
+            InputEventPtr eventPtr;
+            using (StateEvent.From(CustomeDevice.MyDevice.current, out eventPtr))
+            {
+                string buttonName = name.ToString().ToLower();
+
+                InputControl ic = CustomeDevice.MyDevice.current[buttonName];
+
+                ((ButtonControl)ic).WriteValueIntoEvent(freq, eventPtr);
+                //if (name == EventName.Click)
+                //    ((ButtonControl)ic).WriteValueIntoEvent(freq, eventPtr);
+                //else if (name == EventName.Whistle)
+                //    ((AxisControl)ic).WriteValueIntoEvent(freq, eventPtr);
+
+                InputSystem.QueueEvent(eventPtr);
+            }
         }
     }
     #endregion

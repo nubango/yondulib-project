@@ -1,14 +1,13 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
 using UnityEditor;
 using UnityEngine;
+using System.Collections;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Utilities;
 
 namespace CustomeDevice
@@ -47,13 +46,14 @@ namespace CustomeDevice
         // InputControlAttribute.format property determines which format the
         // data is stored in. If omitted, the system generally infers it from the value
         // type of the field.
-        [InputControl(name = "click", displayName = "Click Button", layout = "Button", bit = 3)]
+
+        [InputControl(name = "click", displayName = "Click Button", layout = "Button", bit = 0)]
+        [InputControl(name = "whistle", displayName = "Whistle Button", layout = "Button", bit = 1)]
         public ushort buttons;
 
         // Create a floating-point axis. If a name is not supplied, it is taken
         // from the field.
-        [InputControl(name = "whistle", displayName = "Whistle Axis", layout = "Axis")]
-        public short axis;
+       
     }
 
 
@@ -82,7 +82,7 @@ namespace CustomeDevice
 
         [InputControl(parameters = "pressPoint=1.0")]
         public ButtonControl click { get; private set; }
-        public AxisControl whistle { get; private set; }
+        public ButtonControl whistle { get; private set; }
 
         // The Input System calls this method after it constructs the Device,
         // but before it adds the device to the system. Do any last-minute setup
@@ -95,7 +95,7 @@ namespace CustomeDevice
             //       This is why don't do `new` here but rather just look
             //       the Controls up.
             click = GetChildControl<ButtonControl>("click");
-            whistle = GetChildControl<AxisControl>("whistle");
+            whistle = GetChildControl<ButtonControl>("whistle");
         }
 
         static MyDevice()
