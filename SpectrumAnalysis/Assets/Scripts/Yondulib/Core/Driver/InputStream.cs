@@ -4,8 +4,10 @@
 using System;
 using System.Runtime.InteropServices;
 using InvalidOp = System.InvalidOperationException;
+using SoundIO;
 
-namespace SoundIO.SimpleDriver
+
+namespace YonduLib.Core.Driver
 {
     //
     // High-level wrapper class for SoundIoInStream

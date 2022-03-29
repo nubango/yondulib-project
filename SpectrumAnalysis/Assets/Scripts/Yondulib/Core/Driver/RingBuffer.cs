@@ -3,7 +3,7 @@
 
 using System;
 
-namespace SoundIO.SimpleDriver
+namespace YonduLib.Core.Driver
 {
     //
     // A simple implementation of a ring buffer

@@ -4,8 +4,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.LowLevel;
+using SoundIO;
 
-namespace SoundIO.SimpleDriver
+namespace YonduLib.Core.Driver
 {
     //
     // Singleton-like device driver class
@@ -117,7 +118,7 @@ namespace SoundIO.SimpleDriver
                 if (phase.type == typeof(UnityEngine.PlayerLoop.EarlyUpdate))
                 {
                     phase.subSystemList = phase.subSystemList.
-                        Concat(new[]{ customSystem }).ToArray();
+                        Concat(new[] { customSystem }).ToArray();
                     break;
                 }
             }
