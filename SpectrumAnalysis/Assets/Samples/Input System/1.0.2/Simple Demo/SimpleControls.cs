@@ -58,7 +58,7 @@ public class @SimpleControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""53582a77-8aa4-421f-86a3-b962dcf9cb5f"",
-                    ""path"": ""<MyDevice>/click"",
+                    ""path"": ""<YonduDevice>/click"",
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
@@ -146,7 +146,7 @@ public class @SimpleControls : IInputActionCollection, IDisposable
                 {
                     ""name"": ""up"",
                     ""id"": ""b8d6fe91-4280-4024-a9da-efd9932f1752"",
-                    ""path"": ""<MyDevice>/whistle"",
+                    ""path"": ""<YonduDevice>/whistle"",
                     ""interactions"": """",
                     ""processors"": ""AxisDeadzone"",
                     ""groups"": """",
