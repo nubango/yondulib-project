@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="YonduLib.Core.Driver.DeviceDriver" Collapsed="true">
+    <Position X="10" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAQAAAAAAgAADAAAAAAAAAAABAIAAAQAAAAAIgAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\Core\Driver\DeviceDriver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YonduLib.Core.Driver.InputStream" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BASCAgACAjAAACAAEAgAQEAAAACAgAAEAAAAAgAAABQ=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\Core\Driver\InputStream.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="YonduLib.Core.Driver.RingBuffer" Collapsed="true">
+    <Position X="11.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAoAAAEAAAQACAACAAiAAACAAAAAgAAAAFAAgA=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\Core\Driver\RingBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YonduLib.Core.FftBuffer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACIBEAQAAAAAAEAQAEAJAAIAAAAAAAAEChA=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\Core\FftBuffer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="YonduLib.Core.LogScaler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAgACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\Core\LogScaler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="YonduLib.Core.SpanNativeArraySliceExtensions" Collapsed="true">
+    <Position X="11.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\Core\Utility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YonduLib.Core.TempJobMemory" Collapsed="true">
+    <Position X="14.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\Core\Utility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YonduLib.Core.PersistentMemory" Collapsed="true">
+    <Position X="11.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\Core\Utility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YonduLib.Core.ListExtensions" Collapsed="true">
+    <Position X="11.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\Core\Utility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YonduLib.Core.MathUtils" Collapsed="true">
+    <Position X="14.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\Core\Utility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YonduLib.DeviceSelector" Collapsed="true">
+    <Position X="10.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BATBAAAjACBAAAAAAAAEAAAAAgAIBAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\DeviceSelector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YonduLib.Note" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="6.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAACACAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\Note.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="YonduLib.PriorityQueue&lt;T&gt;" Collapsed="true">
+    <Position X="13" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAgAAAAAEAAAAAAAAAAQAAAAABAAABAAAAABAAAA=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\PriorityQueue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YonduLib.SoundEventManager" Collapsed="true">
+    <Position X="4.25" Y="0.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQEAAAAAAAAABAAhAAAAgAAAAAAIQAAQAAACAIAAEA=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\SoundEventManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YonduLib.SpectrumAnalyzer" Collapsed="true">
+    <Position X="6.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEQAAABAACABAAAAEAAAACAAAABCAAAICAAAEABAIAA=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\SpectrumAnalyzer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YonduLib.Recognizers.ClickRecognizer" Collapsed="true">
+    <Position X="0.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\Recognizers\ClickRecognizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YonduLib.Recognizers.SoundRecognizer" Collapsed="true">
+    <Position X="1.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAgABABAQAAAAEAAAAAEAQCAAAACAARAAgA=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\Recognizers\SoundRecognizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YonduLib.Recognizers.WhistleRecognizer" Collapsed="true">
+    <Position X="3" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\Recognizers\WhistleRecognizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="YonduLib.Recognizers.EventName" Collapsed="true">
+    <Position X="6.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQIAAAIAAgA=</HashCode>
+      <FileName>Assets\Scripts\Yondulib\Recognizers\SoundRecognizer.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

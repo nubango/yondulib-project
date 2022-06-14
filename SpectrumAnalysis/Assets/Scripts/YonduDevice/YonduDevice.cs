@@ -47,13 +47,16 @@ namespace YondulibDevice
         // data is stored in. If omitted, the system generally infers it from the value
         // type of the field.
 
-        [InputControl(name = "click", displayName = "Click Button", layout = "Button", bit = 0)]
-        [InputControl(name = "whistle", displayName = "Whistle Button", layout = "Button", bit = 1)]
+        [InputControl(name = "click", displayName = "Click Button", shortDisplayName = "CB", layout = "Button", bit = 0)]
+        //[InputControl(name = "whistle", displayName = "Whistle Button", layout = "Button", bit = 1)]
         public ushort buttons;
+
+        [InputControl(name = "whistle", displayName = "Whistle Stick", shortDisplayName = "WS", layout = "Stick", usage = "Primary2DMotion", processors = "stickDeadzone")]
+        public Vector2 leftStick;
 
         // Create a floating-point axis. If a name is not supplied, it is taken
         // from the field.
-       
+
     }
 
 
@@ -82,20 +85,22 @@ namespace YondulibDevice
 
         [InputControl(parameters = "pressPoint=1.0")]
         public ButtonControl click { get; private set; }
-        public ButtonControl whistle { get; private set; }
+        //public ButtonControl whistle { get; private set; }
+        public StickControl whistle { get; private set; }
 
         // The Input System calls this method after it constructs the Device,
         // but before it adds the device to the system. Do any last-minute setup
         // here.
         protected override void FinishSetup()
         {
-            base.FinishSetup();
 
             // NOTE: The Input System creates the Controls automatically.
             //       This is why don't do `new` here but rather just look
             //       the Controls up.
             click = GetChildControl<ButtonControl>("click");
-            whistle = GetChildControl<ButtonControl>("whistle");
+            whistle = GetChildControl<StickControl>("whistle");
+
+            base.FinishSetup();
         }
 
         static YonduDevice()

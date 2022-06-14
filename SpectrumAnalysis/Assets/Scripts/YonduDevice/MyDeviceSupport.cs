@@ -19,7 +19,7 @@ namespace YondulibDevice
 
     // This example uses a MonoBehaviour with [ExecuteInEditMode]
     // on it to run the setup code. You can do this many other ways.
-    //[ExecuteInEditMode]
+    [ExecuteInEditMode]
     public class MyDeviceSupport : MonoBehaviour
     {
         protected void OnEnable()
