@@ -53,6 +53,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1074124777361689318}
   - component: {fileID: 2778748518988239288}
+  - component: {fileID: 3569247490513230693}
   m_Layer: 0
   m_Name: YondulibManager
   m_TagString: Untagged
@@ -92,3 +93,15 @@ MonoBehaviour:
   canvas: {fileID: 0}
   activeMedidores: 1
   deviceSelector: {fileID: 0}
+--- !u!114 &3569247490513230693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3587216191304740736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6b4a01ca8b29314c9ba8acfb9088c82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

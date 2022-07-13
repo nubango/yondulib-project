@@ -63,7 +63,7 @@ namespace YonduLib
 
         private void InitInformation()
         {
-            //CustomeDevice.MyDevice.Initialize();
+            YonduLibDevice.YonduDeviceManager.yonduDeviceAdded("Yondu Device 1");
 
             if (analyzer == null)
                 Debug.LogError("Atributo YonduSpectrumAnalyzer no asignado en el componente YondulibManager");
@@ -135,6 +135,7 @@ namespace YonduLib
 
         private void OnDestroy()
         {
+            YonduLibDevice.YonduDeviceManager.yonduDeviceRemoved("Yondu Device 1");
             _streamManager.Dispose();
         }
 
@@ -188,6 +189,7 @@ namespace YonduLib
 
         #endregion
 
+
         #region Stream manager
         public YonduDeviceSelector deviceSelector;
 
@@ -206,7 +208,7 @@ namespace YonduLib
         #endregion
 
 
-        #region SINGLETON_REGION
+        #region Singleton
         private static YondulibManager _instance = null;
         public static YondulibManager Instance => _instance;
         #endregion

@@ -10,7 +10,7 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Utilities;
 
-namespace YondulibDevice
+namespace YonduLibDevice
 {
 
 
@@ -93,6 +93,7 @@ namespace YondulibDevice
         // here.
         protected override void FinishSetup()
         {
+            base.FinishSetup();
 
             // NOTE: The Input System creates the Controls automatically.
             //       This is why don't do `new` here but rather just look
@@ -100,7 +101,6 @@ namespace YondulibDevice
             click = GetChildControl<ButtonControl>("click");
             whistle = GetChildControl<StickControl>("whistle");
 
-            base.FinishSetup();
         }
 
         static YonduDevice()
@@ -110,6 +110,13 @@ namespace YondulibDevice
             // or layouts for entire Devices (which are themselves
             // Controls) like in our case.
             InputSystem.RegisterLayout<YonduDevice>();
+
+            // Register a new layout and supply a matcher for it.
+            InputSystem.RegisterLayoutMatcher<YonduDevice>(
+                matcher : new InputDeviceMatcher()
+                    .WithInterface("YonduLib")
+                    .WithProduct("Yondu Device*")
+                    .WithManufacturer("UCM"));
         }
 
 
@@ -146,5 +153,3 @@ namespace YondulibDevice
         }
     }
 }
-
-
