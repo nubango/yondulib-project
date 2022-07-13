@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1074124776564333531}
   - component: {fileID: 1074124776564333530}
   m_Layer: 0
-  m_Name: SpectrumAnalizer
+  m_Name: YonduSpectrumAnalyzer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf5623de3e7cf6b43853aac632c16ecd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _selector: {fileID: 0}
 --- !u!1 &3587216191304740736
 GameObject:
   m_ObjectHideFlags: 0
@@ -55,7 +54,7 @@ GameObject:
   - component: {fileID: 1074124777361689318}
   - component: {fileID: 2778748518988239288}
   m_Layer: 0
-  m_Name: SoundEventManager 1
+  m_Name: YondulibManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90,8 +89,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   analyzer: {fileID: 1074124776564333530}
   medidorPrefab: {fileID: 1102223686866165526, guid: 22fa7a0d38f7d6a4fac273f453922e75, type: 3}
-  selectorPrefab: {fileID: 0}
-  visibleMedidor: 
   canvas: {fileID: 0}
-  activeSelector: 0
+  activeMedidores: 1
   deviceSelector: {fileID: 0}

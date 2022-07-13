@@ -81,7 +81,7 @@ public class CustomComposite : InputBindingComposite<Vector2>
     }
 
     // So, we need two parts for our composite. The part that delivers the stick
-    // value and the part that delivers the axis multiplier. Note that each part
+    // value and the part that delivers the axis multiplier. YonduNote that each part
     // may be bound to multiple controls. The input system handles that for us
     // by giving us an integer identifier for each part that reads a single value
     // from however many controls are bound to the part.

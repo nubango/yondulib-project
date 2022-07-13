@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using YonduLib.Recognizers;
-
+using Unity.Collections;
+using YonduLib.Core.Driver;
 /*
 IMPORTANTE:
 
@@ -21,7 +22,7 @@ Al generar el evento recogemos la mayor cantidad de parámetros y mas arriba dec
 */
 
 /*
- SoundEventManager tambien se encarga de añadir un dispositivo al inputSystem de tipo MyDevice. 
+ YondulibManager tambien se encarga de añadir un dispositivo al inputSystem de tipo MyDevice. 
  Ahora lo añadimos de forma manual desde el editor. Si no lo añadimos da error al intentar crear el evento correspondiente
  */
 
@@ -30,18 +31,13 @@ namespace YonduLib
     /*
      * Clase que se encarga de gestionar los SoundRecognizers y les proporciona el array de frecuencias a cada uno
      * **/
-    public class SoundEventManager : MonoBehaviour
+    public class YondulibManager : MonoBehaviour
     {
-        #region UNITY_IMPLEMENTTION
+        #region Unity implementation
 
-        // ----------- ATTRIBUTES ---------- //
-
-        public SpectrumAnalyzer analyzer;
+        public YonduSpectrumAnalyzer analyzer;
 
 
-        // ------------ METHODS ------------ //
-
-        // TODO: refactorizar para que añadir otro supuesto recognizer distinto sea facil y no haya que añadir mucho codigo
         private void Awake()
         {
             if (_instance != null && _instance != this)
@@ -54,7 +50,7 @@ namespace YonduLib
             _instance = this;
 
             InitInformation();
-            
+
             DontDestroyOnLoad(this);
         }
 
@@ -70,7 +66,13 @@ namespace YonduLib
             //CustomeDevice.MyDevice.Initialize();
 
             if (analyzer == null)
-                Debug.LogError("Atributo SpectrumAnalyzer no asignado en el componente SoundEventManager");
+                Debug.LogError("Atributo YonduSpectrumAnalyzer no asignado en el componente YondulibManager");
+
+            if (_streamManager == null)
+                (_streamManager = new YonduStreamManager()).Init();
+
+
+            // Init recognizers
 
             if (_recognizers == null)
             {
@@ -82,7 +84,9 @@ namespace YonduLib
                 _recognizers.Add(new WhistleRecognizer(EventName.Whistle, analyzer.resolution));
             }
 
-            if (_medidor == null && _medidorInitSize == null)
+            // Init medidores
+
+            if (_medidor == null && _medidorInitSize == null && canvas != null)
             {
                 int numRecognizers = _recognizers.Count;
 
@@ -91,7 +95,7 @@ namespace YonduLib
                 //_selector.gameObject.SetActive(false);
 
 
-                _medidor = new Medidor[numRecognizers];
+                _medidor = new YonduMedidor[numRecognizers];
                 _medidorInitSize = new Vector3[numRecognizers];
 
                 for (int i = 0; i < numRecognizers; i++)
@@ -108,9 +112,10 @@ namespace YonduLib
         private void Update()
         {
             // si no se ha seleccionado ningun dispositivo de entrada no hay sonido que analizar
-            if (!analyzer.DeviceSelected)
+            if (!_streamManager.isStreamExist)
                 return;
 
+            _streamManager.Update();
 
             float[] array = analyzer.logSpectrumSpan.ToArray();
 
@@ -128,21 +133,24 @@ namespace YonduLib
             }
         }
 
+        private void OnDestroy()
+        {
+            _streamManager.Dispose();
+        }
+
         #endregion
 
 
-        #region GRAPHIC_REGION
+        #region Graphic implementation
 
-        // ----------- ATTRIBUTES ---------- //
 
-        public Medidor medidorPrefab;
+        public YonduMedidor medidorPrefab;
         public Canvas canvas;
         public bool activeMedidores;
 
-        private Medidor[] _medidor = null;
+        private YonduMedidor[] _medidor = null;
         private Vector3[] _medidorInitSize;
 
-        // ------------ METHODS ------------ //
 
         /*
          * Metodo que se encarga de actualizar los medidores graficos de los recognizers
@@ -169,54 +177,38 @@ namespace YonduLib
         #endregion
 
 
-        #region RECOGNIZER_REGION
-
-        // ----------- ATTRIBUTES ---------- //
-
-        // Lista con los reconocedores que hay
-        private List<SoundRecognizer> _recognizers = null;
-
-
-        // ------------ METHODS ------------ //
-
+        #region Recognizers implementation
         /*
          * Devuelve la resolucion a la que se está captando el sonido
          * **/
         public int GetResolution() => analyzer.resolution;
 
+        // Lista con los reconocedores que hay
+        private List<SoundRecognizer> _recognizers = null;
 
+        #endregion
 
-        /*
-        TODO:
-        que los medidores se hagan de forma automatica, al añadir un roundRecognizer 
-        automaticamente se genera una barra verde para mostrar el feedback de ese reconocedor
-         */
+        #region Stream manager
+        public YonduDeviceSelector deviceSelector;
 
-        //public void AddRecognizer(SoundRecognizer sr) => _soundRecognizers.Add(sr);
+        private YonduStreamManager _streamManager = null;
 
-        //public bool RemoveRecognizer(SoundRecognizer sr)
-        //{
-        //    if (_soundRecognizers.Count > 0)
-        //        return _soundRecognizers.Remove(sr);
+        public int Channel => _streamManager.Channel;
+        public int ChannelCount => _streamManager.ChannelCount;
+        public int SampleRate => _streamManager.SampleRate;
 
-        //    return false;
-        //}
+        public float Volume { get; set; } = 1;
 
-        //public List<SoundRecognizer> GetRecognizers() => _soundRecognizers;
+        public NativeArray<float> AudioDataSpan => _streamManager.AudioDataSpan;
 
-        //public void SetReconizerDelegate()
-        //{
-        //}
+        public void OpenStreamOnDevice(int device) { _streamManager.OpenStreamOnDevice(device); }
 
         #endregion
 
 
         #region SINGLETON_REGION
-        /*
-         * sigleton pattern in unity: https://gamedev.stackexchange.com/questions/116009/in-unity-how-do-i-correctly-implement-the-singleton-pattern
-         * **/
-        private static SoundEventManager _instance = null;
-        public static SoundEventManager Instance => _instance;
+        private static YondulibManager _instance = null;
+        public static YondulibManager Instance => _instance;
         #endregion
 
     }

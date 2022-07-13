@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using YonduLib.Utils;
 
 namespace YonduLib.Recognizers
 {
@@ -107,23 +107,23 @@ namespace YonduLib.Recognizers
             int ancho = (int)(factorScaleWindow * array.Length);
 
             int i = 0;
-            maxFrequency = new Note(array[0], i);
-            Note minFrequency = new Note(array[0], i);
+            maxFrequency = new YonduNote(array[0], i);
+            YonduNote minFrequency = new YonduNote(array[0], i);
 
             // cola con todas las frecuencias ordenadas de mayor a menor
-            PriorityQueue<Note> pqAllFeq = new PriorityQueue<Note>(true);
+            PriorityQueue<YonduNote> pqAllFeq = new PriorityQueue<YonduNote>(true);
 
             // cola auxiliar de maximos
-            PriorityQueue<Note> pqMaxs = new PriorityQueue<Note>(true);
+            PriorityQueue<YonduNote> pqMaxs = new PriorityQueue<YonduNote>(true);
 
             // cola auxiliar de minimos
-            PriorityQueue<Note> pqMins = new PriorityQueue<Note>();
+            PriorityQueue<YonduNote> pqMins = new PriorityQueue<YonduNote>();
 
             // caso base
             // buscamos las frecuencias maxima y minima de la ventana para saber cual es la diferencia
             do
             {
-                pqAllFeq.Enqueue(new Note(array[i], i));
+                pqAllFeq.Enqueue(new YonduNote(array[i], i));
                 if (array[i] > maxFrequency.intensity)
                 {
                     maxFrequency.intensity = array[i];
@@ -133,7 +133,7 @@ namespace YonduLib.Recognizers
                     minFrequency.intensity = array[i];
             } while (i++ < ancho);
 
-            Note maxDiff = new Note(maxFrequency.intensity - minFrequency.intensity, maxFrequency.frequency);
+            YonduNote maxDiff = new YonduNote(maxFrequency.intensity - minFrequency.intensity, maxFrequency.frequency);
 
             // metemos el maximo y el minimo en las colas de prioridad
             pqMaxs.Enqueue(maxFrequency);
@@ -144,7 +144,7 @@ namespace YonduLib.Recognizers
             //a [b c d] e f
             while (i < array.Length)
             {
-                pqAllFeq.Enqueue(new Note(array[i], i));
+                pqAllFeq.Enqueue(new YonduNote(array[i], i));
 
                 // Actualizamos la frecuencia maxima
                 if (array[i] > maxFrequency.intensity)
@@ -167,8 +167,8 @@ namespace YonduLib.Recognizers
 
 
                 // introducimos el nuevo elemento a la cola
-                pqMaxs.Enqueue(new Note(array[i], i));
-                pqMins.Enqueue(new Note(array[i], i));
+                pqMaxs.Enqueue(new YonduNote(array[i], i));
+                pqMins.Enqueue(new YonduNote(array[i], i));
 
                 // comprobamos si la dif de esta ventana supera a la dif maxima hasta ahora
                 float aux = pqMaxs.Peek().intensity - pqMins.Peek().intensity;
@@ -216,7 +216,7 @@ namespace YonduLib.Recognizers
             // Es probable que cuando se detecta una subida, haya mas picos cerca por lo que dicha diferencia no es significativa. Nos interesa comparar los maximos que
             // esten distanciados. El valor limite utilizado es el ancho de la ventana deslizante (usada para detectar dichos maximos). 
 
-            Note top = pqAllFeq.Dequeue();
+            YonduNote top = pqAllFeq.Dequeue();
             float dif = 0;
             // Solo usamos las frecuencias con valor superior a 0
             while (pqAllFeq.Count > 0 && pqAllFeq.Peek().intensity > 0)
@@ -249,13 +249,13 @@ namespace YonduLib.Recognizers
         }
 
         // elimina el valor v de la cola c
-        private PriorityQueue<Note> DeleteValorFromQueue(float v, PriorityQueue<Note> c)
+        private PriorityQueue<YonduNote> DeleteValorFromQueue(float v, PriorityQueue<YonduNote> c)
         {
             bool find = false;
-            PriorityQueue<Note> aux = new PriorityQueue<Note>();
+            PriorityQueue<YonduNote> aux = new PriorityQueue<YonduNote>();
             while (!find && c.Count > 0)
             {
-                Note p = c.Peek();
+                YonduNote p = c.Peek();
                 if (p.intensity == v)
                 {
                     c.Dequeue();

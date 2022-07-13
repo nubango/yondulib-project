@@ -9,14 +9,8 @@ using YonduLib.Core;
 // DFT spectrum analyzer graph
 namespace YonduLib
 {
-    public sealed class SpectrumAnalyzer : MonoBehaviour
+    public sealed class YonduSpectrumAnalyzer : MonoBehaviour
     {
-        #region Editable attributes
-
-        [SerializeField] DeviceSelector _selector = null;
-
-        #endregion
-
         #region Public properties
 
         public float CurrentGain { get; set; } = -13;
@@ -35,8 +29,6 @@ namespace YonduLib
         // X-axis log scaled spectrum data as ReadOnlySpan
         public System.ReadOnlySpan<float> logSpectrumSpan
           => logSpectrumArray.GetReadOnlySpan();
-
-        public bool DeviceSelected => _selector.Stream != null;
 
         #endregion
 
@@ -74,7 +66,7 @@ namespace YonduLib
 
 
             // FFT
-            _fft?.Push(_selector.AudioDataSpan);
+            _fft?.Push(YondulibManager.Instance.AudioDataSpan);
             _fft?.Analyze(-CurrentGain - DynamicRange, -CurrentGain);
         }
 

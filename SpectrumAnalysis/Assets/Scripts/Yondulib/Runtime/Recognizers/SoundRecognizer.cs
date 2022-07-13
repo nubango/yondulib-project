@@ -37,7 +37,7 @@ namespace YonduLib.Recognizers
         protected EventName name;
 
         // maxima frecuencia del espectro
-        protected Note maxFrequency = new Note(-1, -1);
+        protected YonduNote maxFrequency = new YonduNote(-1, -1);
 
         // intervalo en el cual se reconoce la misma frecuencia (inicializado en el Awake)
         protected float _offsetFrequency = 10.0f;
@@ -186,8 +186,8 @@ namespace YonduLib.Recognizers
                 //((ButtonControl)ic).WriteValueIntoEvent(freq, eventPtr);
 
 
-                //if (name == EventName.Click)
-                //    ((ButtonControl)ic).WriteValueIntoEvent(freq, eventPtr);
+                if (name == EventName.Click)
+                    ((ButtonControl)ic).WriteValueIntoEvent(freq, eventPtr);
                 //else if (name == EventName.Whistle)
                 //{
                 //    Vector2 value = new Vector2(1f, freq);
