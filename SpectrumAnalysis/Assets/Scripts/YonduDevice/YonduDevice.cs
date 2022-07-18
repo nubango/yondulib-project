@@ -47,7 +47,7 @@ namespace YonduLibDevice
         // data is stored in. If omitted, the system generally infers it from the value
         // type of the field.
 
-        [InputControl(name = "click", displayName = "Click Button", shortDisplayName = "CB", layout = "Button", bit = 0)]
+        [InputControl(name = "click", displayName = "Click Button", shortDisplayName = "CB", layout = "Button", format = "BIT", bit = 0)]
         //[InputControl(name = "whistle", displayName = "Whistle Button", layout = "Button", bit = 1)]
         public ushort buttons;
 

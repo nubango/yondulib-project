@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/Samples/Input System/1.0.2/Simple Demo/SimpleControls.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/Scenes/Simple Demo/SimpleControls.inputactions'
 
 using System;
 using System.Collections;
@@ -63,17 +63,6 @@ public class @SimpleControls : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""fire"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e1b8c4dd-7b3a-4db6-a93a-0889b59b1afc"",
-                    ""path"": ""<Gamepad>/leftStick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -146,7 +135,7 @@ public class @SimpleControls : IInputActionCollection, IDisposable
                 {
                     ""name"": ""up"",
                     ""id"": ""b8d6fe91-4280-4024-a9da-efd9932f1752"",
-                    ""path"": ""<YonduDevice>/whistle/x"",
+                    ""path"": ""<YonduDevice>/whistle/up"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -157,7 +146,7 @@ public class @SimpleControls : IInputActionCollection, IDisposable
                 {
                     ""name"": ""down"",
                     ""id"": ""551f36e5-2f88-4d6b-a541-e3c5dd131dc3"",
-                    ""path"": """",
+                    ""path"": ""<YonduDevice>/whistle/down"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -168,7 +157,7 @@ public class @SimpleControls : IInputActionCollection, IDisposable
                 {
                     ""name"": ""left"",
                     ""id"": ""b2f4eece-43c9-4e53-861b-0f07c9190562"",
-                    ""path"": ""<YonduDevice>/whistle/y"",
+                    ""path"": ""<YonduDevice>/whistle/left"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -179,7 +168,7 @@ public class @SimpleControls : IInputActionCollection, IDisposable
                 {
                     ""name"": ""right"",
                     ""id"": ""4d5e5c02-8d41-4023-ba8f-90596f6c5314"",
-                    ""path"": ""<YonduDevice>/whistle/y"",
+                    ""path"": ""<YonduDevice>/whistle/right"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

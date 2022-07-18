@@ -37,7 +37,7 @@ namespace YonduLib.Recognizers
         protected EventName name;
 
         // maxima frecuencia del espectro
-        protected YonduNote maxFrequency = new YonduNote(-1, -1);
+        protected YonduNote maxFrequency = new YonduNote(0, 0);
 
         // intervalo en el cual se reconoce la misma frecuencia (inicializado en el Awake)
         protected float _offsetFrequency = 10.0f;
@@ -129,7 +129,7 @@ namespace YonduLib.Recognizers
 
                 // generamos el evento de release 
                 //name = EventName.Silence;
-                EnqueueEvent(0.0f);
+                EnqueueEvent(-1.0f, array.Length);
 
             }
             else if (!_soundRecognize)
@@ -151,60 +151,83 @@ namespace YonduLib.Recognizers
                 _eventRecording = true;
 
                 _eventFrequency = freq;
+
+                //if ((freq < array.Length * 0.6f) && (freq > array.Length * 0.2f))
+                //{
+                //    freq = freq - (array.Length * 0.2f);
+                //    //freq = aux / array.Length * 0.4f;
+                //}
+                //else
+                //    freq = 1;
+
                 Debug.Log(name.ToString() + " " + freq);
-
-                if ((freq < array.Length * 0.6f) && (freq > array.Length * 0.2f))
-                {
-                    float aux = freq - 0.2f;
-                    freq = aux / 0.4f;
-                }
-
-                EnqueueEvent(freq == -1 ? 1.0f : freq);
-                lastNameEvent = name;
+                EnqueueEvent(freq, array.Length);
             }
 
             return _recognitionLevel;
         }
 
-        EventName lastNameEvent = EventName.Null;
-
-        private void EnqueueEvent(float freq)
+        private void EnqueueEvent(float dataEvent, int length)
         {
-            // TODO: tal vez habria que tratar el valor de freq para que se adecue a el formato de cada evento
-            InputEventPtr eventPtr;
-            using (StateEvent.From(YonduLibDevice.YonduDevice.current, out eventPtr))
+
+            if (dataEvent == -1)
             {
-                string buttonName;
-                buttonName = name.ToString().ToLower();
-                //if (name != EventName.Silence)
-                //    buttonName = name.ToString().ToLower();
-                //else
-                //    buttonName = lastNameEvent.ToString().ToLower();
-
-                InputControl ic = YonduLibDevice.YonduDevice.current[buttonName];
-
-                //((ButtonControl)ic).WriteValueIntoEvent(freq, eventPtr);
-
-
-                if (name == EventName.Click)
-                    ((ButtonControl)ic).WriteValueIntoEvent(freq, eventPtr);
-                //else if (name == EventName.Whistle)
-                //{
-                //    Vector2 value = new Vector2(1f, freq);
-                //    ((StickControl)ic).WriteValueIntoEvent(value, eventPtr);
-                //}
-                //else if(name == EventName.Silence)
-                //{
-                //    if (name == EventName.Click)
-                //        ((ButtonControl)ic).WriteValueIntoEvent(freq, eventPtr);
-                //    else if (name == EventName.Whistle)
-                //    {
-                //        Vector2 value = new Vector2(freq != 0f? 1f : 0f, freq);
-                //        ((StickControl)ic).WriteValueIntoEvent(value, eventPtr);
-                //    }
-                //}
-                InputSystem.QueueEvent(eventPtr);
+                InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, new Vector2(0f, 0f));
+                InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.click, false);
             }
+            else if (name == EventName.Click)
+            {
+                InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.click, true);
+            }
+            else if (name == EventName.Whistle)
+            {
+                float minFreq = 90f, maxFreq = 130f, aux;
+
+                aux = dataEvent - minFreq;
+                maxFreq -= minFreq;
+
+                float x, y = 1f;
+
+                x = (aux * 2 / maxFreq) - 1;
+
+                x = x > 1 ? 1 : x < -1 ? -1 : x;
+
+                InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, new Vector2(x, y));
+            }
+
+
+
+
+            //if (name == EventName.Whistle && dataEvent <= 1)
+            //{
+            //    InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, new Vector2(0f, 0f));
+            //    return;
+            //}
+            //else if (name == EventName.Click && dataEvent <= 0)
+            //{
+            //    InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.click, false);
+            //}
+
+
+            //if (name == EventName.Whistle)
+            //{
+            //    float x, y = 1, z = 0.2f * length;
+
+            //    if (dataEvent > z)
+            //    {
+            //        x = (dataEvent - z) / z;
+            //    }
+            //    else
+            //    {
+            //        x = (dataEvent / z) - 1;
+            //    }
+
+            //    InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, new Vector2(x, y));
+
+            //    Debug.Log(x + " - " + y);
+            //}
+            //else if (name == EventName.Click)
+            //    InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.click, true);
         }
     }
     #endregion
