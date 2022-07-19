@@ -28,6 +28,14 @@
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "550d4ca0-9535-4aea-bb14-0e871a1ad4f0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -176,23 +184,34 @@
                 },
                 {
                     "name": "",
-                    "id": "578caa03-6827-4797-adfc-a59770c437fe",
-                    "path": "<Pointer>/delta",
-                    "interactions": "",
-                    "processors": "ScaleVector2(x=2,y=2)",
-                    "groups": "",
-                    "action": "look",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "fdec379e-594b-4786-8a31-846009bfdc7b",
                     "path": "<Keyboard>/p",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "50ba43f8-c419-4a59-a20a-c11d76912f18",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Yondu Device Scheme",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "578caa03-6827-4797-adfc-a59770c437fe",
+                    "path": "<Pointer>/delta",
+                    "interactions": "",
+                    "processors": "ScaleVector2(x=2,y=2)",
+                    "groups": "Yondu Device Scheme",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

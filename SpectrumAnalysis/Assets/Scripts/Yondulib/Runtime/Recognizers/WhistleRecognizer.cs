@@ -93,7 +93,7 @@ namespace YonduLib.Recognizers
             // si hay sonido (countFrecActivas > 0) -> countFrecActivas = 1 => factor = 0,333
             //                                      -> countFrecActivas = array.Length => factor = 0,000001
             // ((-x/(length/6)) + 1) * 0.33 (length/6 => ¿1 de cada 6 son picos?-> 0% afinidad)
-            float factor1 = countFrecActivas == 0 ? 0 : (1 - ((float)countFrecActivas / (array.Length / 6))) * 0.33f;
+            float factor1 = countFrecActivas == 0 ? 0 : (1 - ((float)countFrecActivas / (array.Length / 6))) * 0.25f;
 
             //Debug.Log("Factor 1: " + factor1);
             #endregion
