@@ -186,6 +186,17 @@ public class @SimpleControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""38595deb-6def-44de-bc2e-e939495264d8"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""c106d6e6-2780-47ff-b318-396171bd54cc"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
@@ -238,6 +249,17 @@ public class @SimpleControls : IInputActionCollection, IDisposable
             ""devices"": [
                 {
                     ""devicePath"": ""<YonduDevice>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""PS4"",
+            ""bindingGroup"": ""PS4"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<DualShockGamepad>"",
                     ""isOptional"": false,
                     ""isOR"": false
                 }
@@ -360,6 +382,15 @@ public class @SimpleControls : IInputActionCollection, IDisposable
         {
             if (m_YonduDeviceSchemeSchemeIndex == -1) m_YonduDeviceSchemeSchemeIndex = asset.FindControlSchemeIndex("Yondu Device Scheme");
             return asset.controlSchemes[m_YonduDeviceSchemeSchemeIndex];
+        }
+    }
+    private int m_PS4SchemeIndex = -1;
+    public InputControlScheme PS4Scheme
+    {
+        get
+        {
+            if (m_PS4SchemeIndex == -1) m_PS4SchemeIndex = asset.FindControlSchemeIndex("PS4");
+            return asset.controlSchemes[m_PS4SchemeIndex];
         }
     }
     public interface IGameplayActions

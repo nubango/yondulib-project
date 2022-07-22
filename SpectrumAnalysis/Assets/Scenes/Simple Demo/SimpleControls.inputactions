@@ -173,6 +173,17 @@
                 },
                 {
                     "name": "",
+                    "id": "38595deb-6def-44de-bc2e-e939495264d8",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c106d6e6-2780-47ff-b318-396171bd54cc",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
@@ -225,6 +236,17 @@
             "devices": [
                 {
                     "devicePath": "<YonduDevice>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "PS4",
+            "bindingGroup": "PS4",
+            "devices": [
+                {
+                    "devicePath": "<DualShockGamepad>",
                     "isOptional": false,
                     "isOR": false
                 }

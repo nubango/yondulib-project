@@ -30,12 +30,13 @@ namespace YonduLibDevice
     // If it's important for the memory format to match 1:1 at the binary level
     // to an external representation, it's generally advisable to use
     // LayoutLind.Explicit.
+    [StructLayout(LayoutKind.Explicit, Size = 16)]
     public struct YonduDeviceState : IInputStateTypeInfo
     {
         // You must tag every state with a FourCC code for type
         // checking. The characters can be anything. Choose something that allows
         // you to easily recognize memory that belongs to your own Device.
-        public FourCC format => new FourCC('M', 'Y', 'D', 'V');
+        public FourCC format => new FourCC('Y', 'D', 'D', 'V');
 
         // InputControlAttributes on fields tell the Input System to create Controls
         // for the public fields found in the struct.
@@ -48,14 +49,31 @@ namespace YonduLibDevice
         // type of the field.
 
         [InputControl(name = "click", displayName = "Click Button", shortDisplayName = "CB", layout = "Button", format = "BIT", bit = 0)]
-        //[InputControl(name = "whistle", displayName = "Whistle Button", layout = "Button", bit = 1)]
-        public ushort buttons;
+        [FieldOffset(0)]
+        public byte click;
 
         [InputControl(name = "whistle", displayName = "Whistle Stick", shortDisplayName = "WS", layout = "Stick", usage = "Primary2DMotion", processors = "stickDeadzone")]
-        public Vector2 leftStick;
+        //[InputControl(name = "whistle/x", offset = 0, format = "BYTE")] //, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        //[InputControl(name = "whistle/left", offset = 0, format = "BYTE")] //, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
+        //[InputControl(name = "whistle/right", offset = 0, format = "BYTE")] //, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1")]
+        //[InputControl(name = "whistle/y", offset = 1, format = "BYTE")] //, parameters = "invert,normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        //[InputControl(name = "whistle/up", offset = 1, format = "BYTE")] //, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
+        //[InputControl(name = "whistle/down", offset = 1, format = "BYTE")] //, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1,invert=false")]
+        [FieldOffset(1)]
+        public Vector2 whistle;
 
-        // Create a floating-point axis. If a name is not supplied, it is taken
-        // from the field.
+
+        //[InputControl(name = "whistle2", displayName = "Whistle Stick2", layout = "Stick", format = "VC2B")]
+        //[InputControl(name = "whistle2/x", offset = 0, format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        //[InputControl(name = "whistle2/left", offset = 0, format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
+        //[InputControl(name = "whistle2/right", offset = 0, format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1")]
+        //[InputControl(name = "whistle2/y", offset = 1, format = "BYTE", parameters = "invert,normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        //[InputControl(name = "whistle2/up", offset = 1, format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
+        //[InputControl(name = "whistle2/down", offset = 1, format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1,invert=false")]
+        //[FieldOffset(2)] public byte leftStickX;
+        //[FieldOffset(3)] public byte leftStickY;
+
+
 
     }
 
@@ -85,7 +103,6 @@ namespace YonduLibDevice
 
         [InputControl(parameters = "pressPoint=1.0")]
         public ButtonControl click { get; private set; }
-        //public ButtonControl whistle { get; private set; }
         public StickControl whistle { get; private set; }
 
         // The Input System calls this method after it constructs the Device,

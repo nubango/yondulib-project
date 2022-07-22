@@ -17,7 +17,7 @@ namespace YonduLib
         public float DynamicRange { get; set; } = 75;
 
 
-        public readonly int resolution = 256;
+        public readonly int resolution = 512;
         //DftBuffer _dft;
         //public ReadOnlySpan<float> logSpectrumSpan => _dft.Spectrum;
 

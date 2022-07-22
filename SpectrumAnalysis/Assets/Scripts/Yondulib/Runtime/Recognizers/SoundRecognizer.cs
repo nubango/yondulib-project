@@ -193,7 +193,9 @@ namespace YonduLib.Recognizers
 
                 // Los rangos de frecuencia entre los que se mueven los silbidos es de 90 a 130.
                 // Restamos el minimo (90) para preparar las variables para la normalizacion
-                float minFreq = 90f, maxFreq = 130f, curFreq;
+                //float minFreq = 90f, maxFreq = 130f, curFreq;
+                //float minFreq = 200f, maxFreq = 275f, curFreq;
+                float minFreq = 193f, maxFreq = 285f, curFreq;
                 curFreq = dataEvent - minFreq;
                 maxFreq -= minFreq;
 
@@ -202,15 +204,14 @@ namespace YonduLib.Recognizers
 
                 // CALCULAMOS LA X
                 // normalizamos los valores entre -1 y 1;
-                float x;
-                x = (curFreq * 2f / maxFreq) - 1f;
+                float curFreqNorm;
+                curFreqNorm = (curFreq * 2f / maxFreq) - 1f;
                 //x = (curFreq * 3.2f / maxFreq) - 1.6f;
                 //x = (curFreq * 2.314f / maxFreq) - 1.157f;
 
-                // CALCULAMOS LA Y
-                float y;
 
                 // 1.- funcion de media circunferencia -> f(x) = sqtr(1 - x^2)
+                //float x = curFreqNorm, y;
                 //y = Mathf.Sqrt(1 - ((x * x) > 1 ? 1 : x * x));
 
                 // 2.- f(x) = (sqrt(1 - (x^4)))^0.5
@@ -223,24 +224,56 @@ namespace YonduLib.Recognizers
 
 
                 // 4.- f(x) = 1.6 - x -> y>1?1:y
-                //y = 1.6f - x;
+                //y = 1f - Mathf.Abs(x);
 
 
                 // 5.- f(x) = f(x) = sqtr(0.5 - x^2)
-                if (x > 0.71f)
+                //if (x > 0.71f)
+                //{
+                //    x = 1;
+                //    y = 0;
+                //}
+                //else if (x < -0.71f)
+                //{
+                //    x = -1;
+                //    y = 0;
+                //}
+                //else if (Mathf.Abs(x) < 0.1f)
+                //{
+                //    x = 0;
+                //    y = 1;
+                //}
+                //else
+                //{
+                //    y = Mathf.Sqrt(0.5f - (x * x));
+                //}
+                //if (y > 0.7f) y = 1;
+
+
+
+                // 6.- Media elipse pero al llegar al valor 0.812 la ecuacion de invierte
+                float x = curFreqNorm, y;
+                if (Mathf.Abs(curFreqNorm) > 0.812f)
                 {
-                    x = 1;
-                    y = 0;
-                }
-                else if (x < -0.71f)
-                {
-                    x = -1;
-                    y = 0;
+                    //sqrt {(1.3*1.3) * [(x*x)/(1.3*1.3)]}
+                    float t1 = 1.3f * 1.3f;
+                    float t2 = x * x;
+                    t2 = t2 > 1.05f ? 1.05f : t2;
+                    float t3 = 1.05f - t2;
+                    y = Mathf.Sqrt(t1 * t3);
                 }
                 else
                 {
-                    y = Mathf.Sqrt(0.5f - (x * x));
+                    //sqrt {1.05 - [(x*x)/(1.3*1.3)]}
+                    float t1 = 1.05f;
+                    float t2 = x * x;
+                    float t3 = t2 / (1.3f * 1.3f);
+                    t3 = t3 > t1 ? t1 : t3;
+                    y = Mathf.Sqrt(t1 - t3);
                 }
+
+                if (x > 1) x = 1;
+                else if (x < -1) x = -1;
 
                 // 3
                 //y = y > 1 ? 1 : y < 0.2f ? 0 : y;
