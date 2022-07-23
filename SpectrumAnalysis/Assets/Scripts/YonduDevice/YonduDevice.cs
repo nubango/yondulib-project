@@ -50,7 +50,7 @@ namespace YonduLibDevice
 
         [InputControl(name = "click", displayName = "Click Button", shortDisplayName = "CB", layout = "Button", format = "BIT", bit = 0)]
         [FieldOffset(0)]
-        public byte click;
+        public bool click;
 
         [InputControl(name = "whistle", displayName = "Whistle Stick", shortDisplayName = "WS", layout = "Stick", usage = "Primary2DMotion", processors = "stickDeadzone")]
         //[InputControl(name = "whistle/x", offset = 0, format = "BYTE")] //, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]

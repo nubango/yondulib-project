@@ -191,11 +191,25 @@ namespace YonduLib.Recognizers
             else if (name == EventName.Whistle)
             {
 
-                // Los rangos de frecuencia entre los que se mueven los silbidos es de 90 a 130.
+                // Los rangos de frecuencia entre los que se mueven los silbidos es de 90 a 130. (depende de la resolucion de la muestra)
                 // Restamos el minimo (90) para preparar las variables para la normalizacion
-                //float minFreq = 90f, maxFreq = 130f, curFreq;
-                //float minFreq = 200f, maxFreq = 275f, curFreq;
-                float minFreq = 193f, maxFreq = 285f, curFreq;
+                float minFreq = 210f, maxFreq = 270f, curFreq;
+
+                if (YondulibManager.Instance.analyzer.resolution == 256)
+                {
+                    minFreq = 90f; maxFreq = 130f; //256
+                }
+                else if (YondulibManager.Instance.analyzer.resolution == 512)
+                {
+                    //minFreq = 200f; maxFreq = 275f;
+                    minFreq = 215f; maxFreq = 270f; //512
+                }
+                else if (YondulibManager.Instance.analyzer.resolution == 1024)
+                {
+                    minFreq = 500f; maxFreq = 600f; //1024
+                }
+
+
                 curFreq = dataEvent - minFreq;
                 maxFreq -= minFreq;
 
@@ -255,11 +269,11 @@ namespace YonduLib.Recognizers
                 float x = curFreqNorm, y;
                 if (Mathf.Abs(curFreqNorm) > 0.812f)
                 {
-                    //sqrt {(1.3*1.3) * [(x*x)/(1.3*1.3)]}
+                    //sqrt {(1.3*1.3) * [1.05 - (x*x)]}
                     float t1 = 1.3f * 1.3f;
                     float t2 = x * x;
-                    t2 = t2 > 1.05f ? 1.05f : t2;
-                    float t3 = 1.05f - t2;
+                    t2 = t2 > 1.0f ? 1.0f : t2;
+                    float t3 = 1.0f - t2;
                     y = Mathf.Sqrt(t1 * t3);
                 }
                 else
@@ -281,6 +295,7 @@ namespace YonduLib.Recognizers
                 //else if (x < -1) x = -1;
 
                 InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, new Vector2(x, y));
+                //InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, new Vector2(YondulibManager.Instance.xf, YondulibManager.Instance.yf));
 
                 Debug.Log(x + " - " + y);
             }

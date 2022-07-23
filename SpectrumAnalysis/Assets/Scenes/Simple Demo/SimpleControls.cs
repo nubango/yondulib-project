@@ -67,7 +67,7 @@ public class @SimpleControls : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""53582a77-8aa4-421f-86a3-b962dcf9cb5f"",
                     ""path"": ""<YonduDevice>/click"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": ""Press(behavior=1)"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""fire"",
@@ -146,7 +146,7 @@ public class @SimpleControls : IInputActionCollection, IDisposable
                     ""path"": ""<YonduDevice>/whistle/up"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Yondu Device Scheme"",
                     ""action"": ""move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true

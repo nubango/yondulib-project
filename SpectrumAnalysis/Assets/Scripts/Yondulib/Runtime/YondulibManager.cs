@@ -35,6 +35,11 @@ namespace YonduLib
     {
         #region Unity implementation
 
+        //DEBUG
+        public float xf;
+        public float yf;
+        //DEBUG
+
         public YonduSpectrumAnalyzer analyzer;
 
 
