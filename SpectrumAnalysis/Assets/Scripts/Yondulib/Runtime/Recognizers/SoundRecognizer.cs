@@ -172,7 +172,8 @@ namespace YonduLib.Recognizers
 
             if (dataEvent == -1)
             {
-                InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, new Vector2(0f, 0f));
+                //InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, new Vector2(0f, 0f));
+                InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, (short)0);
                 InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.click, false);
             }
             else if (name == EventName.Click)
@@ -294,7 +295,16 @@ namespace YonduLib.Recognizers
                 //if (x > 1) x = 1;
                 //else if (x < -1) x = -1;
 
-                InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, new Vector2(x, y));
+                byte xi = (byte)(255 * (x + 1) / 2);
+                byte yi = (byte)(y * 255);
+
+                xi -= 127;
+                yi -= 127;
+
+
+                InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle.x, xi);
+                InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle.y, yi);
+                //InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, (short)x);
                 //InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, new Vector2(YondulibManager.Instance.xf, YondulibManager.Instance.yf));
 
                 Debug.Log(x + " - " + y);

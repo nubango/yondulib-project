@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &169137678 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2778748518988239288, guid: 89d2a5c357bf4d94a9dab9029f5675ca, type: 3}
+  m_PrefabInstance: {fileID: 1725313009}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a19f07ce02a31b4d8e6d5967de20685, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &451334651
 GameObject:
   m_ObjectHideFlags: 0
@@ -491,6 +502,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1105590577}
     m_Modifications:
+    - target: {fileID: 1663422305370674009, guid: 035fab46789542042a3b609a431e16dd, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1909928877}
+    - target: {fileID: 1663422305370674009, guid: 035fab46789542042a3b609a431e16dd, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_CurrentGain
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663422305370674009, guid: 035fab46789542042a3b609a431e16dd, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: YonduLib.YonduSpectrumAnalyzer, yondulib
+      objectReference: {fileID: 0}
     - target: {fileID: 1663422305827384578, guid: 035fab46789542042a3b609a431e16dd, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -510,6 +533,18 @@ PrefabInstance:
     - target: {fileID: 1663422306148232294, guid: 035fab46789542042a3b609a431e16dd, type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663422306516376124, guid: 035fab46789542042a3b609a431e16dd, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1909928877}
+    - target: {fileID: 1663422306516376124, guid: 035fab46789542042a3b609a431e16dd, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_DynamicRange
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663422306516376124, guid: 035fab46789542042a3b609a431e16dd, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: YonduLib.YonduSpectrumAnalyzer, yondulib
       objectReference: {fileID: 0}
     - target: {fileID: 1663422306686413566, guid: 035fab46789542042a3b609a431e16dd, type: 3}
       propertyPath: m_AnchorMax.x
@@ -538,6 +573,18 @@ PrefabInstance:
     - target: {fileID: 7457420296364445924, guid: 035fab46789542042a3b609a431e16dd, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7457420296591119478, guid: 035fab46789542042a3b609a431e16dd, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 169137678}
+    - target: {fileID: 7457420296591119478, guid: 035fab46789542042a3b609a431e16dd, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_Volume
+      objectReference: {fileID: 0}
+    - target: {fileID: 7457420296591119478, guid: 035fab46789542042a3b609a431e16dd, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: YonduLib.YondulibManager, yondulib
       objectReference: {fileID: 0}
     - target: {fileID: 7457420297516358472, guid: 035fab46789542042a3b609a431e16dd, type: 3}
       propertyPath: m_Name
@@ -711,3 +758,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89d2a5c357bf4d94a9dab9029f5675ca, type: 3}
+--- !u!114 &1909928877 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1074124776564333530, guid: 89d2a5c357bf4d94a9dab9029f5675ca, type: 3}
+  m_PrefabInstance: {fileID: 1725313009}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf5623de3e7cf6b43853aac632c16ecd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

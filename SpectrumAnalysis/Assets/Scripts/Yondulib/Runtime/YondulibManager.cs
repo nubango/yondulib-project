@@ -133,7 +133,7 @@ namespace YonduLib
                 if (_medidor != null && _medidor[i] != null)
                 {
                     _medidor[i].gameObject.SetActive(activeMedidores);
-                    if (activeMedidores) updateMedidor(valueRecognize, i);
+                    if (activeMedidores) UpdateMedidor(valueRecognize, i);
                 }
             }
         }
@@ -161,7 +161,7 @@ namespace YonduLib
         /*
          * Metodo que se encarga de actualizar los medidores graficos de los recognizers
          * **/
-        private void updateMedidor(float valueRecognize, int it)
+        private void UpdateMedidor(float valueRecognize, int it)
         {
             if (_medidor == null || it >= _medidor.Length || _medidor[it] == null)
                 return;
