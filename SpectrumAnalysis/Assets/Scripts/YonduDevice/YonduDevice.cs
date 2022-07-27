@@ -53,16 +53,20 @@ namespace YonduLibDevice
         public bool click;
 
 
-        [InputControl(name = "whistle", layout = "Stick", format = "VC2B")]
-        [InputControl(name = "whistle/x", offset = 0, format = "BYTE")]//, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        [InputControl(name = "whistle/left", offset = 0, format = "BYTE")]//, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5")]
-        [InputControl(name = "whistle/right", offset = 0, format = "BYTE")]//, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1")]
-        [InputControl(name = "whistle/y", offset = 1, format = "BYTE")]//, parameters = "invert,normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        [InputControl(name = "whistle/up", offset = 1, format = "BYTE")]//, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5")]
-        [InputControl(name = "whistle/down", offset = 1, format = "BYTE")]//, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1,invert=false")]
-        [FieldOffset(1)] public float whistleX;
-        [FieldOffset(2)] public float whistleY;
+        //[InputControl(name = "whistle", layout = "Stick", format = "VC2B")]
+        //[InputControl(name = "whistle/x", offset = 0, format = "BYTE")]//, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        //[InputControl(name = "whistle/left", offset = 0, format = "BYTE")]//, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5")]
+        //[InputControl(name = "whistle/right", offset = 0, format = "BYTE")]//, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1")]
+        //[InputControl(name = "whistle/y", offset = 1, format = "BYTE")]//, parameters = "invert,normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        //[InputControl(name = "whistle/up", offset = 1, format = "BYTE")]//, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5")]
+        //[InputControl(name = "whistle/down", offset = 1, format = "BYTE")]//, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1,invert=false")]
+        //[FieldOffset(1)] public float whistleX;
+        //[FieldOffset(2)] public float whistleY;
 
+
+        [InputControl(name = "whistle", displayName = "Whistle Stick", shortDisplayName = "WS", layout = "Stick", usage = "Primary2DMotion")]
+        [FieldOffset(1)]
+        public Vector2 whistle;
 
         //[InputControl(name = "whistle/x", offset = 0, format = "BYTE")] //, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         //[InputControl(name = "whistle/left", offset = 0, format = "BYTE")] //, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]

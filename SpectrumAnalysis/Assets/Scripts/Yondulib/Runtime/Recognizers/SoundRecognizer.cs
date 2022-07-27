@@ -172,8 +172,11 @@ namespace YonduLib.Recognizers
 
             if (dataEvent == -1)
             {
-                //InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, new Vector2(0f, 0f));
-                InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, (short)0);
+                //InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, (short)0);
+                //InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle.x, (byte)0);
+                //InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle.y, (byte)0);
+                InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, new Vector2(0f, 0f));
+
                 InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.click, false);
             }
             else if (name == EventName.Click)
@@ -287,25 +290,35 @@ namespace YonduLib.Recognizers
                     y = Mathf.Sqrt(t1 - t3);
                 }
 
-                if (x > 1) x = 1;
-                else if (x < -1) x = -1;
+                if (x > 1.0f) x = 1;
+                else if (x < -1.0f) x = -1;
+
+                if (y > 1.0f) y = 1;
+                else if (y < 0.0f) y = 0;
+
+
 
                 // 3
                 //y = y > 1 ? 1 : y < 0.2f ? 0 : y;
                 //if (x > 1) x = 1;
                 //else if (x < -1) x = -1;
 
-                byte xi = (byte)(255 * (x + 1) / 2);
-                byte yi = (byte)(y * 255);
-
-                xi -= 127;
-                yi -= 127;
 
 
-                InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle.x, xi);
-                InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle.y, yi);
+                //byte xi = (byte)(255 * (x + 1) / 2);
+                //byte yi = (byte)(y * 255);
+
+                //xi -= 127;
+                //yi -= 127;
+
+                //InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle.x, xi);
+                //InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle.y, yi);
+
+
                 //InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, (short)x);
-                //InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, new Vector2(YondulibManager.Instance.xf, YondulibManager.Instance.yf));
+
+
+                InputSystem.QueueDeltaStateEvent(YonduLibDevice.YonduDevice.current.whistle, new Vector2(x, y));
 
                 Debug.Log(x + " - " + y);
             }
