@@ -235,7 +235,7 @@ public class @SimpleControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": ""ScaleVector2(x=2,y=2)"",
                     ""groups"": ""Yondu Device Scheme"",
-                    ""action"": ""New action"",
+                    ""action"": ""look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
